@@ -1,0 +1,9 @@
+**/.vscode/
+**/objs
+
+*.out
+*.exe
+*.o
+*.a
+*.so
+*.dll
