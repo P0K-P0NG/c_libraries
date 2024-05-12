@@ -3,7 +3,7 @@
 ## Naming Convention
 
 ### Local Variables 
-`lower_case`
+`snake_case`
 
 ### Constants
 `ALL_CAPS`
@@ -12,7 +12,7 @@
 `PascalCase`
 
 #### Struct Members
-`lower_case`
+`snake_case`
 
 #### Enums
 `PascalCase`
@@ -24,7 +24,7 @@
 `PascalCase`
 
 #### Union Members
-`lower_case` ending in `_u`
+`snake_case` ending in `_u`
 
 ### General Functions & Macro Functions
 `camelCase`
