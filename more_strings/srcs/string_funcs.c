@@ -12,7 +12,7 @@
 #include <ctype.h>
 #include "string_funcs.h"
 
-int split_str(char str[], char *substrs[], int count, char delimiter[])
+int splitStr(char str[], char *substrs[], int count, char delimiter[])
 {
     if(str == NULL || count < 1)
     {
@@ -38,8 +38,8 @@ int split_str(char str[], char *substrs[], int count, char delimiter[])
     return spilt_count;
 }
 
-char *str_add_buffer(
-    STR_T str_block, int buffer_len[2], char buffer_char)
+char *strAddBuffer(
+    String str_block, int buffer_len[2], char buffer_char)
 {
     char *str = str_block.items;
     int max_len = str_block.len;
@@ -59,7 +59,7 @@ char *str_add_buffer(
     return str;
 }
 
-char *str_align(STR_T str_block, char mode, char buffer_char)
+char *strAlign(String str_block, char mode, char buffer_char)
 {
     char *str = str_block.items;
     int max_len = str_block.len;
@@ -106,12 +106,12 @@ int trim(char str[], char char_to_del)
     /* MAIN LOGIC */
 
     int del_count = 0;
-    del_count += trim_front(str, char_to_del);
-    del_count += trim_end(str, char_to_del);
+    del_count += trimFront(str, char_to_del);
+    del_count += trimEnd(str, char_to_del);
     return del_count;
 }
 
-int trim_front(char str[], char char_to_del)
+int trimFront(char str[], char char_to_del)
 {
     if(str == NULL)
     {
@@ -129,7 +129,7 @@ int trim_front(char str[], char char_to_del)
     return i;
 }
 
-int trim_end(char str[], char char_to_del)
+int trimEnd(char str[], char char_to_del)
 {
     if(str == NULL)
     {
@@ -144,7 +144,7 @@ int trim_end(char str[], char char_to_del)
     return max_idx - i;
 }
 
-char *str_to_upper(char str[])
+char *strToUpper(char str[])
 {
     if(str == NULL)
     {
@@ -159,7 +159,7 @@ char *str_to_upper(char str[])
     return str;
 }
 
-char *str_to_lower(char str[])
+char *strToLower(char str[])
 {
     if(str == NULL)
     {
@@ -174,7 +174,7 @@ char *str_to_lower(char str[])
     return str;
 }
 
-char *remove_newline(char str[])
+char *removeNewline(char str[])
 {
     if(str == NULL)
     {
@@ -190,7 +190,7 @@ char *remove_newline(char str[])
     return str;
 }
 
-char *case_format(char str[])
+char *caseFormat(char str[])
 {
     if(str == NULL)
     {

@@ -28,7 +28,7 @@
  * 
  * @return Number successfully divided sections, -1 if string is NULL or count < 1.
  */
-int split_str(char str[], char *substrs[], int count, char delimiter[]);
+extern int splitStr(char str[], char *substrs[], int count, char delimiter[]);
 
 /**
  * @brief 
@@ -41,7 +41,7 @@ int split_str(char str[], char *substrs[], int count, char delimiter[]);
  * 
  * @return Pointer to the formatted string, NULL if was NULL passed in.
  */
-char *str_add_buffer(STR_T str, int buffer_len[2], char buffer_char);
+extern char *strAddBuffer(String str, int buffer_len[2], char buffer_char);
 
 /**
  * @brief 
@@ -57,7 +57,7 @@ char *str_add_buffer(STR_T str, int buffer_len[2], char buffer_char);
  * 
  * @return Pointer to the formatted string, NULL if was NULL passed in.
  */
-char *str_align(STR_T str, char mode, char buffer_char);
+extern char *strAlign(String str, char mode, char buffer_char);
 
 /**
  * @brief 
@@ -68,7 +68,7 @@ char *str_align(STR_T str, char mode, char buffer_char);
  * 
  * @return Number of deleted characters, -1 if NULL pointer was passed in.
  */
-int trim(char str[], char char_to_del);
+extern int trim(char str[], char char_to_del);
 
 /**
  * @brief 
@@ -79,7 +79,7 @@ int trim(char str[], char char_to_del);
  * 
  * @return Number of deleted characters, -1 if NULL pointer was passed in.
  */
-int trim_front(char str[], char char_to_del);
+extern int trimFront(char str[], char char_to_del);
 
 /**
  * @brief 
@@ -90,7 +90,7 @@ int trim_front(char str[], char char_to_del);
  * 
  * @return Number of deleted characters, -1 if NULL pointer was passed in.
  */
-int trim_end(char str[], char char_to_del);
+extern int trimEnd(char str[], char char_to_del);
 
 /**
  * @brief 
@@ -100,7 +100,7 @@ int trim_end(char str[], char char_to_del);
  * 
  * @return Pointer to the inputted string.
  */
-char *str_to_upper(char str[]);
+extern char *strToUpper(char str[]);
 
 /**
  * @brief 
@@ -110,7 +110,7 @@ char *str_to_upper(char str[]);
  * 
  * @return Pointer to the inputted string.
  */
-char *str_to_lower(char str[]);
+extern char *strToLower(char str[]);
 
 /**
  * @brief 
@@ -120,7 +120,7 @@ char *str_to_lower(char str[]);
  * 
  * @return Inputted string.
  */
-char *remove_newline(char str[]);
+extern char *removeNewline(char str[]);
 
 /**
  * @brief 
@@ -130,5 +130,5 @@ char *remove_newline(char str[]);
  * 
  * @return Formatted string.
  */
-char *case_format(char str[]);
+extern char *caseFormat(char str[]);
 #endif

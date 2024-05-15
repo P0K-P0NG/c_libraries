@@ -16,9 +16,9 @@
 
 typedef struct chained_hashtable // Chained hashtable
 {
-    KVP_LIST_T *buckets;    // array of linked list buckets
+    KVPList *buckets;    // array of linked list buckets
     unsigned long length;   // length of the bucket array
-} CHAINED_HASH_T;
+} ChainHashTable;
 
 /**
  * @brief 
@@ -28,7 +28,7 @@ typedef struct chained_hashtable // Chained hashtable
  * 
  * @return New chained hashtable. NULL if unable to allocate memory.
  */
-CHAINED_HASH_T *chained_hash_create(unsigned long bucket_count);
+extern ChainHashTable *ChainHashTableCreate(unsigned long bucket_count);
 
 /**
  * @brief 
@@ -38,7 +38,7 @@ CHAINED_HASH_T *chained_hash_create(unsigned long bucket_count);
  * @param free_key      function to free the keys, NULL if not needed
  * @param free_data     function to free the data, NULL if not needed
  */
-void chained_hash_clear(CHAINED_HASH_T **table, void (*free_key)(void*), void (*free_data)(void*));
+extern void ChainHashTableClear(ChainHashTable **table, void (*free_key)(void*), void (*free_data)(void*));
 
 /**
  * @brief 
@@ -61,7 +61,7 @@ void chained_hash_clear(CHAINED_HASH_T **table, void (*free_key)(void*), void (*
  *   1 : added successfully @n 
  *   0 : unable to allocate memory @n
  */
-int chained_hash_add(CHAINED_HASH_T *table, void *key, void *data, unsigned long (*hash_func)(const void*), 
+extern int ChainHashTableAdd(ChainHashTable *table, void *key, void *data, unsigned long (*hash_func)(const void*), 
                      int (*comp_key)(const void*, const void*));
 
 /**
@@ -79,7 +79,7 @@ int chained_hash_add(CHAINED_HASH_T *table, void *key, void *data, unsigned long
  * 
  * @return Pointer to the removed data, NULL if not found.
  */
-void *chained_hash_remove(CHAINED_HASH_T *table, void *key, unsigned long (*hash_func)(const void*), 
+extern void *ChainHashTableRemove(ChainHashTable *table, void *key, unsigned long (*hash_func)(const void*), 
                           int (*comp_key)(const void*, const void*), void (*free_key)(void*));
 
 /**
@@ -96,7 +96,7 @@ void *chained_hash_remove(CHAINED_HASH_T *table, void *key, unsigned long (*hash
  * 
  * @return Pointer to the data, NULL if not found.
  */
-void *chained_hash_find(CHAINED_HASH_T *table, const void *key, unsigned long (*hash_func)(const void*), 
+extern void *ChainHashTableFind(ChainHashTable *table, const void *key, unsigned long (*hash_func)(const void*), 
                        int (*comp_key)(const void*, const void*));
 
 /**
@@ -115,7 +115,7 @@ void *chained_hash_find(CHAINED_HASH_T *table, const void *key, unsigned long (*
  * @return 
  *  Number of matching data found, -1 if memory allocation falied.
  */
-int chained_hash_find_all(CHAINED_HASH_T *table, const void *key, void ***data_arr, unsigned long (*hash_func)(const void*), 
+extern int ChainHashTableFindAll(ChainHashTable *table, const void *key, void ***data_arr, unsigned long (*hash_func)(const void*), 
                           int (*comp_key)(const void*, const void*));
 
 /**
@@ -132,7 +132,7 @@ int chained_hash_find_all(CHAINED_HASH_T *table, const void *key, void ***data_a
  * 
  * @return The numebr of times the provided key is matched.
  */
-int chained_hash_count_repeats(CHAINED_HASH_T *table, const void *key, unsigned long (*hash_func)(const void*), 
+extern int ChainHashTableCountRepeats(ChainHashTable *table, const void *key, unsigned long (*hash_func)(const void*), 
                                int (*comp_key)(const void*, const void*));
 
 /**
@@ -142,7 +142,7 @@ int chained_hash_count_repeats(CHAINED_HASH_T *table, const void *key, unsigned 
  * @param table     chained hashtable to traverse
  * @param func      function to execute
  */
-void chained_hash_traverse(CHAINED_HASH_T *table, void (*func)(void*, void*));
+extern void ChainHashTableTraverse(ChainHashTable *table, void (*func)(void*, void*));
 
 /**
  * @brief 
@@ -155,5 +155,5 @@ void chained_hash_traverse(CHAINED_HASH_T *table, void (*func)(void*, void*));
  * 
  * @return Length of the bucket.
  */
-int chained_hash_chain_length(CHAINED_HASH_T *table, const void *key, unsigned long (*hash_func)(const void*));
+extern int ChainHashTableChainLength(ChainHashTable *table, const void *key, unsigned long (*hash_func)(const void*));
 #endif

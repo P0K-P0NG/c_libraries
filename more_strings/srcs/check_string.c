@@ -15,7 +15,7 @@
 #include <ctype.h>
 #include "check_string.h"
 
-int str_is_alpha(const char str[])
+int strIsAlpha(const char str[])
 {
     if(str == NULL)
     {
@@ -39,7 +39,7 @@ int str_is_alpha(const char str[])
     return is_alpha;
 }
 
-int str_is_digit(const char str[])
+int strIsDigit(const char str[])
 {
     if(str == NULL)
     {
@@ -60,7 +60,7 @@ int str_is_digit(const char str[])
     return i;
 }
 
-int str_is_int(const char str[])
+int strIsInt(const char str[])
 {
     if(str == NULL)
     {
@@ -89,7 +89,7 @@ int str_is_int(const char str[])
     return is_num*i;
 }
 
-int str_is_double(const char str[])
+int strIsDouble(const char str[])
 {
     if(str == NULL)
     {
@@ -129,7 +129,7 @@ int str_is_double(const char str[])
     return is_num*i;
 }
 
-int has_suffix(const char str[], const char suffix[])
+int hasSuffix(const char str[], const char suffix[])
 {
     if(str == NULL || suffix == NULL)
     {

@@ -1,12 +1,12 @@
 /**
  * @file key-value_linked_list.c
- * 
- * @brief 
+ *
+ * @brief
  *  Structs and functions for key-value pair linked lists.
- * 
+ *
  * @implements
  *  key-value_linked_list.h
- * 
+ *
  * @author Pokpong
  * @version 0.1
  * @date 2023-03-20
@@ -15,24 +15,24 @@
 #include <string.h>
 #include "key-value_linked_list.h"
 
-KVP_LIST_T *kvp_list_create()
+KVPList *KVPListCreate()
 {
-    return calloc(1, sizeof(KVP_LIST_T));
+    return calloc(1, sizeof(KVPList));
 }
 
-void kvp_list_clear(
-    KVP_LIST_T **list, void (*free_key)(void*), void (*free_data)(void*))
+void KVPListClear(
+    KVPList **list, void (*free_key)(void *), void (*free_data)(void *))
 {
-    KVP_NODE_T *curr = (*list)->head;
-    while(curr != NULL)
+    KVPListNode *curr = (*list)->head;
+    while (curr != NULL)
     {
-        KVP_NODE_T *prev = curr;
+        KVPListNode *prev = curr;
         curr = curr->next;
-        if(free_key != NULL)
+        if (free_key != NULL)
         {
             free_key(prev->key);
         }
-        if(free_data != NULL)
+        if (free_data != NULL)
         {
             free_data(prev->data);
         }
@@ -42,26 +42,26 @@ void kvp_list_clear(
     *list = NULL;
 }
 
-int kvp_list_remove_head(
-    KVP_LIST_T *list, void (*free_key)(void*), void (*free_data)(void*))
+int KVPListRemoveHead(
+    KVPList *list, void (*free_key)(void *), void (*free_data)(void *))
 {
-    if(list->count == 0)
+    if (list->count == 0)
     {
         return 0;
     }
 
-    KVP_NODE_T *prev_head = list->head;
-    if(list->head == list->tail)
+    KVPListNode *prev_head = list->head;
+    if (list->head == list->tail)
     {
         list->tail = NULL;
     }
     list->head = list->head->next;
     list->count -= 1;
-    if(free_key != NULL)
+    if (free_key != NULL)
     {
         free_key(prev_head->key);
     }
-    if(free_data != NULL)
+    if (free_data != NULL)
     {
         free_data(prev_head->data);
     }
@@ -69,26 +69,25 @@ int kvp_list_remove_head(
     return 1;
 }
 
-
-void *kvp_list_remove(
-    KVP_LIST_T *list,                           void *key,  
-    int (*comp_key)(const void*, const void*),  void (*free_key)(void*))
+void *KVPListRemove(
+    KVPList *list, void *key,
+    int (*comp_key)(const void *, const void *), void (*free_key)(void *))
 {
-    KVP_NODE_T *expired = list->head;
-    KVP_NODE_T *prev = NULL;
+    KVPListNode *expired = list->head;
+    KVPListNode *prev = NULL;
     void *data;
-    while(expired != NULL && comp_key(expired->key, key) != 0)
+    while (expired != NULL && comp_key(expired->key, key) != 0)
     {
         prev = expired;
         expired = expired->next;
     }
-    if(expired == NULL)
+    if (expired == NULL)
     {
         return NULL;
     }
 
     list->count -= 1;
-    if(expired == list->head)
+    if (expired == list->head)
     {
         list->head = expired->next;
     }
@@ -96,11 +95,11 @@ void *kvp_list_remove(
     {
         prev->next = expired->next;
     }
-    if(expired == list->tail)
+    if (expired == list->tail)
     {
         list->tail = prev;
     }
-    if(free_key != NULL)
+    if (free_key != NULL)
     {
         free_key(expired->key);
     }
@@ -109,36 +108,36 @@ void *kvp_list_remove(
     return data;
 }
 
-void kvp_list_remove_all(
-    KVP_LIST_T *list, void (*free_key)(void*), void (*free_data)(void*))
+void KVPListRemoveAll(
+    KVPList *list, void (*free_key)(void *), void (*free_data)(void *))
 {
-    KVP_NODE_T *curr = list->head;
-    while(curr != NULL)
+    KVPListNode *curr = list->head;
+    while (curr != NULL)
     {
-        KVP_NODE_T *prev = curr;
+        KVPListNode *prev = curr;
         curr = curr->next;
-        if(free_key != NULL)
+        if (free_key != NULL)
         {
             free_key(prev->key);
         }
-        if(free_data != NULL)
+        if (free_data != NULL)
         {
             free_data(prev->data);
         }
         free(prev);
     }
-    memset(list, 0, sizeof(KVP_LIST_T));
+    memset(list, 0, sizeof(KVPList));
 }
 
-int kvp_list_add_head(KVP_LIST_T *list, void *key, void *data)
+int KVPListAddHead(KVPList *list, void *key, void *data)
 {
-    KVP_NODE_T *new_head = calloc(1, sizeof(KVP_NODE_T));
-    if(new_head == NULL)
+    KVPListNode *new_head = calloc(1, sizeof(KVPListNode));
+    if (new_head == NULL)
     {
         return 0;
     }
 
-    if(list->tail == NULL)
+    if (list->tail == NULL)
     {
         list->tail = new_head;
     }
@@ -150,15 +149,15 @@ int kvp_list_add_head(KVP_LIST_T *list, void *key, void *data)
     return 1;
 }
 
-int kvp_list_add_tail(KVP_LIST_T *list, void *key, void *data)
+int KVPListAddTail(KVPList *list, void *key, void *data)
 {
-    KVP_NODE_T *new_tail = calloc(1, sizeof(KVP_NODE_T));
-    if(new_tail == NULL)
+    KVPListNode *new_tail = calloc(1, sizeof(KVPListNode));
+    if (new_tail == NULL)
     {
         return 0;
     }
 
-    if(list->head == NULL)
+    if (list->head == NULL)
     {
         list->head = new_tail;
     }
@@ -173,24 +172,24 @@ int kvp_list_add_tail(KVP_LIST_T *list, void *key, void *data)
     return 1;
 }
 
-int kvp_list_add(
-    KVP_LIST_T *list,   void *key, 
-    void *data,         int (*comp_key)(const void*, const void*))
+int KVPListAdd(
+    KVPList *list, void *key,
+    void *data, int (*comp_key)(const void *, const void *))
 {
-    KVP_NODE_T *new_node = calloc(1, sizeof(KVP_NODE_T));
-    if(new_node == NULL)
+    KVPListNode *new_node = calloc(1, sizeof(KVPListNode));
+    if (new_node == NULL)
     {
         return 0;
     }
-    
-    KVP_NODE_T *prev = NULL;
-    KVP_NODE_T *curr = list->head;
-    while(curr != NULL && comp_key(curr->key, key) < 0)
+
+    KVPListNode *prev = NULL;
+    KVPListNode *curr = list->head;
+    while (curr != NULL && comp_key(curr->key, key) < 0)
     {
         prev = curr;
         curr = curr->next;
     }
-    if(prev == NULL)
+    if (prev == NULL)
     {
         list->head = new_node;
     }
@@ -198,7 +197,7 @@ int kvp_list_add(
     {
         prev->next = new_node;
     }
-    if(curr == NULL)
+    if (curr == NULL)
     {
         list->tail = new_node;
     }
@@ -208,59 +207,58 @@ int kvp_list_add(
     return 1;
 }
 
-void *kvp_list_find(
-    KVP_LIST_T *list, 
-    const void *key, 
-    int (*comp_key)(const void*, const void*))
+void *KVPListFind(
+    KVPList *list,
+    const void *key,
+    int (*comp_key)(const void *, const void *))
 {
-    KVP_NODE_T *curr = list->head;
-    while(curr != NULL && comp_key(curr->key, key) != 0)
+    KVPListNode *curr = list->head;
+    while (curr != NULL && comp_key(curr->key, key) != 0)
     {
         curr = curr->next;
     }
     return curr->data;
 }
 
-int kvp_list_find_all(
-    KVP_LIST_T *list, const void *key, 
-    void ***data_arr, int (*comp_key)(const void*, const void*))
+int KVPListFindAll(
+    KVPList *list, const void *key,
+    void ***data_arr, int (*comp_key)(const void *, const void *))
 {
-    KVP_LIST_T *data_list = kvp_list_create();
-    if(data_list == NULL)
+    KVPList *data_list = KVPListCreate();
+    if (data_list == NULL)
     {
         return -1;
     }
-    KVP_NODE_T *curr = list->head;
-    for(int i = 0; curr != NULL; i++)
+    KVPListNode *curr = list->head;
+    for (int i = 0; curr != NULL; i++)
     {
-        if(comp_key(curr->key, key) == 0 
-            && kvp_list_add_tail(data_list, NULL, curr->data) == 0)
+        if (comp_key(curr->key, key) == 0 && KVPListAddTail(data_list, NULL, curr->data) == 0)
         {
             return -1;
         }
         curr = curr->next;
     }
     int count = data_list->count;
-    *data_arr = malloc(count*sizeof(void*));
-    if(*data_arr == NULL)
+    *data_arr = malloc(count * sizeof(void *));
+    if (*data_arr == NULL)
     {
         return -1;
     }
-    kvp_list_to_pointer_arr(data_list, *data_arr, count);
-    kvp_list_clear(&data_list, NULL, NULL);
+    KVPListToPointerArr(data_list, *data_arr, count);
+    KVPListClear(&data_list, NULL, NULL);
     return count;
 }
 
-int kvp_list_count_repeats(
-    KVP_LIST_T *list, 
-    const void *key, 
-    int (*comp_key)(const void*, const void*))
+int KVPListCountRepeats(
+    KVPList *list,
+    const void *key,
+    int (*comp_key)(const void *, const void *))
 {
     int count = 0;
-    KVP_NODE_T *curr = list->head;
-    while(curr != NULL)
+    KVPListNode *curr = list->head;
+    while (curr != NULL)
     {
-        if(comp_key(curr->key, key) == 0)
+        if (comp_key(curr->key, key) == 0)
         {
             count++;
         }
@@ -269,42 +267,42 @@ int kvp_list_count_repeats(
     return count;
 }
 
-void kvp_list_traverse(KVP_LIST_T *list, void (*func)(void*, void*))
+void KVPListTraverse(KVPList *list, void (*func)(void *, void *))
 {
-    KVP_NODE_T *curr = list->head;
-    while(curr != NULL)
+    KVPListNode *curr = list->head;
+    while (curr != NULL)
     {
         func(curr->key, curr->data);
         curr = curr->next;
     }
 }
 
-void kvp_list_to_pointer_arr(KVP_LIST_T *list, void **arr, int len)
+void KVPListToPointerArr(KVPList *list, void **arr, int len)
 {
     int min_len = len;
-    if(min_len > list->count)
+    if (min_len > list->count)
     {
         min_len = list->count;
     }
-    KVP_NODE_T *curr = list->head;
-    for(int i = 0; i < min_len; i++)
+    KVPListNode *curr = list->head;
+    for (int i = 0; i < min_len; i++)
     {
         arr[i] = curr->data;
         curr = curr->next;
     }
 }
 
-void kvp_list_to_arr(KVP_LIST_T *list, void *arr, int len, size_t item_size)
+void KVPListToArr(KVPList *list, void *arr, int len, size_t item_size)
 {
     int min_len = len;
-    if(min_len > list->count)
+    if (min_len > list->count)
     {
         min_len = list->count;
     }
-    KVP_NODE_T *curr = list->head;
-    for(int i = 0; i < min_len; i++)
+    KVPListNode *curr = list->head;
+    for (int i = 0; i < min_len; i++)
     {
-        memcpy(arr + i*item_size, curr->data, item_size);
+        memcpy(arr + i * item_size, curr->data, item_size);
         curr = curr->next;
     }
 }

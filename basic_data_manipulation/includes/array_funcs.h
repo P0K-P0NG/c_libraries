@@ -32,7 +32,7 @@
  * 
  * @return the index of the item in the array. -1 if not found
  */
-int get_arr_idx(const void *value, const void *arr, size_t item_size, int count, int (*comp_func)(const void*, const void*));
+extern int getArrIdx(const void *value, const void *arr, size_t item_size, int count, int (*comp_func)(const void*, const void*));
 
 /**
  * @brief 
@@ -50,5 +50,5 @@ int get_arr_idx(const void *value, const void *arr, size_t item_size, int count,
  * @param count         number of items in the array
  * @param comp_func     function compare the items
  */
-void insert_sort_arr(void *arr, size_t item_size, int count, int (*comp_func)(const void*, const void*));
+extern void insertSortArr(void *arr, size_t item_size, int count, int (*comp_func)(const void*, const void*));
 #endif

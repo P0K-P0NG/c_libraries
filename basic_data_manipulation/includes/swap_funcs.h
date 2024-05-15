@@ -23,5 +23,5 @@ typedef unsigned char byte_t;
  * @param ptr2  pointer 2
  * @param size  size of the content in bytes
  */
-void swap(void *ptr1, void *ptr2, size_t size);
+extern void swap(void *ptr1, void *ptr2, size_t size);
 #endif

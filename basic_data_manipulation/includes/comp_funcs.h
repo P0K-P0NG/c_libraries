@@ -21,7 +21,7 @@
  * 
  * @return difference of INT_1 - INT_2
  */
-static inline int comp_int(const void *int1, const void *int2);
+extern int compInt(const void *int1, const void *int2);
 
 /**
  * @brief 
@@ -36,7 +36,7 @@ static inline int comp_int(const void *int1, const void *int2);
  *  > 0 : if the first string comes after the second @n
  *    0 : if the strings are the same @n
  */
-static inline int comp_str(const void *str1, const void *str2);
+extern int compStr(const void *str1, const void *str2);
 
 /**
  * @brief 
@@ -53,7 +53,7 @@ static inline int comp_str(const void *str1, const void *str2);
  *  > 0 : if the first string comes after the second @n
  *    0 : if the strings are the same @n
  */
-static inline int comp_str_ignore_case(const void *str1, const void *str2);
+extern int compStrIgnoreCase(const void *str1, const void *str2);
 
 
 /**
@@ -66,5 +66,5 @@ static inline int comp_str_ignore_case(const void *str1, const void *str2);
  * 
  * @return difference of PTR_1 - PTR_2
  */
-static inline int comp_ptr(const void *ptr1, const void *ptr2);
+extern int compPtr(const void *ptr1, const void *ptr2);
 #endif

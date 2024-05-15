@@ -13,11 +13,11 @@
  */
 #include <stdio.h>
 #include <unistd.h>
-#include "check_input.h"
+#include "check_string.h"
 #include "get_terminal_input.h"
 #include "get_file.h"
 
-int get_file_p(
+int getFilePtr(
     FILE **file_p,       const size_t name_len, const char mode[],  
     const char suffix[], const char cwd[],      const char prompt[])
 {
@@ -28,11 +28,11 @@ int get_file_p(
         chdir(cwd);
     }
     *file_p = NULL;
-    if(get_str((STR_T){file_name, name_len}, prompt) == NULL)
+    if(getStr((String){file_name, name_len}, prompt) == NULL)
     {
         err_code = 1;
     }
-    else if(!has_suffix(file_name, suffix))
+    else if(!hasSuffix(file_name, suffix))
     {
         err_code = 2;
     }

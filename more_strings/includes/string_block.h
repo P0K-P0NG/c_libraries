@@ -17,6 +17,6 @@ typedef struct string_block
 {
     char *const items;
     const size_t len;
-} STR_T;
+} String;
 
 #endif

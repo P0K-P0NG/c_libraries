@@ -32,5 +32,5 @@ typedef struct Date
  * 
  * @return 1 if is valid; 0 if is not valid.
  */
-int check_date(DATE_T date, int min_year, int max_year);
+extern int checkDate(DATE_T date, int min_year, int max_year);
 #endif

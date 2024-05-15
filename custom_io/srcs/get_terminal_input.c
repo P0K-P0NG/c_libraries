@@ -15,7 +15,7 @@
 #include <string.h>
 #include "get_terminal_input.h"
 
-int get_input(const size_t max_len, Pointer ptr, const char prompt[])
+int getInput(const size_t max_len, Pointer ptr, const char prompt[])
 {
     char str[max_len];
     printf("%s", prompt);
@@ -24,7 +24,7 @@ int get_input(const size_t max_len, Pointer ptr, const char prompt[])
     return sscanf(str, ptr.type, ptr.ptr);
 }
 
-char *get_full_str(STR_T str, const char prompt[])
+char *getFullStr(String str, const char prompt[])
 {
     printf("%s", prompt);
     char *ptr = fgets(str.items, str.len, stdin);
@@ -32,7 +32,7 @@ char *get_full_str(STR_T str, const char prompt[])
     return ptr;
 }
 
-char *get_str(STR_T str_block, const char prompt[])
+char *getStr(String str_block, const char prompt[])
 {
     char *str = str_block.items;
     char max_len = str_block.len;

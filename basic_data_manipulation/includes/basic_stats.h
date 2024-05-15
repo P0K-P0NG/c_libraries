@@ -10,7 +10,7 @@
  * 
  * @return Larger integer.
  */
-int max_int(const int num1, const int num2);
+extern int maxInt(const int num1, const int num2);
 
 /**
  * @brief 
@@ -21,7 +21,7 @@ int max_int(const int num1, const int num2);
  * 
  * @return Smaller integer.
  */
-int min_int(const int num1, const int num2);
+extern int minInt(const int num1, const int num2);
 
 /**
  * @brief 
@@ -32,7 +32,7 @@ int min_int(const int num1, const int num2);
  * 
  * @return Larger float.
  */
-float max_float(const float num1, const float num2);
+extern float maxFloat(const float num1, const float num2);
 
 /**
  * @brief 
@@ -43,7 +43,7 @@ float max_float(const float num1, const float num2);
  * 
  * @return Smaller float.
  */
-float min_float(const float num1, const float num2);
+extern float minFloat(const float num1, const float num2);
 
 /**
  * @brief 
@@ -54,7 +54,7 @@ float min_float(const float num1, const float num2);
  * 
  * @return Larger double.
  */
-double max_double(const double num1, const double num2);
+extern double maxDouble(const double num1, const double num2);
 
 /**
  * @brief 
@@ -65,5 +65,5 @@ double max_double(const double num1, const double num2);
  * 
  * @return Smaller double.
  */
-double min_double(const double num1, const double num2);
+extern double minDouble(const double num1, const double num2);
 #endif

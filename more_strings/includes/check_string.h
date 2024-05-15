@@ -22,7 +22,7 @@
  *    0 : string isn't alphabetical @n
  *   -1 : NULL pointer was passed in @n
  */
-int str_is_alpha(const char str[]);
+extern int strIsAlpha(const char str[]);
 
 /**
  * @brief 
@@ -35,7 +35,7 @@ int str_is_alpha(const char str[]);
  *    0 : string isn't made up of only digits @n 
  *   -1 : NULL pointer was passed in @n
  */
-int str_is_digit(const char str[]);
+extern int strIsDigit(const char str[]);
 
 /**
  * @brief 
@@ -48,7 +48,7 @@ int str_is_digit(const char str[]);
  *    0 : string isn't a valid integer @n 
  *   -1 : NULL pointer was passed in @n
  */
-int str_is_int(const char str[]);
+extern int strIsInt(const char str[]);
 
 /**
  * @brief 
@@ -61,7 +61,7 @@ int str_is_int(const char str[]);
  *    0 : string isn't a valid double @n
  *   -1 : NULL pointer was passed in @n
  */
-int str_is_double(const char str[]);
+extern int strIsDouble(const char str[]);
 
 /**
  * @brief 
@@ -75,5 +75,5 @@ int str_is_double(const char str[]);
  *   0 : string's suffix doesn't match @n
  *  -1 : NULL pointer was passed in @n
  */
-int has_suffix(const char str[], const char suffix[]);
+extern int hasSuffix(const char str[], const char suffix[]);
 #endif

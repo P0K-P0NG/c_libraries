@@ -32,7 +32,7 @@
  *  2 : error incorrect suffix
  *  3 : unable to open file
  */
-int get_file_p(
+extern int getFilePtr(
     FILE **file_p,       const size_t name_len, const char mode[],  
     const char suffix[], const char cwd[],      const char prompt[]);
     

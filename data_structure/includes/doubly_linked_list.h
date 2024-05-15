@@ -18,14 +18,14 @@ typedef struct doubly_node  // node in a doubly linked list
     void *data;                 // pointer to data
     struct doubly_node *next;   // next node in doubly linked list
     struct doubly_node *prev;   // next node in doubly linked list
-} DOUBLY_NODE_T;
+} DLListNode;
 
 typedef struct doubly_linked_list
 {
-    DOUBLY_NODE_T *head;    // head node
-    DOUBLY_NODE_T *tail;    // tail node
+    DLListNode *head;    // head node
+    DLListNode *tail;    // tail node
     int count;
-} DOUBLY_LIST_T;
+} DLList;
 
 /**
  * @brief 
@@ -33,7 +33,7 @@ typedef struct doubly_linked_list
  * 
  * @return Pointer to new doubly linked list, NULL if memory allocation is unsuccessful.
  */
-DOUBLY_LIST_T *doubly_list_create();
+extern DLList *DLListCreate();
 
 /**
  * @brief 
@@ -42,7 +42,7 @@ DOUBLY_LIST_T *doubly_list_create();
  * @param list          doubly linked list to delete
  * @param free_data     function to free data, NULL if not needed
  */
-void doubly_list_clear(DOUBLY_LIST_T **list, void (*free_data)(void*));
+extern void DLListClear(DLList **list, void (*free_data)(void*));
 
 /**
  * @brief 
@@ -57,7 +57,7 @@ void doubly_list_clear(DOUBLY_LIST_T **list, void (*free_data)(void*));
  *  1 : removal successful @n
  *  0 : node pointer is NULL @n
  */
-int doubly_list_remove(DOUBLY_LIST_T *list, DOUBLY_NODE_T *node, void (*free_data)(void*));
+extern int DLListRemove(DLList *list, DLListNode *node, void (*free_data)(void*));
 
 /**
  * @brief 
@@ -67,7 +67,7 @@ int doubly_list_remove(DOUBLY_LIST_T *list, DOUBLY_NODE_T *node, void (*free_dat
  * @param list          doubly linked list to remove from
  * @param free_data     function to free data, NULL if not needed
  */
-void doubly_list_remove_all(DOUBLY_LIST_T *list, void (*free_data)(void*));
+extern void DLListRemoveAll(DLList *list, void (*free_data)(void*));
 
 /**
  * @brief 
@@ -78,7 +78,7 @@ void doubly_list_remove_all(DOUBLY_LIST_T *list, void (*free_data)(void*));
  * 
  * @return Pointer to the new node, NULL if memory allocation failed.
  */
-DOUBLY_NODE_T *doubly_list_add_head(DOUBLY_LIST_T *list, void *data);
+extern DLListNode *DLListAddHead(DLList *list, void *data);
 
 /**
  * @brief 
@@ -89,7 +89,7 @@ DOUBLY_NODE_T *doubly_list_add_head(DOUBLY_LIST_T *list, void *data);
  * 
  * @return Pointer to the new node, NULL if memory allocation failed.
  */
-DOUBLY_NODE_T *doubly_list_add_tail(DOUBLY_LIST_T *list, void *data);
+extern DLListNode *DLListAddTail(DLList *list, void *data);
 
 /**
  * @brief 
@@ -102,7 +102,7 @@ DOUBLY_NODE_T *doubly_list_add_tail(DOUBLY_LIST_T *list, void *data);
  * 
  * @return Pointer to the new node, NULL if memory allocation failed.
  */
-DOUBLY_NODE_T *doubly_list_add_at(DOUBLY_LIST_T *list, DOUBLY_NODE_T *curr_node, void *data);
+extern DLListNode *DLListAddAt(DLList *list, DLListNode *curr_node, void *data);
 
 /**
  * @brief 
@@ -119,7 +119,7 @@ DOUBLY_NODE_T *doubly_list_add_at(DOUBLY_LIST_T *list, DOUBLY_NODE_T *curr_node,
  * 
  * @return Pointer to the new node, NULL if memory allocation failed.
  */
-DOUBLY_NODE_T *doubly_list_add_by_compare(DOUBLY_LIST_T *list, void *data, int (*comp_func)(const void*, const void*));
+extern DLListNode *DLListAddByCompare(DLList *list, void *data, int (*comp_func)(const void*, const void*));
 
 /**
  * @brief 
@@ -130,7 +130,7 @@ DOUBLY_NODE_T *doubly_list_add_by_compare(DOUBLY_LIST_T *list, void *data, int (
  * 
  * @return Pointer to the node, NULL if node is not found or the index is invalid.
  */
-DOUBLY_NODE_T *doubly_list_at(DOUBLY_LIST_T *list, int idx);
+extern DLListNode *DLListAt(DLList *list, int idx);
 
 /**
  * @brief 
@@ -149,7 +149,7 @@ DOUBLY_NODE_T *doubly_list_at(DOUBLY_LIST_T *list, int idx);
  * 
  * @return Pointer to the data, NULL if data is not found
  */
-DOUBLY_NODE_T *doubly_list_find(DOUBLY_LIST_T *list, const void *key, int (*comp_func)(const void*, const void*));
+extern DLListNode *DLListFind(DLList *list, const void *key, int (*comp_func)(const void*, const void*));
 
 /**
  * @brief 
@@ -158,5 +158,5 @@ DOUBLY_NODE_T *doubly_list_find(DOUBLY_LIST_T *list, const void *key, int (*comp
  * @param list  doubly linked list to traverse
  * @param func  function to preform on data
  */
-void doubly_list_traverse(DOUBLY_LIST_T *list, void (*func)(void*));
+extern void DLListTraverse(DLList *list, void (*func)(void*));
 #endif

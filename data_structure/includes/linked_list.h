@@ -17,14 +17,14 @@ typedef struct node // node in a linked list
 {
     void *data;         // pointer to data
     struct node *next;  // next node in linked list
-} NODE_T;
+} LListNode;
 
 typedef struct linked_list
 {
-    NODE_T *head;   // head node
-    NODE_T *tail;   // tail node
+    LListNode *head;   // head node
+    LListNode *tail;   // tail node
     int count;
-} LINKED_LIST_T;
+} LList;
 
 /**
  * @brief 
@@ -32,7 +32,7 @@ typedef struct linked_list
  * 
  * @return Pointer to new linked list, NULL if memory allocation is unsuccessful.
  */
-LINKED_LIST_T *list_create();
+extern LList *LListCreate();
 
 /**
  * @brief 
@@ -41,7 +41,7 @@ LINKED_LIST_T *list_create();
  * @param list          linked list to delete
  * @param free_data     function to free data, NULL if not needed
  */
-void list_clear(LINKED_LIST_T **list, void (*free_data)(void*));
+extern void LListClear(LList **list, void (*free_data)(void*));
 
 /**
  * @brief 
@@ -54,7 +54,7 @@ void list_clear(LINKED_LIST_T **list, void (*free_data)(void*));
  *  1 : removal successful @n
  *  0 : linked list is empty @n
  */
-int list_pop(LINKED_LIST_T *list, void (*free_data)(void*));
+extern int LListPop(LList *list, void (*free_data)(void*));
 
 /**
  * @brief 
@@ -69,7 +69,7 @@ int list_pop(LINKED_LIST_T *list, void (*free_data)(void*));
  *  1 : removal successful @n
  *  0 : invalid index @n
  */
-int list_remove_at(LINKED_LIST_T *list, int idx, void (*free_data)(void*));
+extern int LListRemoveAt(LList *list, int idx, void (*free_data)(void*));
 
 /**
  * @brief 
@@ -79,7 +79,7 @@ int list_remove_at(LINKED_LIST_T *list, int idx, void (*free_data)(void*));
  * @param list          linked list to remove from
  * @param free_data     function to free data, NULL if not needed
  */
-void list_remove_all(LINKED_LIST_T *list, void (*free_data)(void*));
+extern void LListRemoveAll(LList *list, void (*free_data)(void*));
 
 /**
  * @brief 
@@ -92,7 +92,7 @@ void list_remove_all(LINKED_LIST_T *list, void (*free_data)(void*));
  *  1 : node added successfully @n
  *  0 : memory allocation falied @n
  */
-int list_push(LINKED_LIST_T *list, void *data);
+extern int LListPush(LList *list, void *data);
 
 /**
  * @brief 
@@ -105,7 +105,7 @@ int list_push(LINKED_LIST_T *list, void *data);
  *  1 : node added successfully @n
  *  0 : memory allocation falied @n
  */
-int list_add_tail(LINKED_LIST_T *list, void *data);
+extern int LListAddTail(LList *list, void *data);
 
 /**
  * @brief 
@@ -120,7 +120,7 @@ int list_add_tail(LINKED_LIST_T *list, void *data);
  *   0 : memory allocation falied @n
  *  -1 : invalid index @n
  */
-int list_add_at(LINKED_LIST_T *list, void *data, int idx);
+extern int LListAddAt(LList *list, void *data, int idx);
 
 /**
  * @brief 
@@ -139,7 +139,7 @@ int list_add_at(LINKED_LIST_T *list, void *data, int idx);
  *  1 : added successfully @n
  *  0 : memory allocation falied @n
  */
-int list_add_by_compare(LINKED_LIST_T *list, void *data, int (*comp_func)(const void*, const void*));
+extern int LListAddByCompare(LList *list, void *data, int (*comp_func)(const void*, const void*));
 
 /**
  * @brief 
@@ -153,7 +153,7 @@ int list_add_by_compare(LINKED_LIST_T *list, void *data, int (*comp_func)(const 
  *  1 : edit successful @n
  *  0 : invalid index @n
  */
-int list_edit_at(LINKED_LIST_T *list, void *data, int idx);
+extern int LListEditAt(LList *list, void *data, int idx);
 
 /**
  * @brief 
@@ -164,7 +164,7 @@ int list_edit_at(LINKED_LIST_T *list, void *data, int idx);
  * 
  * @return Pointer to the data, NULL if data is not found or the index is invalid.
  */
-void *list_data_at(LINKED_LIST_T *list, int idx);
+extern void *LListDataAt(LList *list, int idx);
 
 /**
  * @brief 
@@ -183,7 +183,7 @@ void *list_data_at(LINKED_LIST_T *list, int idx);
  * 
  * @return Pointer to the data, NULL if data is not found
  */
-void *list_data(LINKED_LIST_T *list, const void *key, int (*comp_func)(const void*, const void*));
+extern void *LListData(LList *list, const void *key, int (*comp_func)(const void*, const void*));
 
 /**
  * @brief 
@@ -204,7 +204,7 @@ void *list_data(LINKED_LIST_T *list, const void *key, int (*comp_func)(const voi
  * 
  * @return Number of data chunks, -1 if memory allocation failed.
  */
-int list_all_data(LINKED_LIST_T *list, const void *key, void ***data_arr, int (*comp_func)(const void*, const void*));
+extern int LListAllData(LList *list, const void *key, void ***data_arr, int (*comp_func)(const void*, const void*));
 
 /**
  * @brief 
@@ -222,7 +222,7 @@ int list_all_data(LINKED_LIST_T *list, const void *key, void ***data_arr, int (*
  * 
  * @return Index of node conatining the data, -1 if node with the given data doesn't exist.
  */
-int list_find_idx(LINKED_LIST_T *list, const void *key, int (*comp_func)(const void*, const void*));
+extern int LListFindIdx(LList *list, const void *key, int (*comp_func)(const void*, const void*));
 
 /**
  * @brief 
@@ -243,7 +243,7 @@ int list_find_idx(LINKED_LIST_T *list, const void *key, int (*comp_func)(const v
  * 
  * @return Number of indices, -1 if memory allocation failed.
  */
-int list_find_all_idx(LINKED_LIST_T *list, const void *key, int **idx_arr, int (*comp_func)(const void*, const void*));
+extern int LListFindAllIdx(LList *list, const void *key, int **idx_arr, int (*comp_func)(const void*, const void*));
 
 /**
  * @brief 
@@ -252,7 +252,7 @@ int list_find_all_idx(LINKED_LIST_T *list, const void *key, int **idx_arr, int (
  * @param list  linked list to traverse
  * @param func  function to preform on data
  */
-void list_traverse(LINKED_LIST_T *list, void (*func)(void*));
+extern void LListTraverse(LList *list, void (*func)(void*));
 
 /**
  * @brief 
@@ -266,7 +266,7 @@ void list_traverse(LINKED_LIST_T *list, void (*func)(void*));
  * @param len           array length
  * @param item_size     array element size
  */
-void list_to_arr(LINKED_LIST_T *list, void *arr, int len, size_t item_size);
+extern void LListToArr(LList *list, void *arr, int len, size_t item_size);
 
 /**
  * @brief 
@@ -276,5 +276,5 @@ void list_to_arr(LINKED_LIST_T *list, void *arr, int len, size_t item_size);
  * @param arr   array to store copied pointers
  * @param len   array length
  */
-void list_to_pointer_arr(LINKED_LIST_T *list, void **arr, int len);
+extern void LListToPointerArr(LList *list, void **arr, int len);
 #endif

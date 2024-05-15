@@ -18,14 +18,14 @@ typedef struct key_value_pair_node // node in a key-value pair linked list
     void *key;                          // key to identify the node with
     void *data;                         // pointer to data
     struct key_value_pair_node *next;   // next node in key-value pair linked list
-} KVP_NODE_T;
+} KVPListNode;
 
 typedef struct key_value_pair_linked_list
 {
-    KVP_NODE_T *head;   // head node
-    KVP_NODE_T *tail;   // tail node
+    KVPListNode *head;   // head node
+    KVPListNode *tail;   // tail node
     int count;
-} KVP_LIST_T;
+} KVPList;
 
 /**
  * @brief 
@@ -33,7 +33,7 @@ typedef struct key_value_pair_linked_list
  * 
  * @return Pointer to new key-value pair linked list, NULL if memory allocation is unsuccessful.
  */
-KVP_LIST_T *kvp_list_create();
+extern KVPList *KVPListCreate();
 
 /**
  * @brief 
@@ -43,7 +43,7 @@ KVP_LIST_T *kvp_list_create();
  * @param free_key      function to free keys, NULL if not needed
  * @param free_data     function to free data, NULL if not needed
  */
-void kvp_list_clear(KVP_LIST_T **list, void (*free_key)(void*), void (*free_data)(void*));
+extern void KVPListClear(KVPList **list, void (*free_key)(void*), void (*free_data)(void*));
 
 /**
  * @brief 
@@ -57,7 +57,7 @@ void kvp_list_clear(KVP_LIST_T **list, void (*free_key)(void*), void (*free_data
  *  1 : removal successful @n
  *  0 : key-value pair linked list is empty @n
  */
-int kvp_list_remove_head(KVP_LIST_T *list, void (*free_key)(void*), void (*free_data)(void*));
+extern int KVPListRemoveHead(KVPList *list, void (*free_key)(void*), void (*free_data)(void*));
 
 /**
  * @brief 
@@ -74,7 +74,7 @@ int kvp_list_remove_head(KVP_LIST_T *list, void (*free_key)(void*), void (*free_
  * 
  * @return Pointer the data of the removed node, NULL if not found.
  */
-void *kvp_list_remove(KVP_LIST_T *list, void *key,  int (*comp_key)(const void*, const void*), void (*free_key)(void*));
+extern void *KVPListRemove(KVPList *list, void *key,  int (*comp_key)(const void*, const void*), void (*free_key)(void*));
 
 /**
  * @brief 
@@ -85,7 +85,7 @@ void *kvp_list_remove(KVP_LIST_T *list, void *key,  int (*comp_key)(const void*,
  * @param free_key      function to free keys, NULL if not needed
  * @param free_data     function to free data, NULL if not needed
  */
-void kvp_list_remove_all(KVP_LIST_T *list, void (*free_key)(void*), void (*free_data)(void*));
+extern void KVPListRemoveAll(KVPList *list, void (*free_key)(void*), void (*free_data)(void*));
 
 /**
  * @brief 
@@ -99,7 +99,7 @@ void kvp_list_remove_all(KVP_LIST_T *list, void (*free_key)(void*), void (*free_
  *  1 : node added successfully @n
  *  0 : memory allocation falied @n
  */
-int kvp_list_add_head(KVP_LIST_T *list, void *key, void *data);
+extern int KVPListAddHead(KVPList *list, void *key, void *data);
 
 /**
  * @brief 
@@ -113,7 +113,7 @@ int kvp_list_add_head(KVP_LIST_T *list, void *key, void *data);
  *  1 : node added successfully @n
  *  0 : memory allocation falied @n
  */
-int kvp_list_add_tail(KVP_LIST_T *list, void *key, void *data);
+extern int KVPListAddTail(KVPList *list, void *key, void *data);
 
 /**
  * @brief 
@@ -133,7 +133,7 @@ int kvp_list_add_tail(KVP_LIST_T *list, void *key, void *data);
  *  1 : added successfully @n
  *  0 : memory allocation falied @n
  */
-int kvp_list_add(KVP_LIST_T *list, void *key, void *data, int (*comp_key)(const void*, const void*));
+extern int KVPListAdd(KVPList *list, void *key, void *data, int (*comp_key)(const void*, const void*));
 
 /**
  * @brief 
@@ -148,7 +148,7 @@ int kvp_list_add(KVP_LIST_T *list, void *key, void *data, int (*comp_key)(const 
  * 
  * @return Pointer to the data, NULL if data is not found
  */
-void *kvp_list_find(KVP_LIST_T *list, const void *key, int (*comp_key)(const void*, const void*));
+extern void *KVPListFind(KVPList *list, const void *key, int (*comp_key)(const void*, const void*));
 
 /**
  * @brief 
@@ -165,7 +165,7 @@ void *kvp_list_find(KVP_LIST_T *list, const void *key, int (*comp_key)(const voi
  * 
  * @return Number of data chunks, -1 if memory allocation failed.
  */
-int kvp_list_find_all(KVP_LIST_T *list, const void *key, void ***data_arr, int (*comp_key)(const void*, const void*));
+extern int KVPListFindAll(KVPList *list, const void *key, void ***data_arr, int (*comp_key)(const void*, const void*));
 
 /**
  * @brief 
@@ -180,7 +180,7 @@ int kvp_list_find_all(KVP_LIST_T *list, const void *key, void ***data_arr, int (
  * 
  * @return The numebr of times the provided key is matched.
  */
-int kvp_list_count_repeats(KVP_LIST_T *list, const void *key, int (*comp_key)(const void*, const void*));
+extern int KVPListCountRepeats(KVPList *list, const void *key, int (*comp_key)(const void*, const void*));
 
 /**
  * @brief 
@@ -189,7 +189,7 @@ int kvp_list_count_repeats(KVP_LIST_T *list, const void *key, int (*comp_key)(co
  * @param list  key-value pair linked list to traverse
  * @param func  function to preform on key and data, in this order
  */
-void kvp_list_traverse(KVP_LIST_T *list, void (*func)(void*, void*));
+extern void KVPListTraverse(KVPList *list, void (*func)(void*, void*));
 
 /**
  * @brief 
@@ -203,7 +203,7 @@ void kvp_list_traverse(KVP_LIST_T *list, void (*func)(void*, void*));
  * @param len           array length
  * @param item_size     array element size
  */
-void kvp_list_to_arr(KVP_LIST_T *list, void *arr, int len, size_t item_size);
+extern void KVPListToArr(KVPList *list, void *arr, int len, size_t item_size);
 
 /**
  * @brief 
@@ -213,5 +213,5 @@ void kvp_list_to_arr(KVP_LIST_T *list, void *arr, int len, size_t item_size);
  * @param arr   array to store copied pointers
  * @param len   array length
  */
-void kvp_list_to_pointer_arr(KVP_LIST_T *list, void **arr, int len);
+extern void KVPListToPointerArr(KVPList *list, void **arr, int len);
 #endif

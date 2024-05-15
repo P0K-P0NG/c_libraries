@@ -14,7 +14,7 @@
 #include <swap_funcs.h>
 #include "array_funcs.h"
 
-int get_arr_idx(
+int getArrIdx(
     const void *value, 
     const void *arr, 
     size_t item_size, 
@@ -41,7 +41,7 @@ int get_arr_idx(
     return index;
 }
 
-void insert_sort_arr(
+void insertSortArr(
     void *arr, size_t item_size, 
     int count, int (*comp_func)(const void*, const void*))
 {

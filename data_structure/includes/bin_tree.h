@@ -17,12 +17,12 @@ typedef struct bin_tree_node // node of a binary tree structure
     int count;
     struct bin_tree_node *left;     // left child, less "value", 
     struct bin_tree_node *right;    // right child, greater "value"
-} BIN_TREE_NODE_T;
+} BinTreeNode;
 
 typedef struct  // binary tree
 {
-    BIN_TREE_NODE_T *root;  // root of the tree
-} BIN_TREE_T;
+    BinTreeNode *root;  // root of the tree
+} BinTree;
 
 /**
  * @brief 
@@ -35,7 +35,7 @@ typedef struct  // binary tree
  * 
  * @return Pointer to the new binary tree, NULL if unable to allocate memory.
  */
-BIN_TREE_T *bin_tree_create();
+extern BinTree *BinTreeCreate();
 
 /**
  * @brief 
@@ -44,7 +44,7 @@ BIN_TREE_T *bin_tree_create();
  * @param tree          binary tree to delete
  * @param free_data     function to free the data, NULL if not needed
  */
-void bin_tree_clear(BIN_TREE_T **tree, void (*free_data)(void*));
+extern void BinTreeClear(BinTree **tree, void (*free_data)(void*));
 
 /**
  * @brief 
@@ -53,7 +53,7 @@ void bin_tree_clear(BIN_TREE_T **tree, void (*free_data)(void*));
  * @param tree  binary tree to execute on
  * @param func  function to execute on the data
  */
-void bin_tree_in_order(BIN_TREE_T *tree, void (*func)(void*));
+extern void BinTreeInOrder(BinTree *tree, void (*func)(void*));
 
 /**
  * @brief 
@@ -62,7 +62,7 @@ void bin_tree_in_order(BIN_TREE_T *tree, void (*func)(void*));
  * @param tree  binary tree to execute on
  * @param func  function to execute on the data
  */
-void bin_tree_pre_order(BIN_TREE_T *tree, void (*func)(void*));
+extern void BinTreePreOrder(BinTree *tree, void (*func)(void*));
 
 /**
  * @brief 
@@ -71,7 +71,7 @@ void bin_tree_pre_order(BIN_TREE_T *tree, void (*func)(void*));
  * @param tree  binary tree to execute on
  * @param func  function to execute on the data
  */
-void bin_tree_post_order(BIN_TREE_T *tree, void (*func)(void*));
+extern void BinTreePostOrder(BinTree *tree, void (*func)(void*));
 
 /**
  * @brief 
@@ -91,7 +91,7 @@ void bin_tree_post_order(BIN_TREE_T *tree, void (*func)(void*));
  *   1 : new unique node added @n
  *   0 : unable to allocate memory @n
  */
-int bin_tree_add(BIN_TREE_T *tree, void *data, int (*comp_func)(const void*, const void*));
+extern int BinTreeAdd(BinTree *tree, void *data, int (*comp_func)(const void*, const void*));
 
 /**
  * @brief 
@@ -112,7 +112,7 @@ int bin_tree_add(BIN_TREE_T *tree, void *data, int (*comp_func)(const void*, con
  * 
  * @return Pointer to the matching data, NULL if not found.
  */
-void *bin_tree_find(BIN_TREE_T *tree, void *key, int (*comp_func)(const void*, const void*));
+extern void *BinTreeFind(BinTree *tree, void *key, int (*comp_func)(const void*, const void*));
 
 /**
  * @brief 
@@ -122,5 +122,5 @@ void *bin_tree_find(BIN_TREE_T *tree, void *key, int (*comp_func)(const void*, c
  * 
  * @return The number of nodes in the tree.
  */
-int bin_tree_count(BIN_TREE_T *tree);
+extern int BinTreeCount(BinTree *tree);
 #endif

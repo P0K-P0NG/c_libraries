@@ -15,13 +15,13 @@
 #include "result_struct.h"
 #include "universal_array.h"
 
-struct defResult(Array);
+extern struct defResult(Array);
 
-int ArrayReadBinary(Array *arr, FILE *file_src);
+extern int ArrayReadBinary(Array *arr, FILE *file_src);
 
-int ArrayWriteBinary(Array arr, FILE *file_dest);
+extern int ArrayWriteBinary(Array arr, FILE *file_dest);
 
-int ArrayWrite(
+extern int ArrayWrite(
     Array arr,     char type[TYPE_LEN], 
     char *delim,    FILE *file_dest);
 

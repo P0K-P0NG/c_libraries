@@ -17,7 +17,7 @@ typedef struct tree_node    // struct of a tree node of a tree structure
     struct tree_node *parent;       // parent node of this node
     struct tree_node *next;         // the next sibling node in reverse of the order added
     struct tree_node *head_child;   // the most recent child added of this node
-} LL_TREE_NODE_T;
+} LListTreeNode;
 
 /**
  * @brief 
@@ -27,7 +27,7 @@ typedef struct tree_node    // struct of a tree node of a tree structure
  * 
  * @return Pointer to the new root node, NULL is unable to allocate memory. 
  */
-LL_TREE_NODE_T *linked_tree_create(void *data);
+extern LListTreeNode *LListTreeCreate(void *data);
 
 /**
  * @brief 
@@ -36,7 +36,7 @@ LL_TREE_NODE_T *linked_tree_create(void *data);
  * @param root          root node of the tree to delete
  * @param free_data     function to free the data, NULL if not needed
  */
-void linked_tree_clear(LL_TREE_NODE_T **root, void (*free_data)(void*));
+extern void LListTreeClear(LListTreeNode **root, void (*free_data)(void*));
 
 /**
  * @brief 
@@ -49,7 +49,7 @@ void linked_tree_clear(LL_TREE_NODE_T **root, void (*free_data)(void*));
  *   1 : added successfully @n
  *   0 : unable to allocate memory @n
  */
-int linked_tree_add(LL_TREE_NODE_T *parent, void *data);
+extern int LListTreeAdd(LListTreeNode *parent, void *data);
 
 /**
  * @brief 
@@ -58,7 +58,7 @@ int linked_tree_add(LL_TREE_NODE_T *parent, void *data);
  * @param node  node to edit
  * @param data  data of the new node
  */
-void linked_tree_edit(LL_TREE_NODE_T *node, void *data);
+extern void LListTreeEdit(LListTreeNode *node, void *data);
 
 /**
  * @brief 
@@ -81,7 +81,7 @@ void linked_tree_edit(LL_TREE_NODE_T *node, void *data);
  * 
  * @return Pointer to the node with matching data, NULL if not found.
  */
-LL_TREE_NODE_T *linked_tree_get_node(LL_TREE_NODE_T *root, void *data, int (*comp_func)(const void*, const void*));
+extern LListTreeNode *LListTreeGetNode(LListTreeNode *root, void *data, int (*comp_func)(const void*, const void*));
 
 /**
  * @brief 
@@ -91,7 +91,7 @@ LL_TREE_NODE_T *linked_tree_get_node(LL_TREE_NODE_T *root, void *data, int (*com
  * 
  * @return Number of child nodes.
  */
-int linked_tree_count_child(LL_TREE_NODE_T *parent);
+extern int LListTreeCountChild(LListTreeNode *parent);
 
 /**
  * @brief 
@@ -103,7 +103,7 @@ int linked_tree_count_child(LL_TREE_NODE_T *parent);
  * @param depth     starting depth level (larger values are deeper)
  * @param func      function to execute
  */
-void linked_tree_pre_order(LL_TREE_NODE_T *root, int depth, void (*func)(void*, int));
+extern void LListTreePreOrder(LListTreeNode *root, int depth, void (*func)(void*, int));
 
 /**
  * @brief 
@@ -116,21 +116,21 @@ void linked_tree_pre_order(LL_TREE_NODE_T *root, int depth, void (*func)(void*, 
  * @param depth     starting depth level (larger values are deeper)
  * @param func      function to execute
  */
-void linked_tree_in_order(LL_TREE_NODE_T *root, int depth, void (*func)(void*, int));
+extern void LListTreeInOrder(LListTreeNode *root, int depth, void (*func)(void*, int));
 
 /**
  * @brief 
  *  Executes a function on all the nodes in the linked list tree, with a depth first traversal 
  *  pioritizing the last child node, then the silibing nodes in the reverse order of recency, 
  *  then the parent node. Starts executing a node once it cannot go a layer deeper and is has no 
- *  older sibling node (in terms of time added) or the layer below and it's older silibing node(s) 
+ *  older sibling node (in terms of time added) or the layer below and it's older silibing Node(s) 
  *  has already been executed.
  * 
  * @param root      root node of the tree
  * @param depth     starting depth level (larger values are deeper)
  * @param func      function to execute
  */
-void linked_tree_post_order(LL_TREE_NODE_T *root, int depth, void (*func)(void*, int));
+extern void LListTreePostOrder(LListTreeNode *root, int depth, void (*func)(void*, int));
 
 /**
  * @brief 
@@ -141,5 +141,5 @@ void linked_tree_post_order(LL_TREE_NODE_T *root, int depth, void (*func)(void*,
  * 
  * @return 1 if executed successfully, 0 if unable to allocate memory. 
  */
-int linked_tree_deepest_nodes(LL_TREE_NODE_T *root, LL_TREE_NODE_T **node_arr);
+extern int LListTreeDeepestNodes(LListTreeNode *root, LListTreeNode **node_arr);
 #endif

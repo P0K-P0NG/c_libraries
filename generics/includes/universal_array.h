@@ -31,7 +31,7 @@ typedef struct Array
     ((Array) {(void*)items, (item_size), (len)})
 #define ArrayItemsInit(type, len, ...) ((type[len]) {__VA_ARGS__})
 
-void ArraySetItem(Array arr, unsigned int idx, void *item);
+extern void ArraySetItem(Array arr, unsigned int idx, void *item);
 
 void* ArrayGetItem(Array arr, unsigned int idx);
 
@@ -52,7 +52,7 @@ void* ArrayGetItem(Array arr, unsigned int idx);
  * 
  * @return the index of the item in the array. -1 if not found
  */
-int ArrayGetIdx(Array arr, const void *item, int (*comp_func)(const void*, const void*));
+extern int ArrayGetIdx(Array arr, const void *item, int (*comp_func)(const void*, const void*));
 
 /**
  * @brief 
@@ -67,8 +67,8 @@ int ArrayGetIdx(Array arr, const void *item, int (*comp_func)(const void*, const
  * 
  * @param comp_func     function compare the items
  */
-void ArrayInsertSort(Array *arr, int (*comp_func)(const void*, const void*));
+extern void ArrayInsertSort(Array *arr, int (*comp_func)(const void*, const void*));
 
-int ArrayToInt(Array arr);
+extern int ArrayToInt(Array arr);
 
 #endif

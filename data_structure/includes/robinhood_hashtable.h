@@ -11,26 +11,21 @@
 #ifndef ROBINHOOD_HASHTABLE_H
 #define ROBINHOOD_HASHTABLE_H
 
-typedef struct hashtable_bucket_count   // made purely to make types feel more organized 
-{
-    unsigned long max;
-    unsigned long used;
-} HT_BUCKET_COUNT_T;
-
 typedef struct robinhood_bucket // robinhood open address hashtable bucket
 {
     void *key;          // Pointer to the key
     void *data;         // Pointer to the data
     unsigned long psl;  // probe sequence lengths, used to manage the hashtable
-} RH_BUCKET_T;
+} RobinHTBucket;
 
 typedef struct robinhood_open_hashtable // robinhood open address hastable
 {
-    RH_BUCKET_T **buckets;      // Dynamic array of pointers to the buckets
-    HT_BUCKET_COUNT_T count;    // tracks the total amount of buckets and the amount used
+    RobinHTBucket **buckets;      // Dynamic array of pointers to the buckets
+    struct { unsigned long max; unsigned long used; } 
+        count;                  // tracks the total amount of buckets and the amount used
     float max_load;             // limit proportion of load when rehashing should occur;
                                 // 0 to disable the automatic rehashing
-} RH_HASH_T;
+} RobinHashTable;
 
 /**
  * @brief 
@@ -42,7 +37,7 @@ typedef struct robinhood_open_hashtable // robinhood open address hastable
  * 
  * @return Pointer to the new hashtable, NULL if unable to allocate memory. 
  */
-RH_HASH_T *robinhood_hash_create(unsigned long bucket_count, float max_load_prop);
+extern RobinHashTable *RobinHashTableCreate(unsigned long bucket_count, float max_load_prop);
 
 /**
  * @brief 
@@ -53,7 +48,7 @@ RH_HASH_T *robinhood_hash_create(unsigned long bucket_count, float max_load_prop
  * @param free_data     function to free data; NULL if not needed
  * @param free_key      function to free keys; NULL if not needed
  */
-void robinhood_hash_clear(RH_HASH_T **table, void (*free_key)(void*), void (*free_data)(void*));
+extern void RobinHashTableClear(RobinHashTable **table, void (*free_key)(void*), void (*free_data)(void*));
 
 /**
  * @brief 
@@ -69,7 +64,7 @@ void robinhood_hash_clear(RH_HASH_T **table, void (*free_key)(void*), void (*fre
  *  1 : added successfully @n 
  *  0 : memory allocation falied @n 
  */
-int robinhood_hash_add(RH_HASH_T *table, void *key, void *data, unsigned long (*hash_func)(const void*));
+extern int RobinHashTableAdd(RobinHashTable *table, void *key, void *data, unsigned long (*hash_func)(const void*));
 
 /**
  * @brief 
@@ -88,7 +83,7 @@ int robinhood_hash_add(RH_HASH_T *table, void *key, void *data, unsigned long (*
  * 
  * @return Pointer the data of the removed item, NULL if not found.
  */
-void *robinhood_hash_remove(RH_HASH_T *table, void *key, unsigned long (*hash_func)(const void*), 
+extern void *RobinHashTableRemove(RobinHashTable *table, void *key, unsigned long (*hash_func)(const void*), 
                             int (*comp_key)(const void*, const void*), void (*free_key)(void*));
                             
 /**
@@ -105,7 +100,7 @@ void *robinhood_hash_remove(RH_HASH_T *table, void *key, unsigned long (*hash_fu
  * 
  * @return Data corresponding to the key, NULL if not found.
  */
-void *robinhood_hash_find(RH_HASH_T *table, void *key, unsigned long (*hash_func)(const void*), int (*comp_key)(const void*, const void*));
+extern void *RobinHashTableFind(RobinHashTable *table, void *key, unsigned long (*hash_func)(const void*), int (*comp_key)(const void*, const void*));
 
 /**
  * @brief 
@@ -120,5 +115,5 @@ void *robinhood_hash_find(RH_HASH_T *table, void *key, unsigned long (*hash_func
  *   0 : unable to allocate memory @n
  *  -1 : new count is less than current limit of available buckets (max_load_prop*max_count) @n
  */
-int robinhood_rehash(RH_HASH_T *table, unsigned long new_count, unsigned long (*hash_func)(const void*));
+extern int RobinHashTableRehash(RobinHashTable *table, unsigned long new_count, unsigned long (*hash_func)(const void*));
 #endif

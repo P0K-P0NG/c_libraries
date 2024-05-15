@@ -8,7 +8,7 @@ int ArrayReadBinary(Array *arr, FILE *file_src)
 {
     if(file_src == NULL)
     {
-        return ;
+        return -2;
     }
     /* MAIN LOGIC */
     
