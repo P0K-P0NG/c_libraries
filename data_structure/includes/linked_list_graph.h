@@ -12,20 +12,11 @@
 #define LINKED_LIST_GRAPH_H
 
 #include "doubly_linked_list.h"
-
-typedef struct graph_vertex     // linked list graph vertex
-{
-    void *data;                 // pointer to data
-    int lvl;                    // tracks the level/depth of the vertex in a traversal
-    unsigned char state;        // indicates the vertex state in a traversal; 
-                                // 0 = have not passed, 1 = have passed, 2 = skip 
-    DOUBLY_LIST_T adj_list;     // list of adjacent verticies
-    DOUBLY_LIST_T ref_list;     // list of vertices this vertex is adjacent to
-} GRAPH_VERTEX_T;
+#include "graph.h"
 
 // redefining for more clarity
-typedef DOUBLY_NODE_T GRAPH_LIST_NODE_T;    
-typedef DOUBLY_LIST_T LINKED_GRAPH_T;
+typedef DLListNode LListGraphNode;    
+typedef DLList LListGraph;
 
 /**
  * @brief 
@@ -33,7 +24,7 @@ typedef DOUBLY_LIST_T LINKED_GRAPH_T;
  * 
  * @return Pointer to the new linked list graph. NULL if memory allocation failed.
  */
-LINKED_GRAPH_T *linked_graph_create();
+extern LListGraph *LListGraphCreate();
 
 /**
  * @brief 
@@ -42,7 +33,7 @@ LINKED_GRAPH_T *linked_graph_create();
  * @param graph         linked list graph to delete
  * @param free_data     function to free data, NULL if not needed
  */
-void linked_graph_clear(LINKED_GRAPH_T **graph, void (*free_data)(void*));
+extern void LListGraphClear(LListGraph **graph, void (*free_data)(void*));
 
 /**
  * @brief 
@@ -53,7 +44,7 @@ void linked_graph_clear(LINKED_GRAPH_T **graph, void (*free_data)(void*));
  * 
  * @return Pointer to the list node with the vertex. NULL if memory allocation failed.
  */
-GRAPH_LIST_NODE_T *linked_graph_add(LINKED_GRAPH_T *graph, void *data);
+extern LListGraphNode *LListGraphAdd(LListGraph *graph, void *data);
 
 /**
  * @brief 
@@ -67,7 +58,7 @@ GRAPH_LIST_NODE_T *linked_graph_add(LINKED_GRAPH_T *graph, void *data);
  *  1 : removal successful @n
  *  0 : node pointer is NULL @n
  */
-int linked_graph_remove(LINKED_GRAPH_T *graph, GRAPH_LIST_NODE_T *vertex_node, void (*free_data)(void*));
+extern int LListGraphRemove(LListGraph *graph, LListGraphNode *vertex_node, void (*free_data)(void*));
 
 /**
  * @brief 
@@ -80,7 +71,7 @@ int linked_graph_remove(LINKED_GRAPH_T *graph, GRAPH_LIST_NODE_T *vertex_node, v
  *  1 : connected successful @n
  *  0 : memory allocation failed @n
  */
-int linked_graph_connect(GRAPH_VERTEX_T *start, GRAPH_VERTEX_T *end);
+extern int LListGraphConnect(GraphVert *start, GraphVert *end);
 
 /**
  * @brief 
@@ -93,7 +84,7 @@ int linked_graph_connect(GRAPH_VERTEX_T *start, GRAPH_VERTEX_T *end);
  *  1 : removal successful @n
  *  0 : no edge found @n
  */
-int linked_graph_disconnect(GRAPH_VERTEX_T *start, GRAPH_VERTEX_T *end);
+extern int LListGraphDisconnect(GraphVert *start, GraphVert *end);
 
 /**
  * @brief 
@@ -111,7 +102,7 @@ int linked_graph_disconnect(GRAPH_VERTEX_T *start, GRAPH_VERTEX_T *end);
  * 
  * @return Pointer to the node with the vertex search for. NULL if not found.
  */
-GRAPH_LIST_NODE_T *linked_graph_find_node(LINKED_GRAPH_T *graph, const void *key, int (*comp_func)(const void*, const void*));
+extern LListGraphNode *LListGraphFindNode(LListGraph *graph, const void *key, int (*comp_func)(const void*, const void*));
 
 /**
  * @brief 
@@ -124,7 +115,7 @@ GRAPH_LIST_NODE_T *linked_graph_find_node(LINKED_GRAPH_T *graph, const void *key
  *  1 : an edge exist @n
  *  0 : an edge doesn't exit @n
  */
-int linked_graph_is_connected(GRAPH_VERTEX_T *start, GRAPH_VERTEX_T *end);
+extern int LListGraphIsConnected(GraphVert *start, GraphVert *end);
 
 /**
  * @brief 
@@ -134,25 +125,25 @@ int linked_graph_is_connected(GRAPH_VERTEX_T *start, GRAPH_VERTEX_T *end);
  * @param graph     linked list graoh to traverse
  * @param func      function to execute
  */
-void linked_graph_traverse_all(LINKED_GRAPH_T *graph, void (*func)(void*));
+extern void LListGraphTraverseAll(LListGraph *graph, void (*func)(void*));
 
 /**
  * @brief 
- *  Performs a given function on the data of all the vertecies adjencent to the one passed. 
+ *  Performs a given function on the data of all the vertices adjacent to the one passed. 
  * 
  * @param vertex    vertex with the adjacency list
  * @param func      function to execute 
  */
-void linked_graph_traverse_adj(GRAPH_VERTEX_T *vertex, void (*func)(void*));
+extern void LListGraphTraverseAdj(GraphVert *vertex, void (*func)(void*));
 
 /**
  * @brief 
- *  Sets the state of all the verticies adjacent to the one passed.
+ *  Sets the state of all the vertices adjacent to the one passed.
  * 
  * @param vertex    vertex with the adjacency list
  * @param state     state to set to
  */
-void linked_graph_set_adj_state(GRAPH_VERTEX_T *vertex, unsigned char state);
+extern void LListGraphSetAdjState(GraphVert *vertex, unsigned char state);
 
 /**
  * @brief 
@@ -168,5 +159,5 @@ void linked_graph_set_adj_state(GRAPH_VERTEX_T *vertex, unsigned char state);
  *  1 : traversed successful @n
  *  0 : memory allocation failed @n
  */
-int linked_graph_breath_traverse(LINKED_GRAPH_T *graph, GRAPH_VERTEX_T *vertex, int max_lvl, void (*func)(void*));
+extern int LListGraphBreathTraverse(LListGraph *graph, GraphVert *vertex, int max_lvl, void (*func)(void*));
 #endif
