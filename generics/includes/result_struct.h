@@ -135,8 +135,8 @@
  */
 #define arrayResult(type) Result_##type##_arr
 
-extern struct defResult(char);
-extern struct defResult(int);
-extern struct defResult(double);
+struct defResult(char);
+struct defResult(int);
+struct defResult(double);
 
 #endif
