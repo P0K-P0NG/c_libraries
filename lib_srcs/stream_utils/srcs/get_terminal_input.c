@@ -20,7 +20,6 @@ int getInput(const size_t max_len, Pointer ptr, const char prompt[])
     char str[max_len];
     printf("%s", prompt);
     fgets(str, max_len, stdin);
-    fflush(stdin);
     return sscanf(str, ptr.type, ptr.ptr);
 }
 
@@ -28,7 +27,6 @@ char *getFullStr(String str, const char prompt[])
 {
     printf("%s", prompt);
     char *ptr = fgets(str.items, str.len, stdin);
-    fflush(stdin);
     return ptr;
 }
 
@@ -43,6 +41,5 @@ char *getStr(String str_block, const char prompt[])
     {
         str[strlen(str) - 1] = '\0';
     }
-    fflush(stdin);
     return ptr;
 }

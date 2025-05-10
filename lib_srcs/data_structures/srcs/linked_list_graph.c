@@ -19,8 +19,6 @@
 
 /**
  * LOCAL FUNTION DECLARATIONS
- *
- * These function aren't defined outside of this source file and are not intended to be acessed directly.
  */
 static void freeVertex(void *vert);
 
@@ -120,8 +118,7 @@ void LListGraphTraverseAdj(GraphVert *vert, void (*func)(void *))
 }
 
 int LListGraphBreathTraverse(
-    LListGraph *graph, GraphVert *start,
-    int max_lvl, void (*func)(void *))
+    GraphVert *start, int max_lvl, void (*func)(void *))
 {
     return GraphBreathTraverse(start, max_lvl, func);
 }

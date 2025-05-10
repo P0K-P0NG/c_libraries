@@ -24,11 +24,11 @@
  *  2) WHEN input_1 < input_2,  RETURNS a negative integer @n
  *  3) WHEN input_1 == input_2, RETURNS zero @n
  * 
- * @param value         item or value to find
- * @param arr           array to search through
- * @param item_size     size of the items in the array in bytes 
- * @param count         number of items in the array
- * @param comp_func     function compare the items
+ * @param[in] value         item or value to find
+ * @param[in] arr           array to search through
+ * @param[in] item_size     size of the items in the array in bytes 
+ * @param[in] count         number of items in the array
+ * @param[in] comp_func     function compare the items
  * 
  * @return the index of the item in the array. -1 if not found
  */
@@ -45,10 +45,10 @@ extern int getArrIdx(const void *value, const void *arr, size_t item_size, int c
  *  2) WHEN input_1 < input_2,  RETURNS a negative integer @n
  *  3) WHEN input_1 == input_2, RETURNS zero @n
  * 
- * @param arr           array to search through
- * @param item_size     size of the items in the array in bytes 
- * @param count         number of items in the array
- * @param comp_func     function compare the items
+ * @param[in] arr           array to search through
+ * @param[in] item_size     size of the items in the array in bytes 
+ * @param[in] count         number of items in the array
+ * @param[in] comp_func     function compare the items
  */
 extern void insertSortArr(void *arr, size_t item_size, int count, int (*comp_func)(const void*, const void*));
 #endif

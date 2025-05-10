@@ -16,8 +16,8 @@
  *  Compares two integers, received as void pointers, through subtraction.
  *  INT_1 - INT_2.
  * 
- * @param int1  pointer to integer 1
- * @param int2  pointer to integer 2
+ * @param[in] int1  pointer to integer 1
+ * @param[in] int2  pointer to integer 2
  * 
  * @return difference of INT_1 - INT_2
  */
@@ -28,8 +28,8 @@ extern int compInt(const void *int1, const void *int2);
  *  Compares 2 strings, received as void pointers, 
  *  by the ascii values of their characters.
  * 
- * @param str1    pointer to string 1
- * @param str2    pointer to string 2
+ * @param[in] str1    pointer to string 1
+ * @param[in] str2    pointer to string 2
  * 
  * @return an integer siginifying the strings alphabetical order relative to one another. @n
  *  < 0 : if the first string comes before the second @n
@@ -43,8 +43,8 @@ extern int compStr(const void *str1, const void *str2);
  *  Compares 2 strings while ignoring case differences, received as void pointers, 
  *  by the ascii values of their characters.
  * 
- * @param str1    pointer to string 1
- * @param str2    pointer to string 2
+ * @param[in] str1    pointer to string 1
+ * @param[in] str2    pointer to string 2
  * 
  * @return 
  *  an integer siginifying the strings alphabetical order, 
@@ -61,8 +61,8 @@ extern int compStrIgnoreCase(const void *str1, const void *str2);
  *  Compares two pointers, received as void pointers, through subtraction.
  *  PTR_1 - PTR_1.
  * 
- * @param int1  pointer 1
- * @param int2  pointer 2
+ * @param[in] int1  pointer 1
+ * @param[in] int2  pointer 2
  * 
  * @return difference of PTR_1 - PTR_2
  */

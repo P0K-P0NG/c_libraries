@@ -26,9 +26,9 @@ typedef struct Date
  * @brief 
  *  Check if a date is valid.
  * 
- * @param date      date to check
- * @param min_year  minimum year bound
- * @param max_year  maximum year bound
+ * @param[in] date      date to check
+ * @param[in] min_year  minimum year bound
+ * @param[in] max_year  maximum year bound
  * 
  * @return 1 if is valid; 0 if is not valid.
  */

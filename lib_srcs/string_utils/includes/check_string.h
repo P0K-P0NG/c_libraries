@@ -15,7 +15,7 @@
  * @brief 
  *  Checks if a string is completely alphabetical.
  * 
- * @param str   string to check
+ * @param[in] str   string to check
  * 
  * @return 
  *  > 0 : string is alphabetical @n
@@ -28,7 +28,7 @@ extern int strIsAlpha(const char str[]);
  * @brief 
  *  Checks if string consist of only digits or not.
  * 
- * @param str   string to check
+ * @param[in] str   string to check
  * 
  * @return 
  *  > 0 : string is made up of only digits @n
@@ -41,7 +41,7 @@ extern int strIsDigit(const char str[]);
  * @brief 
  *  Checks if inputted string is compeletely an integer.
  * 
- * @param str   string to check
+ * @param[in] str   string to check
  * 
  * @return 
  *  > 0 : string is a valid integer @n
@@ -54,7 +54,7 @@ extern int strIsInt(const char str[]);
  * @brief 
  *  Check if a string is compeletely a double.
  * 
- * @param str     string to check
+ * @param[in] str     string to check
  * 
  * @return
  *  > 0 : string is a valid double @n
@@ -67,8 +67,8 @@ extern int strIsDouble(const char str[]);
  * @brief 
  *  Checks if a string has the suffix specified
  * 
- * @param str       string to check
- * @param suffix    suffix to find in the string
+ * @param[in] str       string to check
+ * @param[in] suffix    suffix to find in the string
  * 
  * @return
  *   1 : string's suffix matches @n

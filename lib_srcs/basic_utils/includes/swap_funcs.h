@@ -19,9 +19,9 @@ typedef unsigned char byte_t;
  * @brief 
  *  Swaps the contents in two pointers
  * 
- * @param ptr1  pointer 1
- * @param ptr2  pointer 2
- * @param size  size of the content in bytes
+ * @param[in] ptr1  pointer 1
+ * @param[in] ptr2  pointer 2
+ * @param[in] size  size of the content in bytes
  */
 extern void swap(void *ptr1, void *ptr2, size_t size);
 #endif

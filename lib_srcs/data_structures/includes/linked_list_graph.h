@@ -150,7 +150,6 @@ extern void LListGraphSetAdjState(GraphVert *vertex, unsigned char state);
  *  Traverses breath first from the given vertex a specified amount of levels and performs a 
  *  function on the data of the every vertex encountered.
  * 
- * @param graph     linked list graoh to traverse
  * @param vertex    vertex to start at
  * @param max_lvl   further level to traverse; -1 for unbound traversal
  * @param func      function to execute 
@@ -159,5 +158,5 @@ extern void LListGraphSetAdjState(GraphVert *vertex, unsigned char state);
  *  1 : traversed successful @n
  *  0 : memory allocation failed @n
  */
-extern int LListGraphBreathTraverse(LListGraph *graph, GraphVert *vertex, int max_lvl, void (*func)(void*));
+extern int LListGraphBreathTraverse(GraphVert *vertex, int max_lvl, void (*func)(void*));
 #endif
