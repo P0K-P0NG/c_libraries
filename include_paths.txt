@@ -1,1 +1,0 @@
-./basic_data_manipulation ./custom_io ./data_structure ./general_purpose ./generics ./more_strings 
