@@ -11,8 +11,6 @@ endif()
 add_library(${PROJECT_NAME})
 # Optionally set common flags, include paths, etc.
 set(CMAKE_C_STANDARD 11)
-# message(STATUS "PATH [${CMAKE_SOURCE_DIR}/lib]")
-# set_target_properties(${PROJECT_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
 
 file(GLOB srcs ${CMAKE_CURRENT_SOURCE_DIR}/srcs/*.c)
 target_sources(${PROJECT_NAME} 
@@ -22,9 +20,3 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE 
         ${CMAKE_CURRENT_SOURCE_DIR}/includes    
 )
-# target_link_directories(${PROJECT_NAME} 
-#     PRIVATE 
-#         ${CMAKE_CURRENT_SOURCE_DIR}/objs)
-# set_target_properties(${PROJECT_NAME} PROPERTIES
-#     LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib
-# )

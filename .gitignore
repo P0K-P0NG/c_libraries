@@ -1,9 +1,6 @@
 **/.vscode/
 **/objs
-lib/
-CMakeFiles/
-cmake_install.cmake
-CMakeCache.txt
+build/
 
 *.out
 *.exe
@@ -12,4 +9,4 @@ CMakeCache.txt
 *.so
 *.dll
 
-**test**
+**tmp**

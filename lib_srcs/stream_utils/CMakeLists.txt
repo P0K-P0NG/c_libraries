@@ -12,9 +12,9 @@ add_library(${PROJECT_NAME})
 
 # Optionally set common flags, include paths, etc.
 set(CMAKE_C_STANDARD 11)
-set(dependency basic_utils string_utils generics)
+set(dependencies basic_utils string_utils generics)
 set(dependency_includes)
-foreach(dep IN LISTS dependency)
+foreach(dep IN LISTS dependencies)
     list(APPEND dependency_includes "${CMAKE_SOURCE_DIR}/lib_srcs/${dep}/includes")
 endforeach()
 
@@ -27,3 +27,6 @@ target_include_directories(${PROJECT_NAME}
         ${CMAKE_CURRENT_SOURCE_DIR}/includes    
         ${dependency_includes}
 )
+target_link_libraries(${PROJECT_NAME} 
+    PUBLIC
+        ${dependencies})
