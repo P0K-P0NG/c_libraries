@@ -19,56 +19,57 @@
 //     typedef union ArrayDataBase ArrayData;
 // #endif
 
-typedef struct Array
-{
+struct Array {
     void *items;
     size_t item_size;
     unsigned int len;
-} Array;
+};
 
-#define IDX(type, arr, i) (*(type*) ((arr).items + (i)*(arr).item_size))
-#define ArrayInit(items, item_size, len) \
-    ((Array) {(void*)items, (item_size), (len)})
-#define ArrayItemsInit(type, len, ...) ((type[len]) {__VA_ARGS__})
+#define IDX(type, arr, i) (*(type *)((arr).items + (i) * (arr).item_size))
+#define ArrayInit(items, item_size, len)                                       \
+    ((struct Array){(void *)items, (item_size), (len)})
+#define ArrayItemsInit(type, len, ...) ((type[len]){__VA_ARGS__})
 
-extern void ArraySetItem(Array arr, unsigned int idx, void *item);
+extern void ArraySetItem(struct Array arr, unsigned int idx, void *item);
 
-void* ArrayGetItem(Array arr, unsigned int idx);
+void *ArrayGetItem(struct Array arr, unsigned int idx);
 
 /**
- * @brief 
+ * @brief
  *  Finds the array index of a item.
- * 
+ *
  * @note
- *  The function used to compare must behave in the follows 
+ *  The function used to compare must behave in the follows
  *  ways in order for the function to perform properly. @n
  *  1) WHEN input_1 > input_2,  RETURNS a postive integer @n
  *  2) WHEN input_1 < input_2,  RETURNS a negative integer @n
  *  3) WHEN input_1 == input_2, RETURNS zero @n
- * 
+ *
  * @param arr           array to search through
  * @param item         item or value to find
  * @param comp_func     function compare the items
- * 
+ *
  * @return the index of the item in the array. -1 if not found
  */
-extern int ArrayGetIdx(Array arr, const void *item, int (*comp_func)(const void*, const void*));
+extern int ArrayGetIdx(struct Array arr, const void *item,
+                       int (*comp_func)(const void *, const void *));
 
 /**
- * @brief 
+ * @brief
  *  Sorts an array using insertion sort
- * 
+ *
  * @note
- *  The function used to compare must behave in the follows 
+ *  The function used to compare must behave in the follows
  *  ways in order for the function to perform properly. @n
  *  1) WHEN input_1 > input_2,  RETURNS a postive integer @n
  *  2) WHEN input_1 < input_2,  RETURNS a negative integer @n
  *  3) WHEN input_1 == input_2, RETURNS zero @n
- * 
+ *
  * @param comp_func     function compare the items
  */
-extern void ArrayInsertSort(Array *arr, int (*comp_func)(const void*, const void*));
+extern void ArrayInsertSort(struct Array *arr,
+                            int (*comp_func)(const void *, const void *));
 
-extern int ArrayToInt(Array arr);
+extern int ArrayToInt(struct Array arr);
 
 #endif

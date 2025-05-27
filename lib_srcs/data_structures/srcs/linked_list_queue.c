@@ -11,28 +11,24 @@
  * @version 0.1
  * @date 2023-05-22
  */
-#include <stdlib.h>
 #include "linked_list_queue.h"
+#include <stdlib.h>
 
-LListQueue *LListQueueCreate()
+struct LListQueue *LListQueueCreate()
 {
-    return calloc(1, sizeof(LListQueue));
+    return calloc(1, sizeof(struct LListQueue));
 }
 
-int LListQueueEnqueue(LListQueue *queue, void *data)
+int LListQueueEnqueue(struct LListQueue *queue, void *data)
 {
-    LListQueueNode *new_tail = calloc(1, sizeof(LListQueueNode));
-    if (new_tail == NULL)
-    {
+    struct LListQueueNode *new_tail = calloc(1, sizeof(struct LListQueueNode));
+    if (new_tail == NULL) {
         return 0;
     }
 
-    if (queue->head == NULL)
-    {
+    if (queue->head == NULL) {
         queue->head = new_tail;
-    }
-    else
-    {
+    } else {
         queue->tail->next = new_tail;
     }
     new_tail->data = data;
@@ -40,16 +36,14 @@ int LListQueueEnqueue(LListQueue *queue, void *data)
     return 1;
 }
 
-void *LListQueueDequeue(LListQueue *queue)
+void *LListQueueDequeue(struct LListQueue *queue)
 {
     void *data;
-    LListQueueNode *prev_head = queue->head;
-    if (prev_head == NULL)
-    {
+    struct LListQueueNode *prev_head = queue->head;
+    if (prev_head == NULL) {
         return NULL;
     }
-    if (prev_head == queue->tail)
-    {
+    if (prev_head == queue->tail) {
         queue->tail = NULL;
     }
     data = prev_head->data;
@@ -58,15 +52,13 @@ void *LListQueueDequeue(LListQueue *queue)
     return data;
 }
 
-void LListQueueClear(LListQueue **queue, void (*free_data)(void *))
+void LListQueueClear(struct LListQueue **queue, void (*free_data)(void *))
 {
-    LListQueueNode *curr = (*queue)->head;
-    while (curr != NULL)
-    {
-        LListQueueNode *prev = curr;
+    struct LListQueueNode *curr = (*queue)->head;
+    while (curr != NULL) {
+        struct LListQueueNode *prev = curr;
         curr = curr->next;
-        if (free_data != NULL)
-        {
+        if (free_data != NULL) {
             free_data(prev->data);
         }
         free(prev);

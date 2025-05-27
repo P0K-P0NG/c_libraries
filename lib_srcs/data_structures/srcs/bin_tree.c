@@ -1,5 +1,5 @@
 /**
- * @file bin_tree.h
+ * @file bin_tree.c
  *
  * @brief
  *  Structs and functions for binary tree structures
@@ -11,23 +11,24 @@
  * @version 0.1
  * @date 2023-04-23
  */
-#include <stdlib.h>
 #include "bin_tree.h"
+#include <stdlib.h>
 
 /**
  * LOCAL FUNTION DECLARATIONS
  *
- * These function aren't defined outside of this source file and are not intended to be acessed directly.
+ * These function aren't defined outside of this source file and are not
+ * intended to be acessed directly.
  */
-static void clearRec(BinTreeNode *node, void (*free_data)(void *));
-static void inOrderRec(BinTreeNode *node, void (*func)(void *));
-static void preOrderRec(BinTreeNode *node, void (*func)(void *));
-static void postOrderRec(BinTreeNode *node, void (*func)(void *));
-static int addRec(BinTreeNode **node, void *data,
-                  int (*comp_func)(const void *, const void *));
-static void findRec(BinTreeNode *node, void *key, void **data,
-                    int (*comp_func)(const void *, const void *));
-static int countRec(BinTreeNode *node);
+static void _clearRec(struct BinTreeNode *node, void (*free_data)(void *));
+static void _inOrderRec(struct BinTreeNode *node, void (*func)(void *));
+static void _preOrderRec(struct BinTreeNode *node, void (*func)(void *));
+static void _postOrderRec(struct BinTreeNode *node, void (*func)(void *));
+static int _addRec(struct BinTreeNode **node, void *data,
+                   int (*comp_func)(const void *, const void *));
+static void _findRec(struct BinTreeNode *node, void *key, void **data,
+                     int (*comp_func)(const void *, const void *));
+static int _countRec(struct BinTreeNode *node);
 
 /**
  * @brief
@@ -40,10 +41,7 @@ static int countRec(BinTreeNode *node);
  *
  * @return Pointer to the new binary tree, NULL if unable to allocate memory.
  */
-BinTree *BinTreeCreate()
-{
-    return calloc(1, sizeof(BinTreeNode *));
-}
+struct BinTree *BinTreeCreate() { return calloc(1, sizeof(struct BinTree *)); }
 
 /**
  * @brief
@@ -51,21 +49,19 @@ BinTree *BinTreeCreate()
  *
  * @param tree  binary tree to delete
  */
-void BinTreeClear(BinTree **tree, void (*free_data)(void *))
+void BinTreeClear(struct BinTree **tree, void (*free_data)(void *))
 {
-    clearRec((*tree)->root, free_data);
+    _clearRec((*tree)->root, free_data);
     free(*tree);
     *tree = NULL;
 }
 
-void clearRec(BinTreeNode *node, void (*free_data)(void *))
+void _clearRec(struct BinTreeNode *node, void (*free_data)(void *))
 {
-    if (node != NULL)
-    {
-        clearRec(node->left, free_data);
-        clearRec(node->right, free_data);
-        if (free_data != NULL)
-        {
+    if (node != NULL) {
+        _clearRec(node->left, free_data);
+        _clearRec(node->right, free_data);
+        if (free_data != NULL) {
             free_data(node->data);
         }
         free(node);
@@ -79,21 +75,19 @@ void clearRec(BinTreeNode *node, void (*free_data)(void *))
  * @param tree  binary tree to execute on
  * @param func  function to execute the nodes with
  */
-void BinTreeInOrder(BinTree *tree, void (*func)(void *))
+void BinTreeInOrder(struct BinTree *tree, void (*func)(void *))
 {
-    inOrderRec(tree->root, func);
+    _inOrderRec(tree->root, func);
 }
 
-void inOrderRec(BinTreeNode *node, void (*func)(void *))
+void _inOrderRec(struct BinTreeNode *node, void (*func)(void *))
 {
-    if (node->left != NULL)
-    {
-        inOrderRec(node->left, func);
+    if (node->left != NULL) {
+        _inOrderRec(node->left, func);
     }
     func(node->data);
-    if (node->right != NULL)
-    {
-        inOrderRec(node->right, func);
+    if (node->right != NULL) {
+        _inOrderRec(node->right, func);
     }
 }
 
@@ -104,21 +98,19 @@ void inOrderRec(BinTreeNode *node, void (*func)(void *))
  * @param tree  binary tree to execute on
  * @param func  function to execute the nodes with
  */
-void BinTreePreOrder(BinTree *tree, void (*func)(void *))
+void BinTreePreOrder(struct BinTree *tree, void (*func)(void *))
 {
-    preOrderRec(tree->root, func);
+    _preOrderRec(tree->root, func);
 }
 
-static void preOrderRec(BinTreeNode *node, void (*func)(void *))
+static void _preOrderRec(struct BinTreeNode *node, void (*func)(void *))
 {
     func(node->data);
-    if (node->left != NULL)
-    {
-        preOrderRec(node->left, func);
+    if (node->left != NULL) {
+        _preOrderRec(node->left, func);
     }
-    if (node->right != NULL)
-    {
-        preOrderRec(node->right, func);
+    if (node->right != NULL) {
+        _preOrderRec(node->right, func);
     }
 }
 
@@ -129,20 +121,18 @@ static void preOrderRec(BinTreeNode *node, void (*func)(void *))
  * @param tree  binary tree to execute on
  * @param func  function to execute the nodes with
  */
-void BinTreePostOrder(BinTree *tree, void (*func)(void *))
+void BinTreePostOrder(struct BinTree *tree, void (*func)(void *))
 {
-    postOrderRec(tree->root, func);
+    _postOrderRec(tree->root, func);
 }
 
-static void postOrderRec(BinTreeNode *node, void (*func)(void *))
+static void _postOrderRec(struct BinTreeNode *node, void (*func)(void *))
 {
-    if (node->left != NULL)
-    {
-        postOrderRec(node->left, func);
+    if (node->left != NULL) {
+        _postOrderRec(node->left, func);
     }
-    if (node->right != NULL)
-    {
-        postOrderRec(node->right, func);
+    if (node->right != NULL) {
+        _postOrderRec(node->right, func);
     }
     func(node->data);
 }
@@ -160,41 +150,28 @@ static void postOrderRec(BinTreeNode *node, void (*func)(void *))
  *   1 : new unique node added @n
  *   0 : unable to allocate memory @n
  */
-int BinTreeAdd(
-    BinTree *tree,
-    void *data,
-    int (*comp_func)(const void *, const void *))
+int BinTreeAdd(struct BinTree *tree, void *data,
+               int (*comp_func)(const void *, const void *))
 {
-    return addRec(&(tree->root), data, comp_func);
+    return _addRec(&(tree->root), data, comp_func);
 }
 
-static int addRec(
-    BinTreeNode **node,
-    void *data,
-    int (*comp_func)(const void *, const void *))
+static int _addRec(struct BinTreeNode **node, void *data,
+                   int (*comp_func)(const void *, const void *))
 {
     int status = 0;
-    if (*node != NULL)
-    {
+    if (*node != NULL) {
         int result = comp_func((*node)->data, data);
-        if (result > 0)
-        {
-            status = addRec(&((*node)->left), data, comp_func);
-        }
-        else if (result < 0)
-        {
-            status = addRec(&((*node)->right), data, comp_func);
-        }
-        else
-        {
+        if (result > 0) {
+            status = _addRec(&((*node)->left), data, comp_func);
+        } else if (result < 0) {
+            status = _addRec(&((*node)->right), data, comp_func);
+        } else {
             status = 2;
             (*node)->count += 1;
         }
-    }
-    else
-    {
-        if ((*node = calloc(1, sizeof(BinTreeNode))) != NULL)
-        {
+    } else {
+        if ((*node = calloc(1, sizeof(struct BinTreeNode))) != NULL) {
             status = 1;
             (*node)->data = data;
         }
@@ -221,36 +198,25 @@ static int addRec(
  *
  * @return Pointer to the matching data, NULL if not found.
  */
-void *BinTreeFind(
-    BinTree *tree,
-    void *key,
-    int (*comp_func)(const void *, const void *))
+void *BinTreeFind(struct BinTree *tree, void *key,
+                  int (*comp_func)(const void *, const void *))
 {
     void *data = NULL;
-    findRec(tree->root, key, &data, comp_func);
+    _findRec(tree->root, key, &data, comp_func);
     return data;
 }
 
-static void findRec(
-    BinTreeNode *node,
-    void *key,
-    void **data,
-    int (*comp_func)(const void *, const void *))
+static void _findRec(struct BinTreeNode *node, void *key, void **data,
+                     int (*comp_func)(const void *, const void *))
 {
-    if (node != NULL)
-    {
+    if (node != NULL) {
         int result = comp_func(node->data, key);
-        if (result == 0)
-        {
+        if (result == 0) {
             *data = node->data;
-        }
-        else if (result > 0)
-        {
-            findRec(node->left, key, data, comp_func);
-        }
-        else if (result < 0)
-        {
-            findRec(node->right, key, data, comp_func);
+        } else if (result > 0) {
+            _findRec(node->left, key, data, comp_func);
+        } else if (result < 0) {
+            _findRec(node->right, key, data, comp_func);
         }
     }
 }
@@ -263,19 +229,15 @@ static void findRec(
  *
  * @return The number of nodes in the tree.
  */
-int BinTreeCount(BinTree *tree)
-{
-    return countRec(tree->root);
-}
+int BinTreeCount(struct BinTree *tree) { return _countRec(tree->root); }
 
-static int countRec(BinTreeNode *node)
+static int _countRec(struct BinTreeNode *node)
 {
     int count = 0;
-    if (node != NULL)
-    {
+    if (node != NULL) {
         count++;
-        count += countRec(node->left);
-        count += countRec(node->right);
+        count += _countRec(node->left);
+        count += _countRec(node->right);
     }
     return 0;
 }

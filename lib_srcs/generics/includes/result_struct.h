@@ -1,7 +1,7 @@
 /**
  * @file result_struct.h
  *
- * @brief 
+ * @brief
  *  Structs of generic result (err, data) data type and Macros for creating and
  *  using them.
  *
@@ -16,7 +16,7 @@
 
 #define defer(...) __VA_ARGS__
 #define expand(...) __VA_ARGS__
-#define blank(...)      
+#define blank(...)
 #define joinUnderscore(a, b) a##_##b
 #define joinU(a, b) defer(joinUnderscore)(a, b)
 #define joinSpace(a, b) a b
@@ -33,58 +33,68 @@
 // #define joinSR2(a, ...) a joinSR1(__VA_ARGS__)
 
 /**
- * @brief 
+ * @brief
  *  Declares the struct for the provided non-pointer and non-array type
- * 
+ *
  * @attention
  *  The struct keyword must be included before the macro.
- * 
+ *
  * @warning
  *  Do not use pointer or array types, the code will break. For those refer to
  *  their intended macros. defPointerResult for pointers and defArrayResult for
- *  arrays. 
- * 
+ *  arrays.
+ *
  * @example
  *  struct defResult(int);
  */
-#define defResult(...) joinResult(joinU, __VA_ARGS__){unsigned int err; join(joinS, __VA_ARGS__) data;}
+#define defResult(...)                                                         \
+    joinResult(joinU, __VA_ARGS__)                                             \
+    {                                                                          \
+        unsigned int err;                                                      \
+        join(joinS, __VA_ARGS__) data;                                         \
+    }
 
 /**
- * @brief 
+ * @brief
  *  A abbreviation for the struct created with defResult(type)
- * 
+ *
  * @attention
  *  The struct keyword must be included before the macro.
- * 
+ *
  * @warning
  *  Do not use pointer or array types, the code will break. For those refer to
- *  their intended macros. pointerResult for pointers and arrayResult for arrays. 
- * 
+ *  their intended macros. pointerResult for pointers and arrayResult for
+ * arrays.
+ *
  * @example
  *  struct result(int) number;
  */
 #define result(type) Result_##type##_
 
 /**
- * @brief 
+ * @brief
  *  Declares the struct for the provided pointer type
- * 
+ *
  * @attention
  *  The struct keyword must be included before the macro.
- * 
+ *
  * @warning
  *  Do not use non-pointer types. For those refer to their intended macros.
  *  defResult for plain types (i.e. no special characters) and defArrayResult
- *  for arrays. 
- * 
+ *  for arrays.
+ *
  * @example
  *  struct defPointerResult(int);
  */
-#define defPointerResult(typetars) \
-    Result_##type##_ptr{unsigned int err; type stars##data;}
+#define defPointerResult(typetars)                                             \
+    Result_##type##_ptr                                                        \
+    {                                                                          \
+        unsigned int err;                                                      \
+        type stars##data;                                                      \
+    }
 
 /**
- * @brief 
+ * @brief
  *  A abbreviation for the struct created with defPointerResult(type)
  *
  * @attention
@@ -93,7 +103,7 @@
  * @warning
  *  Do not use non-pointer types. For those refer to their intended macros.
  *  result for plain types (i.e. no special characters) and arrayResult for
- *  arrays.  
+ *  arrays.
  *
  * @example
  *  struct pointerResult(int) number;
@@ -101,25 +111,29 @@
 #define pointerResult(type) Result_##type##_ptr
 
 /**
- * @brief 
+ * @brief
  *  Declares the struct for the provided array type
- * 
+ *
  * @attention
  *  The struct keyword must be included before the macro.
- * 
+ *
  * @warning
  *  Do not use non-array types. For those refer to their intended macros.
  *  defResult for plain types (i.e. no special characters) and defPointerResult
- *  for pointers. 
- * 
+ *  for pointers.
+ *
  * @example
  *  struct defArrayResult(int);
  */
-#define defArrayResult(type, len) \
-    Result_##type##len##_arr{unsigned int err; type data[len];}
+#define defArrayResult(type, len)                                              \
+    Result_##type##len##_arr                                                   \
+    {                                                                          \
+        unsigned int err;                                                      \
+        type data[len];                                                        \
+    }
 
 /**
- * @brief 
+ * @brief
  *  A abbreviation for the struct created with defArrayResult(type)
  *
  * @attention
@@ -128,7 +142,7 @@
  * @warning
  *  Do not use non-array types. For those refer to their intended macros.
  *  result for plain types (i.e. no special characters) and pointerResult for
- *  pointer.  
+ *  pointer.
  *
  * @example
  *  struct arrayResult(int) number;

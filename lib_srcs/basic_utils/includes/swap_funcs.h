@@ -1,9 +1,9 @@
 /**
  * @file swap_funcs.h
- * 
- * @brief 
+ *
+ * @brief
  *  Functions for swaping data.
- * 
+ *
  * @author Pokpong
  * @version 0.1
  * @date 2023-02-25
@@ -16,9 +16,9 @@
 typedef unsigned char byte_t;
 
 /**
- * @brief 
+ * @brief
  *  Swaps the contents in two pointers
- * 
+ *
  * @param[in] ptr1  pointer 1
  * @param[in] ptr2  pointer 2
  * @param[in] size  size of the content in bytes

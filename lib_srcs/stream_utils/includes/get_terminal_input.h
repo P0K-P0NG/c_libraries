@@ -1,9 +1,9 @@
 /**
  * @file get_terminal_input.h
- * 
- * @brief 
+ *
+ * @brief
  *  Functions for getting various types of inputs from terminal.
- * 
+ *
  * @author Pokpong
  * @version 0.1
  * @date 2023-02-25
@@ -11,12 +11,12 @@
 #ifndef GET_TERMINAL_INPUT_H
 #define GET_TERMINAL_INPUT_H
 
-#include <stddef.h>
 #include "string_block.h"
 #include "universal_pointer.h"
+#include <stddef.h>
 
 /**
- * @brief 
+ * @brief
  *  Gets string input from console/terminal and parses into the specified data
  *  type.
  *
@@ -27,26 +27,27 @@
  * @param ptr       pointer to store to
  * @param prompt    input prompt
  *
- * @return 
- *   1 : successful @n 
- *   0 : parsing unsuccessful @n 
+ * @return
+ *   1 : successful @n
+ *   0 : parsing unsuccessful @n
  *  -1 : no input or contains only the newline character @n
  */
-extern int getInput(const size_t max_len, Pointer ptr, const char prompt[]);
+extern int getInput(const size_t max_len, struct Pointer ptr,
+                    const char prompt[]);
 
 /**
- * @brief 
+ * @brief
  *  Gets full string input from console/terminal.
- * 
+ *
  * @param str       string to store to
  * @param prompt    input prompt
- * 
+ *
  * @return Pointer to the string unless it is emtpy, then NULL is returned.
  */
-extern char *getFullStr(String str, const char prompt[]);
+extern char *getFullStr(struct String str, const char prompt[]);
 
 /**
- * @brief 
+ * @brief
  *  Gets a string input from console/terminal and removes the trailing newline
  *  character.
  *
@@ -55,6 +56,6 @@ extern char *getFullStr(String str, const char prompt[]);
  *
  * @return Pointer to the string unless it is emtpy, then NULL is returned.
  */
-extern char *getStr(String str, const char prompt[]);
+extern char *getStr(struct String str, const char prompt[]);
 
 #endif
