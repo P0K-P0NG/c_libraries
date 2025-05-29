@@ -52,16 +52,40 @@ extern int isStrInt(const char str[]);
 
 /**
  * @brief
- *  Check if a string is compeletely a double.
+ *  Check if a string is completely a floating point number.
  *
  * @param[in] str     string to check
  *
  * @return
- *  > 0 : string is a valid double @n
- *    0 : string isn't a valid double @n
+ *  > 0 : string is a valid floating point number @n
+ *    0 : string isn't a valid floating point number @n
  *   -1 : NULL pointer was passed in @n
  */
-extern int isStrDouble(const char str[]);
+extern int isStrFloat(const char str[]);
+
+/**
+ * @brief
+ *  Finds the length of the longest valid integer from the start of the inputed
+ *  string.
+ *
+ * @param[in] str     string to check
+ *
+ * @return Length of the longest integer in characters. -1 if NULL pointer was
+ *  passed in @n
+ */
+int getIntStrLength(const char str[]);
+
+/**
+ * @brief
+ *  Finds the length of the longest valid floating point number from the start
+ *  of the inputed string.
+ *
+ * @param[in] str     string to check
+ *
+ * @return Length of the longest floating point number in characters. -1 if NULL
+ *  pointer was passed in @n
+ */
+int getFloatStrLength(const char str[]);
 
 /**
  * @brief
