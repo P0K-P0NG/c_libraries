@@ -8,9 +8,10 @@
  * @version 0.1
  * @date 2023-03-20
  */
-#ifndef KEY_VALUE_LINKED_LIST_H
-#define KEY_VALUE_LINKED_LIST_H
+#ifndef LINKED_LIST_KVP_H
+#define LINKED_LIST_KVP_H
 
+#include <stdbool.h>
 #include <stddef.h>
 
 struct LListKVPNode {          // node in a key-value pair linked list
@@ -56,11 +57,11 @@ extern void LListKVPClear(struct LListKVP **list, void (*free_key)(void *),
  * @param free_data     function to free data, NULL if not needed
  *
  * @return
- *  1 : removal successful @n
- *  0 : key-value pair linked list is empty @n
+ *  true  : removal successful @n
+ *  false : key-value pair linked list is empty @n
  */
-extern int LListKVPRemoveHead(struct LListKVP *list, void (*free_key)(void *),
-                              void (*free_data)(void *));
+extern bool LListKVPRemoveHead(struct LListKVP *list, void (*free_key)(void *),
+                               void (*free_data)(void *));
 
 /**
  * @brief
@@ -103,10 +104,10 @@ extern void LListKVPRemoveAll(struct LListKVP *list, void (*free_key)(void *),
  * @param data  data of the new node
  *
  * @return
- *  1 : node added successfully @n
- *  0 : memory allocation falied @n
+ *  true  : node added successfully @n
+ *  false : memory allocation falied @n
  */
-extern int LListKVPAddHead(struct LListKVP *list, void *key, void *data);
+extern bool LListKVPAddHead(struct LListKVP *list, void *key, void *data);
 
 /**
  * @brief
@@ -117,10 +118,10 @@ extern int LListKVPAddHead(struct LListKVP *list, void *key, void *data);
  * @param data  data of the new node
  *
  * @return
- *  1 : node added successfully @n
- *  0 : memory allocation falied @n
+ *  true  : node added successfully @n
+ *  false : memory allocation falied @n
  */
-extern int LListKVPAddTail(struct LListKVP *list, void *key, void *data);
+extern bool LListKVPAddTail(struct LListKVP *list, void *key, void *data);
 
 /**
  * @brief
@@ -138,11 +139,11 @@ extern int LListKVPAddTail(struct LListKVP *list, void *key, void *data);
  * @param comp_key  function to compare keys with
  *
  * @return
- *  1 : added successfully @n
- *  0 : memory allocation falied @n
+ *  true  : added successfully @n
+ *  false : memory allocation falied @n
  */
-extern int LListKVPAdd(struct LListKVP *list, void *key, void *data,
-                       int (*comp_key)(const void *, const void *));
+extern bool LListKVPAdd(struct LListKVP *list, void *key, void *data,
+                        int (*comp_key)(const void *, const void *));
 
 /**
  * @brief

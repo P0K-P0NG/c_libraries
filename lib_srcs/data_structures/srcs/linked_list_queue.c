@@ -19,11 +19,11 @@ struct LListQueue *LListQueueCreate()
     return calloc(1, sizeof(struct LListQueue));
 }
 
-int LListQueueEnqueue(struct LListQueue *queue, void *data)
+bool LListQueueEnqueue(struct LListQueue *queue, void *data)
 {
     struct LListQueueNode *new_tail = calloc(1, sizeof(struct LListQueueNode));
     if (new_tail == NULL) {
-        return 0;
+        return false;
     }
 
     if (queue->head == NULL) {
@@ -33,7 +33,7 @@ int LListQueueEnqueue(struct LListQueue *queue, void *data)
     }
     new_tail->data = data;
     queue->tail = new_tail;
-    return 1;
+    return true;
 }
 
 void *LListQueueDequeue(struct LListQueue *queue)

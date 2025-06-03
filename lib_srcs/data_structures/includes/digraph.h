@@ -1,19 +1,20 @@
 /**
- * @file list_graph.h
+ * @file digraph.h
  *
  * @brief
- *  Structs and functions for linked list graphs.
+ *  Structs and functions for digraphs (directed digraphs).
  *
  * @author Pokpong
  * @version 0.1
  * @date 2023-05-21
  */
-#ifndef GRAPH_H
-#define GRAPH_H
+#ifndef DIGRAPH_H
+#define DIGRAPH_H
 
 #include "doubly_linked_list.h"
+#include <stdbool.h>
 
-struct GraphVert {       // linked list graph vertex
+struct DigraphVert {     // linked list digraph vertex
     void *data;          // pointer to data
     int lvl;             // tracks the level/depth of the vertex in a traversal
     unsigned char state; // indicates the vertex state in a traversal;
@@ -22,9 +23,20 @@ struct GraphVert {       // linked list graph vertex
     struct DLList ref_list; // list of vertices this vertex is adjacent to
 };
 
-struct GraphVert *GraphInitVert(void *data);
+struct DigraphVert *DigraphInitVert(void *data);
 
-int GraphRemoveVert(struct GraphVert **vert, void (*free_data)(void *));
+/**
+ * @brief
+ *  Remove an vertex from the digraph.
+ *
+ * @param start     vertex the edge starts at
+ * @param end       vertex the edge ends at
+ *
+ * @return
+ *  true  : connected successful @n
+ *  false : memory allocation failed @n
+ */
+bool DigraphRemoveVert(struct DigraphVert **vert, void (*free_data)(void *));
 
 /**
  * @brief
@@ -34,10 +46,10 @@ int GraphRemoveVert(struct GraphVert **vert, void (*free_data)(void *));
  * @param end       vertex the edge ends at
  *
  * @return
- *  1 : connected successful @n
- *  0 : memory allocation failed @n
+ *  true  : connected successful @n
+ *  false : memory allocation failed @n
  */
-int GraphConnect(struct GraphVert *start, struct GraphVert *end);
+bool DigraphConnect(struct DigraphVert *start, struct DigraphVert *end);
 
 /**
  * @brief
@@ -47,10 +59,10 @@ int GraphConnect(struct GraphVert *start, struct GraphVert *end);
  * @param end       vertex the edge ends at
  *
  * @return
- *  1 : removal successful @n
- *  0 : no edge found @n
+ *  true  : removal successful @n
+ *  false : no edge found @n
  */
-int GraphDisconnect(struct GraphVert *start, struct GraphVert *end);
+bool DigraphDisconnect(struct DigraphVert *start, struct DigraphVert *end);
 
 /**
  * @brief
@@ -60,10 +72,10 @@ int GraphDisconnect(struct GraphVert *start, struct GraphVert *end);
  * @param end       vertex the edge ends at
  *
  * @return
- *  1 : an edge exist @n
- *  0 : an edge doesn't exit @n
+ *  true  : an edge exist @n
+ *  false : an edge doesn't exit @n
  */
-int GraphIsConnected(struct GraphVert *start, struct GraphVert *end);
+bool DigraphIsConnected(struct DigraphVert *start, struct DigraphVert *end);
 
 /**
  * @brief
@@ -73,7 +85,7 @@ int GraphIsConnected(struct GraphVert *start, struct GraphVert *end);
  * @param vertex    vertex with the adjacency list
  * @param func      function to execute
  */
-void GraphTraverseAdj(struct GraphVert *vertex, void (*func)(void *));
+void DigraphTraverseAdj(struct DigraphVert *vertex, void (*func)(void *));
 
 /**
  * @brief
@@ -82,7 +94,7 @@ void GraphTraverseAdj(struct GraphVert *vertex, void (*func)(void *));
  * @param vertex    vertex with the adjacency list
  * @param state     state to set to
  */
-void GraphSetAdjState(struct GraphVert *vertex, unsigned char state);
+void DigraphSetAdjState(struct DigraphVert *vertex, unsigned char state);
 
 /**
  * @brief
@@ -94,9 +106,9 @@ void GraphSetAdjState(struct GraphVert *vertex, unsigned char state);
  * @param func      function to execute
  *
  * @return
- *  1 : traversed successful @n
- *  0 : memory allocation failed @n
+ *  true  : traversed successful @n
+ *  false : memory allocation failed @n
  */
-int GraphBreathTraverse(struct GraphVert *vertex, int max_lvl,
-                        void (*func)(void *));
+bool DigraphBreathTraverse(struct DigraphVert *vertex, int max_lvl,
+                           void (*func)(void *));
 #endif

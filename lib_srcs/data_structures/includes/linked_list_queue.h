@@ -11,6 +11,8 @@
 #ifndef LINKED_LIST_QUEUE_H
 #define LINKED_LIST_QUEUE_H
 
+#include <stdbool.h>
+
 struct LListQueueNode {          // linked list queue node
     void *data;                  // Pointer to data
     struct LListQueueNode *next; // next node in the queue
@@ -37,10 +39,10 @@ extern struct LListQueue *LListQueueCreate();
  * @param data      new data
  *
  * @return
- *   1 : enqueued successfully @n
- *   0 : unable to allocate memory @n
+ *   true  : enqueued successfully @n
+ *   false : unable to allocate memory @n
  */
-extern int LListQueueEnqueue(struct LListQueue *queue, void *data);
+extern bool LListQueueEnqueue(struct LListQueue *queue, void *data);
 
 /**
  * @brief
