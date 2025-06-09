@@ -21,3 +21,17 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE 
         ${CMAKE_CURRENT_SOURCE_DIR}/includes    
 )
+
+file(GLOB test_srcs ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.c)
+foreach(test_src IN LISTS test_srcs)
+    get_filename_component(test ${test_src} NAME_WE)
+    add_executable(${test} ${test_src})
+    target_include_directories(${test}
+        PRIVATE 
+            ${CMAKE_CURRENT_SOURCE_DIR}/includes
+    )
+    target_link_libraries(${test}
+        PRIVATE
+            ${PROJECT_NAME})
+    add_test(${test} ${test})
+endforeach()

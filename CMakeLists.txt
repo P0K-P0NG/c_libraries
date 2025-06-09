@@ -5,6 +5,7 @@ project(c_libs)
 # Optionally set common flags, include paths, etc.
 set(CMAKE_C_STANDARD 11)
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
+enable_testing()
 set(CMAKE_BINARY_DIR ${CMAKE_BINARY_DIR}/lib)
 
 file(GLOB lib_dirs lib_srcs/*)
