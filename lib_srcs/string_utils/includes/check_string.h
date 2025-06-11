@@ -11,93 +11,118 @@
 #ifndef CHECK_STRING_H
 #define CHECK_STRING_H
 
+#include <regex.h>
+#include <stdbool.h>
+#include <stddef.h>
+
 /**
  * @brief
- *  Checks if a string is completely alphabetical.
+ *  Checks if the inputted string up to provided length entirely
+ *  alphabetical.
  *
  * @param[in] str   string to check
+ * @param[in] len   length to check
  *
  * @return
- *  > 0 : string is alphabetical @n
- *    0 : string isn't alphabetical @n
- *   -1 : NULL pointer was passed in @n
+ *  true  : substring is valid @n
+ *  false : substring is invalid @n
  */
-extern int isStrAlpha(const char str[]);
+extern bool isStrAlpha(const char str[], size_t len);
 
 /**
  * @brief
- *  Checks if string consist of only digits or not.
+ *  Checks if the inputted string up to provided length consists of only
+ *  digits or not.
  *
  * @param[in] str   string to check
+ * @param[in] len   length to check
  *
  * @return
- *  > 0 : string is made up of only digits @n
- *    0 : string isn't made up of only digits @n
- *   -1 : NULL pointer was passed in @n
+ *  true  : substring is valid @n
+ *  false : substring is invalid @n
  */
-extern int isStrDigit(const char str[]);
+extern bool isStrDigit(const char str[], size_t len);
 
 /**
  * @brief
- *  Checks if inputted string is compeletely an integer.
+ *  Checks if the inputted string up to provided length is a valid an
+ *  integer.
  *
  * @param[in] str   string to check
+ * @param[in] len   length to check
  *
  * @return
- *  > 0 : string is a valid integer @n
- *    0 : string isn't a valid integer @n
- *   -1 : NULL pointer was passed in @n
+ *  true  : substring is valid @n
+ *  false : substring is invalid @n
  */
-extern int isStrInt(const char str[]);
+extern bool isStrInt(const char str[], size_t len);
 
 /**
  * @brief
- *  Check if a string is completely a floating point number.
+ *  Checks if the inputted string up to provided length is a valid a floating
+ *  point number.
  *
- * @param[in] str     string to check
+ * @param[in] str   string to check
+ * @param[in] len   length to check
  *
  * @return
- *  > 0 : string is a valid floating point number @n
- *    0 : string isn't a valid floating point number @n
- *   -1 : NULL pointer was passed in @n
+ *  true  : substring is valid @n false : substring is invalid @n
  */
-extern int isStrFloat(const char str[]);
+extern bool isStrFloat(const char str[], size_t len);
 
 /**
  * @brief
- *  Finds the length of the longest valid integer from the start of the inputed
- *  string.
+ *  Checks if the inputted string up to provided delimiter is a valid an
+ *  integer.
  *
- * @param[in] str     string to check
+ * @param[in] str       string to check
+ * @param[in] delim     delimiter to check up to
  *
- * @return Length of the longest integer in characters. -1 if NULL pointer was
- *  passed in @n
+ * @return
+ *  true  : substring is valid @n false : substring is invalid @n
  */
-int getIntStrLength(const char str[]);
+extern bool isDelimStrInt(const char str[], const char delim[]);
 
 /**
  * @brief
- *  Finds the length of the longest valid floating point number from the start
- *  of the inputed string.
+ *  Checks if the inputted string up to provided delimiter is a valid a floating
+ *  point number.
  *
- * @param[in] str     string to check
+ * @param[in] str       string to check
+ * @param[in] delim     delimiter to check up to
  *
- * @return Length of the longest floating point number in characters. -1 if NULL
- *  pointer was passed in @n
+ * @return
+ *  true  : substring is valid @n
+ *  false : substring is invalid @n
  */
-int getFloatStrLength(const char str[]);
+bool isDelimStrFloat(const char str[], const char delim[]);
 
 /**
  * @brief
- *  Checks if a string has the suffix specified
+ *  Checks if a string has the suffix specified.
  *
  * @param[in] str       string to check
  * @param[in] suffix    suffix to find in the string
  *
  * @return
- *   1 : string's suffix matches @n
- *   0 : string's suffix doesn't match @n
- *  -1 : NULL pointer was passed in @n
+ *  > 0 : length of valid string @n
+ *    0 : string's suffix doesn't match @n
  */
-extern int hasSuffix(const char str[], const char suffix[]);
+extern size_t hasSuffix(const char str[], const char suffix[]);
+
+/**
+ * @brief
+ *  finds the position of the first match to given pattern in the given string.
+ *
+ * @param[in]  str      string to format
+ * @param[in]  pattern  pattern to find
+ * @param[out] offsets  offsets of the matched substring
+ *
+ * @return
+ *   1 : a match is found @n
+ *   0 : no match is found @n
+ *  -1 : an error occurred @n
+ */
+extern int matchRegex(const char str[], const char pattern[],
+                      regmatch_t *offsets);
 #endif

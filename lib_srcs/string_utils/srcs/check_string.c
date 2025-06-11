@@ -13,157 +13,197 @@
  */
 #include "check_string.h"
 #include <ctype.h>
+#include <regex.h>
 #include <string.h>
 
-int isStrAlpha(const char str[])
+bool isStrAlpha(const char str[], size_t len)
 {
-    if (str == NULL)
-        return -1;
+    bool is_valid = true;
 
-    int i = 0;
-    for (; str[i] != '\0'; i++) {
+    if (len == -1)
+        len = strlen(str);
+
+    for (size_t i = 0; i < len; i++) {
         if (!isalpha(str[i])) {
-            i = 0;
+            is_valid = false;
             break;
         }
     }
-    return i;
+    return is_valid;
 }
 
-int isStrDigit(const char str[])
+bool isStrDigit(const char str[], size_t len)
 {
-    if (str == NULL)
-        return -1;
+    bool is_valid = true;
 
-    int i = 0;
-    for (; str[i] != '\0'; i++) {
+    if (len == -1)
+        len = strlen(str);
+
+    for (size_t i = 0; i < len; i++) {
         if (!isdigit(str[i])) {
-            i = 0;
+            is_valid = false;
             break;
         }
     }
-    return i;
+    return is_valid;
 }
 
-int isStrInt(const char str[])
+bool isStrInt(const char str[], size_t len)
 {
-    if (str == NULL)
-        return -1;
+    bool is_valid = false;
+    size_t i = 0;
 
-    int is_valid = 0;
-    int i = 0;
-    if (str[0] == '-')
-        i++;
-    if (str[i] == '0')
-        return 0;
-    for (; str[i] != '\0'; i++) {
-        if (isdigit(str[i])) {
-            is_valid = 1;
-        } else {
-            is_valid = 0;
-            break;
-        }
+    if (len == -1) {
+        len = strlen(str);
+    } else if (len == 0) {
+        return true;
     }
-    return is_valid * i;
-}
 
-int isStrFloat(const char str[])
-{
-    if (str == NULL)
-        return -1;
-
-    int deci_pt_count = 0;
-    int is_valid = 0;
-    int i = 0;
-    if (str[0] == '-')
+    if (str[i] == '-')
         i++;
+
     if (str[i] != '0') {
         // Skip
-    } else if (str[i + 1] == '.') {
-        deci_pt_count++;
-        i += 2;
+    } else if (i + 1 == len) {
+        return len;
     } else {
         return 0;
     }
-    for (; str[i] != '\0'; i++) {
+    for (; i < len; i++) {
+        if (isdigit(str[i])) {
+            is_valid = true;
+        } else {
+            is_valid = false;
+            break;
+        }
+    }
+    return is_valid;
+}
+
+bool isStrFloat(const char str[], size_t len)
+{
+    int is_valid = 0;
+    int deci_pt_count = 0;
+    size_t i = 0;
+
+    if (len == -1) {
+        len = strlen(str);
+    } else if (len == 0) {
+        return true;
+    }
+
+    if (str[0] == '-')
+        i++;
+
+    if (str[i] == '0') {
+        i++;
+        if (str[i] == '.') {
+            deci_pt_count++;
+            i++;
+        } else if (str[i] == '\0') {
+            return i;
+        } else {
+            return false;
+        }
+    } else if (str[i] == '.') {
+        return false;
+    }
+
+    for (; i < len; i++) {
         if (str[i] == '.') {
             deci_pt_count++;
             if (deci_pt_count > 1) {
-                is_valid = 0;
+                is_valid = false;
+                break;
+            }
+            if (i + 1 == len) {
+                is_valid = false;
                 break;
             }
         } else if (isdigit(str[i])) {
-            is_valid = 1;
+            is_valid = true;
         } else {
-            is_valid = 0;
+            is_valid = false;
             break;
         }
     }
-    return is_valid * i;
+    return is_valid;
 }
 
-int getIntStrLength(const char str[])
+bool isDelimStrInt(const char str[], const char delim[])
 {
-    if (str == NULL)
-        return -1;
-
-    int is_valid = 0;
-    int i = 0;
-    if (str[0] == '-')
-        i++;
-    if (str[i] == '0')
-        return 0;
-    for (; str[i] != '\0'; i++) {
-        if (isdigit(str[i])) {
-            is_valid = 1;
-        } else {
-            break;
-        }
-    }
-    return is_valid * i;
-}
-
-int getFloatStrLength(const char str[])
-{
-    if (str == NULL)
-        return -1;
-
-    int deci_pt_count = 0;
-    int is_valid = 0;
-    int i = 0;
-    if (str[0] == '-')
-        i++;
-    if (str[i] != '0') {
-        // Skip
-    } else if (str[i + 1] == '.') {
-        deci_pt_count++;
-        i += 2;
+    int len;
+    if (delim == NULL) {
+        len = strlen(str);
     } else {
-        return 0;
-    }
-    for (; str[i] != '\0'; i++) {
-        if (str[i] == '.') {
-            deci_pt_count++;
-            if (deci_pt_count > 1)
-                break;
-        } else if (isdigit(str[i])) {
-            is_valid = 1;
-        } else {
+        regmatch_t offsets;
+        int status = matchRegex(str, delim, &offsets);
+        switch (status) {
+        case 1:
+            len = offsets.rm_so;
             break;
+        case 0:
+            len = 0;
+            break;
+        case -1:
+            return false;
         }
     }
-    return is_valid * i;
+    return isStrInt(str, len);
 }
 
-int hasSuffix(const char str[], const char suffix[])
+bool isDelimStrFloat(const char str[], const char delim[])
 {
-    if (str == NULL || suffix == NULL)
-        return -1;
+    int len;
+    if (delim == NULL) {
+        len = strlen(str);
+    } else {
+        regmatch_t offsets;
+        int status = matchRegex(str, delim, &offsets);
+        switch (status) {
+        case 1:
+            len = offsets.rm_so;
+            break;
+        case 0:
+            len = 0;
+            break;
+        case -1:
+            return false;
+        }
+    }
+    return isStrFloat(str, len);
+}
 
-    int result = 0;
-    int suffix_start = strlen(str) - strlen(suffix);
+size_t hasSuffix(const char str[], const char suffix[])
+{
+    size_t str_len = strlen(str);
+    size_t suffix_len = strlen(suffix);
+    if (str_len < suffix_len)
+        return 0;
+    size_t result = 0;
+    size_t suffix_start = str_len - suffix_len;
     if (suffix_start >= 0 && strcmp(&str[suffix_start], suffix) == 0) {
         result = 1;
     }
     return result;
+}
+
+int matchRegex(const char str[], const char pattern[], regmatch_t *offsets)
+{
+    regex_t buf;
+    regmatch_t match_arr[1];
+    if (regcomp(&buf, pattern, 0) != 0)
+        return -1;
+    int match_status = regexec(&buf, str, 1, match_arr, 0);
+    regfree(&buf);
+
+    switch (match_status) {
+    case 0:
+        *offsets = match_arr[0];
+        return 1;
+    case REG_NOMATCH:
+        return 0;
+    default:
+        return -1;
+    }
 }
