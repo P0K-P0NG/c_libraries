@@ -17,22 +17,22 @@
 /**
  * @brief
  *  Splits a string into a specified number of substrings at the specified
- * delimiter character.
+ *  delimiter character.
  *
  * @note
- *  If the number of spiltted sections is less than count the remaining
- * substrings is set to NULL.
+ *  If the number of spilt sections is less than count the remaining
+ *  substrings is set to NULL.
  *
- * @param[in]  str           string to split
- * @param[out] substrs       array of substrings to store in
- * @param[in]  count         number of substrings
- * @param[in]  delimiter     string marking the point of speration, will be
- * replaced
+ * @param[in]  str      string to split
+ * @param[out] substrs  array of substrings to store in
+ * @param[in]  count    number of substrings
+ * @param[in]  delim    string marking the point of speration, will be
+ *                      replaced
  *
  * @return Number successfully divided sections, -1 if string is NULL or count
  * < 1.
  */
-extern int splitStr(char str[], char *substrs[], int count, char delimiter[]);
+extern int splitStr(char str[], char *substrs[], int count, const char delim[]);
 
 /**
  * @brief
@@ -66,36 +66,36 @@ extern char *strAlign(struct String str, char mode, char buffer_char);
 
 /**
  * @brief
- *  Trims a specified character from both ends of a string.
+ *  Trims a specific character from both ends of a string.
  *
  * @param[in,out] str           string to trim
  * @param[in]     char_to_del   character to remove
  *
  * @return Number of deleted characters, -1 if NULL pointer was passed in.
  */
-extern int trim(char str[], char char_to_del);
+extern int trim(char str[], const char char_to_del);
 
 /**
  * @brief
- *  Trims a specified character from the font of a string.
+ *  Trims a specific character from the font of a string.
  *
  * @param[in,out] str           string to trim
  * @param[in]     char_to_del   character to remove
  *
  * @return Number of deleted characters, -1 if NULL pointer was passed in.
  */
-extern int trimFront(char str[], char char_to_del);
+extern int trimFront(char str[], const char char_to_del);
 
 /**
  * @brief
- *  Trims a specified character from the end of a string.
+ *  Trims a specific character from the end of a string.
  *
  * @param[in,out] str           string to trim
  * @param[in]     char_to_del   character to remove
  *
  * @return Number of deleted characters, -1 if NULL pointer was passed in.
  */
-extern int trimEnd(char str[], char char_to_del);
+extern int trimEnd(char str[], const char char_to_del);
 
 /**
  * @brief
@@ -130,7 +130,7 @@ extern char *removeNewline(char str[]);
 /**
  * @brief
  *  Formats the first character of a string to uppercase and the rest to
- * lowercase.
+ *  lowercase.
  *
  * @param[in,out] str   string to format
  *

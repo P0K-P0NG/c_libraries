@@ -12,19 +12,19 @@
 #include <ctype.h>
 #include <string.h>
 
-int splitStr(char str[], char *substrs[], int count, char delimiter[])
+int splitStr(char str[], char *substrs[], int count, const char delim[])
 {
     if (str == NULL || count < 1)
         return -1;
 
     int i = 0;
     int spilt_count = 0;
-    substrs[i] = strtok(str, delimiter);
+    substrs[i] = strtok(str, delim);
     if (substrs[i] != NULL) {
         spilt_count++;
     }
     for (i++; i < count; i++) {
-        substrs[i] = strtok(NULL, delimiter);
+        substrs[i] = strtok(NULL, delim);
         if (substrs[i] != NULL) {
             spilt_count++;
         }
