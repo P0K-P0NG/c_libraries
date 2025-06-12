@@ -9,27 +9,125 @@
  * @date 2023-02-25
  */
 #include "string_funcs.h"
+#include <assert.h>
 #include <ctype.h>
+#include <regex.h>
+#include <stdlib.h>
 #include <string.h>
 
-int splitStr(char str[], char *substrs[], int count, const char delim[])
-{
-    if (str == NULL || count < 1)
-        return -1;
 
-    int i = 0;
-    int spilt_count = 0;
-    substrs[i] = strtok(str, delim);
-    if (substrs[i] != NULL) {
-        spilt_count++;
+char *joinStrs(char joined_str[], size_t max_len, char *str_list[],
+               size_t count, const char delim[])
+{
+    size_t delim_len = strlen(delim);
+    size_t total_len = strlen(str_list[0]);
+
+    if (total_len >= max_len)
+        return NULL;
+    memcpy(&joined_str[0], str_list[0], total_len);
+
+    for (size_t i = 1; i < count; i++) {
+        size_t item_len = strlen(str_list[i]);
+        if (total_len + delim_len + item_len >= max_len)
+            return NULL;
+        memcpy(&joined_str[total_len], delim, delim_len);
+        total_len += delim_len;
+        memcpy(&joined_str[total_len], str_list[i], item_len);
+        total_len += item_len;
     }
-    for (i++; i < count; i++) {
-        substrs[i] = strtok(NULL, delim);
-        if (substrs[i] != NULL) {
-            spilt_count++;
+    joined_str[total_len] = '\0';
+    return joined_str;
+}
+
+size_t splitStr(char str[], char *substrs[], size_t count, const char delim[])
+{
+    assert(str != NULL);
+
+    regex_t regex_buf;
+    if (regcomp(&regex_buf, delim, 0) != 0)
+        return 0;
+
+    char *curr = str;
+    int status;
+    size_t idx = 0;
+    regmatch_t offsets;
+    while (idx < count) {
+        status = regexec(&regex_buf, curr, 1, &offsets, 0);
+        if (status == 0) {
+            if (offsets.rm_so != 0) {
+                substrs[idx] = curr;
+                idx++;
+            }
+            curr[offsets.rm_so] = '\0';
+            curr += offsets.rm_eo;
+        } else if (status == REG_NOMATCH) {
+            break;
+        } else {
+            regfree(&regex_buf);
+            return 0;
         }
     }
-    return spilt_count;
+    regfree(&regex_buf);
+
+    if (idx < count && (idx == 0 || *curr != '\0')) {
+        substrs[idx] = curr;
+        idx++;
+    }
+
+    for (size_t i = idx; i < count; i++) {
+        substrs[i] = NULL;
+    }
+    return idx;
+}
+
+size_t removeRegexMatches(char str[], const char pattern[])
+{
+    assert(str != NULL);
+
+    regex_t regex_buf;
+    if (regcomp(&regex_buf, pattern, 0) != 0)
+        return 0;
+
+    size_t str_len = strlen(str);
+    char *copy_buf = calloc(str_len + 1, sizeof(char));
+    if (copy_buf == NULL) {
+        regfree(&regex_buf);
+        return 0;
+    }
+
+    char *curr = str;
+    int status = 0;
+    size_t remove_len = 0;
+    size_t count = 0;
+    regmatch_t offsets;
+    status = regexec(&regex_buf, curr, 1, &offsets, 0);
+    if (status == 0) {
+        curr += offsets.rm_eo;
+        remove_len += offsets.rm_eo - offsets.rm_so;
+        count++;
+    }
+    while (status == 0) {
+        status = regexec(&regex_buf, curr, 1, &offsets, 0);
+        if (status != 0)
+            break;
+
+        memcpy(copy_buf, curr, offsets.rm_so);
+        memcpy(curr - remove_len, copy_buf, offsets.rm_so);
+        curr += offsets.rm_eo;
+        remove_len += offsets.rm_eo - offsets.rm_so;
+        count++;
+    }
+    regfree(&regex_buf);
+
+    if (status != REG_NOMATCH) {
+        count = 0;
+    } else if (remove_len != 0) {
+        size_t len = str + str_len + 1 - curr;
+        memcpy(copy_buf, curr, len);
+        memcpy(curr - remove_len, copy_buf, len);
+    }
+    free(copy_buf);
+    return count;
 }
 
 char *strAddBuffer(struct String str_block, int buffer_len[2], char buffer_char)
@@ -37,8 +135,7 @@ char *strAddBuffer(struct String str_block, int buffer_len[2], char buffer_char)
     char *str = str_block.items;
     int max_len = str_block.len;
 
-    if (str == NULL)
-        return NULL;
+    assert(str != NULL);
 
     char temp_str[strlen(str) + 1];
     strcpy(temp_str, str);
@@ -54,8 +151,7 @@ char *strAlign(struct String str_block, char mode, char buffer_char)
     char *str = str_block.items;
     int max_len = str_block.len;
 
-    if (str == NULL)
-        return NULL;
+    assert(str != NULL);
 
     int front_len = 0;
     int back_len = 0;
@@ -124,8 +220,7 @@ int trimEnd(char str[], char char_to_del)
 
 char *strToUpper(char str[])
 {
-    if (str == NULL)
-        return NULL;
+    assert(str != NULL);
 
     for (int i = 0; str[i] != '\0'; i++) {
         str[i] = toupper(str[i]);
@@ -135,8 +230,7 @@ char *strToUpper(char str[])
 
 char *strToLower(char str[])
 {
-    if (str == NULL)
-        return NULL;
+    assert(str != NULL);
 
     for (int i = 0; str[i] != '\0'; i++) {
         str[i] = tolower(str[i]);
@@ -146,8 +240,7 @@ char *strToLower(char str[])
 
 char *removeNewline(char str[])
 {
-    if (str == NULL)
-        return NULL;
+    assert(str != NULL);
 
     int last_idx = strlen(str) - 1;
     if (str[0] != '\0' && str[last_idx] == '\n') {
@@ -158,8 +251,7 @@ char *removeNewline(char str[])
 
 char *caseFormat(char str[])
 {
-    if (str == NULL)
-        return NULL;
+    assert(str != NULL);
 
     int len = strlen(str);
     str[0] = toupper(str[0]);

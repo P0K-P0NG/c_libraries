@@ -16,8 +16,23 @@
 
 /**
  * @brief
+ *  Join multiple strings together seperated by a provided string.
+ *
+ * @param[out] joined_str   string to store the result
+ * @param[in]  max_len      max length of output string
+ * @param[in]  str_list     list of strings to join
+ * @param[in]  count        number of strings to join
+ * @param[in]  delim        seperator string
+ *
+ * @return Pointer to the output string. NULL if failed.
+ */
+extern char *joinStrs(char joined_str[], size_t max_len, char *str_list[],
+                      size_t count, const char delim[]);
+
+/**
+ * @brief
  *  Splits a string into a specified number of substrings at the specified
- *  delimiter character.
+ *  delimiter regex pattern.
  *
  * @note
  *  If the number of spilt sections is less than count the remaining
@@ -29,10 +44,19 @@
  * @param[in]  delim    string marking the point of speration, will be
  *                      replaced
  *
- * @return Number successfully divided sections, -1 if string is NULL or count
- * < 1.
+ * @return Number successfully divided sections.
  */
-extern int splitStr(char str[], char *substrs[], int count, const char delim[]);
+extern size_t splitStr(char str[], char *substrs[], size_t count,
+                       const char delim[]);
+
+/**
+ * @brief 
+ * 
+ * @param str 
+ * @param pattern 
+ * @return size_t 
+ */
+size_t removeRegexMatches(char str[], const char pattern[]);
 
 /**
  * @brief
@@ -43,7 +67,7 @@ extern int splitStr(char str[], char *substrs[], int count, const char delim[]);
  * @param[in]     buffer_len    buffer length from the front and back
  * @param[in]     buffer_char   buffer character
  *
- * @return Pointer to the formatted string, NULL if was NULL passed in.
+ * @return Pointer to the formatted string.
  */
 extern char *strAddBuffer(struct String str, int buffer_len[2],
                           char buffer_char);
@@ -60,7 +84,7 @@ extern char *strAddBuffer(struct String str, int buffer_len[2],
  * @param[in]     mode          alignment mode
  * @param[in]     buffer_char   buffer character
  *
- * @return Pointer to the formatted string, NULL if was NULL passed in.
+ * @return Pointer to the formatted string.
  */
 extern char *strAlign(struct String str, char mode, char buffer_char);
 
@@ -71,7 +95,7 @@ extern char *strAlign(struct String str, char mode, char buffer_char);
  * @param[in,out] str           string to trim
  * @param[in]     char_to_del   character to remove
  *
- * @return Number of deleted characters, -1 if NULL pointer was passed in.
+ * @return Number of deleted characters.
  */
 extern int trim(char str[], const char char_to_del);
 
@@ -82,7 +106,7 @@ extern int trim(char str[], const char char_to_del);
  * @param[in,out] str           string to trim
  * @param[in]     char_to_del   character to remove
  *
- * @return Number of deleted characters, -1 if NULL pointer was passed in.
+ * @return Number of deleted characters.
  */
 extern int trimFront(char str[], const char char_to_del);
 
@@ -93,7 +117,7 @@ extern int trimFront(char str[], const char char_to_del);
  * @param[in,out] str           string to trim
  * @param[in]     char_to_del   character to remove
  *
- * @return Number of deleted characters, -1 if NULL pointer was passed in.
+ * @return Number of deleted characters.
  */
 extern int trimEnd(char str[], const char char_to_del);
 
