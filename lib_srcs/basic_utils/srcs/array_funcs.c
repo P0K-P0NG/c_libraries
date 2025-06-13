@@ -12,37 +12,52 @@
  * @date 2023-02-25
  */
 #include "array_funcs.h"
-#include <swap_funcs.h>
+#include "swap_funcs.h"
+#include <assert.h>
+#include <stdlib.h>
 
-int getArrIdx(const void *value, const void *arr, size_t item_size, int count,
-              int (*comp_func)(const void *, const void *))
+bool getArrIdx(size_t *idx, const void *value, const void *arr,
+               size_t item_size, int count,
+               int (*comp_func)(const void *, const void *))
 {
-    if (value == NULL || arr == NULL)
-        return -2;
+    assert(value != NULL);
+    assert(arr != NULL);
+    assert(comp_func != NULL);
 
-    int index = -1;
+    bool is_found = false;
     const void *item_i = arr;
-    for (int i = 0; i < count; i++) {
+    for (size_t i = 0; i < count; i++) {
         if (comp_func(value, item_i) == 0) {
-            index = i;
+            *idx = i;
+            is_found = true;
             break;
         }
         item_i += item_size;
     }
-    return index;
+    return is_found;
 }
 
-void insertSortArr(void *arr, size_t item_size, int count,
+bool insertSortArr(void *arr, size_t item_size, int count,
                    int (*comp_func)(const void *, const void *))
 {
+    assert(arr != NULL);
+    assert(comp_func != NULL);
+
+    byte_t *swap_buf = malloc(item_size);
+    if (swap_buf == NULL)
+        return false;
+
     for (int i = 1; i < count; i++) {
         for (int j = i; j >= 1; j--) {
-            if (comp_func(arr + (j - 1) * item_size, arr + j * item_size)
-                >= 0) {
-                swap(arr + (j - 1) * item_size, arr + j * item_size, item_size);
+            void *item1 = arr + (j - 1) * item_size;
+            void *item2 = arr + j * item_size;
+            if (comp_func(item1, item2) >= 0) {
+                swapBuf(item1, item2, swap_buf, item_size);
             } else {
                 break;
             }
         }
     }
+    free(swap_buf);
+    return true;
 }
