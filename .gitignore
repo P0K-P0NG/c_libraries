@@ -1,6 +1,7 @@
 **/.vscode/
 **/objs
 build/
+build_debug/
 
 *.out
 *.exe
