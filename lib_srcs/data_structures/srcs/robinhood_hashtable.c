@@ -15,20 +15,28 @@
 #include "swap_funcs.h"
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
-void RobinHashTableAddBucket(struct RobinHTBucket **buckets,
-                             struct RobinHTBucket *new_bucket, unsigned long i,
-                             unsigned long max_count);
+static void _addBucket(struct RobinHTBucket **buckets,
+                       struct RobinHTBucket *new_bucket, size_t i,
+                       size_t max_count);
 
-struct RobinHashTable *RobinHashTableCreate(unsigned long bucket_count,
-                                            float max_load_prop)
+struct RobinHashTable *
+RobinHashTableCreate(size_t bucket_count, float max_load_prop,
+                     size_t (*hash_func)(const void *),
+                     int (*comp_key)(const void *, const void *))
 {
+    assert(hash_func != NULL);
+    assert(comp_key != NULL);
+
     struct RobinHashTable *new_table = calloc(1, sizeof(struct RobinHashTable));
     if (new_table == NULL) {
         return NULL;
     }
     new_table->count.max = bucket_count;
     new_table->max_load = max_load_prop;
+    new_table->hash = hash_func;
+    new_table->comp_key = comp_key;
     new_table->buckets = calloc(bucket_count, sizeof(struct RobinHTBucket *));
     if (new_table->buckets == NULL) {
         free(new_table);
@@ -37,33 +45,37 @@ struct RobinHashTable *RobinHashTableCreate(unsigned long bucket_count,
     return new_table;
 }
 
-void RobinHashTableClear(struct RobinHashTable **table,
-                         void (*free_key)(void *), void (*free_data)(void *))
+void RobinHashTableClear(struct RobinHashTable **p_table,
+                         void (*free_data)(void *), void (*free_key)(void *))
 {
-    for (unsigned long i = 0; i < (*table)->count.max; i++) {
+    assert(p_table != NULL);
+    assert(*p_table != NULL);
+
+    for (size_t i = 0; i < (*p_table)->count.max; i++) {
         if (free_data != NULL) {
-            free_data((*table)->buckets[i]->data);
+            free_data((*p_table)->buckets[i]->data);
         }
         if (free_key != NULL) {
-            free_key((*table)->buckets[i]->key);
+            free_key((*p_table)->buckets[i]->key);
         }
-        free((*table)->buckets[i]);
+        free((*p_table)->buckets[i]);
     }
-    free((*table)->buckets);
-    free(*table);
-    *table = NULL;
+    free((*p_table)->buckets);
+    free(*p_table);
+    *p_table = NULL;
 }
 
-int RobinHashTableAdd(struct RobinHashTable *table, void *key, void *data,
-                      unsigned long (*hash_func)(const void *))
+int RobinHashTableAdd(struct RobinHashTable *table, void *key, void *data)
 {
+    assert(table != NULL);
+
     if (table->max_load == 0) {
         if (table->count.used >= table->count.max) {
             return 0;
         }
     } else if ((float)table->count.used / table->count.max >= table->max_load
                || table->count.used >= table->count.max) {
-        if (RobinHashTableRehash(table, 2 * table->count.max, hash_func) == 0) {
+        if (RobinHashTableRehash(table, 2 * table->count.max) == 0) {
             return 0;
         }
     }
@@ -73,37 +85,23 @@ int RobinHashTableAdd(struct RobinHashTable *table, void *key, void *data,
     }
     new_bucket->data = data;
     new_bucket->key = key;
-    unsigned long i = hash_func(key) % table->count.max;
-    RobinHashTableAddBucket(table->buckets, new_bucket, i, table->count.max);
+    size_t i =  table->hash(key) % table->count.max;
+    _addBucket(table->buckets, new_bucket, i, table->count.max);
     table->count.used += 1;
     return 1;
 }
 
-void RobinHashTableAddBucket(struct RobinHTBucket **buckets,
-                             struct RobinHTBucket *new_bucket, unsigned long i,
-                             unsigned long max_count)
-{
-    struct RobinHTBucket *curr_bucket = new_bucket;
-    for (; buckets[i] != NULL; i = (i + 1) % max_count) {
-        if (curr_bucket->psl > buckets[i]->psl) {
-            swap(&curr_bucket, &buckets[i], sizeof(struct RobinHTBucket *));
-        }
-        curr_bucket->psl += 1;
-    }
-    buckets[i] = curr_bucket;
-}
-
 void *RobinHashTableRemove(struct RobinHashTable *table, void *key,
-                           unsigned long (*hash_func)(const void *),
-                           int (*comp_key)(const void *, const void *),
-                           void (*free_key)(void *))
+                           void (*free_data)(void *), void (*free_key)(void *))
 {
+    assert(table != NULL);
+
     void *data = NULL;
     int found = 0;
-    unsigned long curr_psl = 0;
-    unsigned long i = hash_func(key) % table->count.max;
+    size_t curr_psl = 0;
+    size_t i =  table->hash(key) % table->count.max;
     while (table->buckets[i] != NULL && curr_psl <= table->buckets[i]->psl) {
-        if (comp_key(table->buckets[i]->key, key) == 0) {
+        if ( table->comp_key(table->buckets[i]->key, key) == 0) {
             data = table->buckets[i]->data;
             if (free_key != NULL) {
                 free_key(table->buckets[i]->key);
@@ -116,7 +114,7 @@ void *RobinHashTableRemove(struct RobinHashTable *table, void *key,
         curr_psl++;
     }
     if (found) {
-        unsigned long prev_i = i;
+        size_t prev_i = i;
         i = (i + 1) % table->count.max;
         while (table->buckets[i] != NULL && table->buckets[i]->psl > 0) {
             memcpy(&table->buckets[prev_i], &table->buckets[i],
@@ -129,15 +127,15 @@ void *RobinHashTableRemove(struct RobinHashTable *table, void *key,
     return data;
 }
 
-void *RobinHashTableFind(struct RobinHashTable *table, void *key,
-                         unsigned long (*hash_func)(const void *),
-                         int (*comp_key)(const void *, const void *))
+void *RobinHashTableFind(struct RobinHashTable *table, void *key)
 {
+    assert(table != NULL);
+
     void *data = NULL;
-    unsigned long curr_psl = 0;
-    unsigned long i = hash_func(key) % table->count.max;
+    size_t curr_psl = 0;
+    size_t i =  table->hash(key) % table->count.max;
     while (table->buckets[i] != NULL && curr_psl <= table->buckets[i]->psl) {
-        if (comp_key(table->buckets[i]->key, key) == 0) {
+        if ( table->comp_key(table->buckets[i]->key, key) == 0) {
             data = table->buckets[i]->data;
             break;
         }
@@ -147,9 +145,10 @@ void *RobinHashTableFind(struct RobinHashTable *table, void *key,
     return data;
 }
 
-int RobinHashTableRehash(struct RobinHashTable *table, unsigned long new_count,
-                         unsigned long (*hash_func)(const void *))
+int RobinHashTableRehash(struct RobinHashTable *table, size_t new_count)
 {
+    assert(table != NULL);
+    
     float max_load = table->max_load;
     if (max_load == 0) {
         max_load = 1;
@@ -162,13 +161,12 @@ int RobinHashTableRehash(struct RobinHashTable *table, unsigned long new_count,
     if (new_buckets == NULL) {
         return 0;
     }
-    unsigned long rehash_count = 0;
-    for (unsigned long i = 0;
+    size_t rehash_count = 0;
+    for (size_t i = 0;
          i < table->count.max && rehash_count <= table->count.used; i++) {
         if (table->buckets[i] != NULL) {
-            unsigned long new_i = hash_func(table->buckets[i]->key) % new_count;
-            RobinHashTableAddBucket(new_buckets, table->buckets[i], new_i,
-                                    new_count);
+            size_t new_i =  table->hash(table->buckets[i]->key) % new_count;
+            _addBucket(new_buckets, table->buckets[i], new_i, new_count);
             rehash_count++;
         }
     }
@@ -176,4 +174,18 @@ int RobinHashTableRehash(struct RobinHashTable *table, unsigned long new_count,
     table->buckets = new_buckets;
     table->count.max = new_count;
     return 1;
+}
+
+static void _addBucket(struct RobinHTBucket **buckets,
+                       struct RobinHTBucket *new_bucket, size_t i,
+                       size_t max_count)
+{
+    struct RobinHTBucket *curr_bucket = new_bucket;
+    for (; buckets[i] != NULL; i = (i + 1) % max_count) {
+        if (curr_bucket->psl > buckets[i]->psl) {
+            swap(&curr_bucket, &buckets[i], sizeof(struct RobinHTBucket *));
+        }
+        curr_bucket->psl += 1;
+    }
+    buckets[i] = curr_bucket;
 }

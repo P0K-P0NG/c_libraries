@@ -12,10 +12,18 @@
  * @date 2023-03-20
  */
 #include "linked_list_kvp.h"
+#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 
-struct LListKVP *LListKVPCreate() { return calloc(1, sizeof(struct LListKVP)); }
+struct LListKVP *LListKVPCreate(int (*comp_key)(const void *, const void *))
+{
+    assert(comp_key != NULL);
+
+    struct LListKVP *new_list = calloc(1, sizeof(struct LListKVP));
+    new_list->comp_key = comp_key;
+    return new_list;
+}
 
 void LListKVPClear(struct LListKVP **list, void (*free_key)(void *),
                    void (*free_data)(void *))
@@ -59,14 +67,12 @@ bool LListKVPRemoveHead(struct LListKVP *list, void (*free_key)(void *),
     return true;
 }
 
-void *LListKVPRemove(struct LListKVP *list, void *key,
-                     int (*comp_key)(const void *, const void *),
-                     void (*free_key)(void *))
+void *LListKVPRemove(struct LListKVP *list, void *key, void (*free_key)(void *))
 {
     struct LListKVPNode *expired = list->head;
     struct LListKVPNode *prev = NULL;
     void *data;
-    while (expired != NULL && comp_key(expired->key, key) != 0) {
+    while (expired != NULL && list->comp_key(expired->key, key) != 0) {
         prev = expired;
         expired = expired->next;
     }
@@ -146,8 +152,7 @@ bool LListKVPAddTail(struct LListKVP *list, void *key, void *data)
     return true;
 }
 
-bool LListKVPAdd(struct LListKVP *list, void *key, void *data,
-                 int (*comp_key)(const void *, const void *))
+bool LListKVPAdd(struct LListKVP *list, void *key, void *data)
 {
     struct LListKVPNode *new_node = calloc(1, sizeof(struct LListKVPNode));
     if (new_node == NULL) {
@@ -156,7 +161,7 @@ bool LListKVPAdd(struct LListKVP *list, void *key, void *data,
 
     struct LListKVPNode *prev = NULL;
     struct LListKVPNode *curr = list->head;
-    while (curr != NULL && comp_key(curr->key, key) < 0) {
+    while (curr != NULL && list->comp_key(curr->key, key) < 0) {
         prev = curr;
         curr = curr->next;
     }
@@ -174,26 +179,24 @@ bool LListKVPAdd(struct LListKVP *list, void *key, void *data,
     return true;
 }
 
-void *LListKVPFind(struct LListKVP *list, const void *key,
-                   int (*comp_key)(const void *, const void *))
+void *LListKVPFind(struct LListKVP *list, const void *key)
 {
     struct LListKVPNode *curr = list->head;
-    while (curr != NULL && comp_key(curr->key, key) != 0) {
+    while (curr != NULL && list->comp_key(curr->key, key) != 0) {
         curr = curr->next;
     }
     return curr->data;
 }
 
-int LListKVPFindAll(struct LListKVP *list, const void *key, void ***data_arr,
-                    int (*comp_key)(const void *, const void *))
+int LListKVPFindAll(struct LListKVP *list, const void *key, void ***data_arr)
 {
-    struct LListKVP *data_list = LListKVPCreate();
+    struct LListKVP *data_list = LListKVPCreate(list->comp_key);
     if (data_list == NULL) {
         return -1;
     }
     struct LListKVPNode *curr = list->head;
     for (int i = 0; curr != NULL; i++) {
-        if (comp_key(curr->key, key) == 0
+        if (list->comp_key(curr->key, key) == 0
             && LListKVPAddTail(data_list, NULL, curr->data) == 0) {
             return -1;
         }
@@ -209,13 +212,12 @@ int LListKVPFindAll(struct LListKVP *list, const void *key, void ***data_arr,
     return count;
 }
 
-int LListKVPCountRepeats(struct LListKVP *list, const void *key,
-                         int (*comp_key)(const void *, const void *))
+int LListKVPCountRepeats(struct LListKVP *list, const void *key)
 {
     int count = 0;
     struct LListKVPNode *curr = list->head;
     while (curr != NULL) {
-        if (comp_key(curr->key, key) == 0) {
+        if (list->comp_key(curr->key, key) == 0) {
             count++;
         }
         curr = curr->next;

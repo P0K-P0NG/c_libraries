@@ -11,6 +11,8 @@
 #ifndef BIN_TREE_H
 #define BIN_TREE_H
 
+#include <stddef.h>
+
 struct BinTreeNode { // node of a binary tree structure
     void *data;      // pointer to data
     int count;
@@ -122,5 +124,5 @@ extern void *BinTreeFind(struct BinTree *tree, void *key,
  *
  * @return The number of nodes in the tree.
  */
-extern int BinTreeCount(struct BinTree *tree);
+extern size_t BinTreeCount(struct BinTree *tree);
 #endif
