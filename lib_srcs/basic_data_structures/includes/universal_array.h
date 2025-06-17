@@ -59,7 +59,8 @@ extern bool ArrayFind(struct Array *arr, size_t *idx, const void *item,
  *  2) WHEN input_1 < input_2,  RETURNS a negative integer @n
  *  3) WHEN input_1 == input_2, RETURNS zero @n
  *
- * @param comp_func     function compare the items
+ * @param[in,out] arr           array to sort
+ * @param[in]     comp_func     function compare the items
  */
 extern bool ArrayInsertSort(struct Array *arr,
                             int (*comp_func)(const void *, const void *));

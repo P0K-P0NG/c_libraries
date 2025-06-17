@@ -18,14 +18,6 @@
 static int _deepestNodesRec(struct LListTreeNode *node, int depth, int deepest,
                             struct LList *node_list);
 
-/**
- * @brief
- *  Creates the root node of a linked list tree structure.
- *
- * @param data  data for the root node
- *
- * @return Pointer to the new root node, NULL is unable to allocate memory.
- */
 struct LListTreeNode *LListTreeCreate(void *data)
 {
     struct LListTreeNode *root = calloc(1, sizeof(struct LListTreeNode));
@@ -35,13 +27,6 @@ struct LListTreeNode *LListTreeCreate(void *data)
     return root;
 }
 
-/**
- * @brief
- *  Deletes a linked list tree structure.
- *
- * @param root          root node of the tree to delete
- * @param free_data     function to free the data, NULL if not needed
- */
 void LListTreeClear(struct LListTreeNode **root, void (*free_data)(void *))
 {
     if ((*root)->head_child != NULL) {
@@ -56,18 +41,6 @@ void LListTreeClear(struct LListTreeNode **root, void (*free_data)(void *))
     *root = NULL;
 }
 
-/**
- * @brief
- *  Adds a new linked list tree node as the child of the inputted node.
- *
- * @param parent    parent node of the new node
- * @param data      data of the new node
- *
- * @return
- *   1 : added successfully @n
- *   0 : unable to allocate memory @n
- *  -1 : NULL pointer was passed in @n
- */
 int LListTreeAdd(struct LListTreeNode *parent, void *data)
 {
     int is_made = 0;
@@ -82,36 +55,11 @@ int LListTreeAdd(struct LListTreeNode *parent, void *data)
     return is_made;
 }
 
-/**
- * @brief
- *  Edits the data of a given linked list tree node.
- *
- * @param node  node to edit
- * @param data  data of the new node
- */
 void LListTreeEdit(struct LListTreeNode *node, void *data)
 {
     node->data = data;
 }
 
-/**
- * @brief
- *  Finds and returns the pointer to the first tree node (in a depth first
- * traversal) with data matching the input, if there is any.
- *
- * @note
- *  The function used to compare must behave in the follows
- *  ways in order for the function to perform properly. @n
- *  1) WHEN input_1 > input_2,  RETURNS a postive integer @n
- *  2) WHEN input_1 < input_2,  RETURNS a negative integer @n
- *  3) WHEN input_1 == input_2, RETURNS zero @n
- *
- * @param root          root node of the tree to search
- * @param data          data of the node to find
- * @param comp_func     function to compare the data
- *
- * @return Pointer to the node with matching data, NULL if not found.
- */
 struct LListTreeNode *LListTreeGetNode(struct LListTreeNode *root, void *data,
                                        int (*comp_func)(const void *,
                                                         const void *))
@@ -130,14 +78,6 @@ struct LListTreeNode *LListTreeGetNode(struct LListTreeNode *root, void *data,
     return target;
 }
 
-/**
- * @brief
- *  Finds the number of child nodes belong to the inputted node/
- *
- * @param parent    node to count the children of
- *
- * @return number of child nodes.
- */
 int LListTreeCountChild(struct LListTreeNode *parent)
 {
     int count = 0;
@@ -149,17 +89,6 @@ int LListTreeCountChild(struct LListTreeNode *parent)
     return count;
 }
 
-/**
- * @brief
- *  Executes a function on all the nodes in the linked list tree, with a depth
- * first traversal pioritizing the last child node, then the silibing nodes in
- * the reverse order of recency, then the parent node. Immediately executes the
- * nodes when it is first called.
- *
- * @param root      root node of the tree
- * @param depth     starting depth level (larger values are deeper)
- * @param func      function to execute
- */
 void LListTreePreOrder(struct LListTreeNode *root, int depth,
                        void (*func)(void *, int))
 {
@@ -172,17 +101,6 @@ void LListTreePreOrder(struct LListTreeNode *root, int depth,
     }
 }
 
-/**
- * @brief
- *  Executes a function on all the nodes in the linked list tree, with a depth
- * first traversal pioritizing the last child node, then the silibing nodes in
- * the reverse order of recency, then the parent node. Starts executing a node
- * once it cannot go a layer deeper or already has gone deeper.
- *
- * @param root      root node of the tree
- * @param depth     starting depth level (larger values are deeper)
- * @param func      function to execute
- */
 void LListTreeInOrder(struct LListTreeNode *root, int depth,
                       void (*func)(void *, int))
 {
@@ -195,19 +113,6 @@ void LListTreeInOrder(struct LListTreeNode *root, int depth,
     }
 }
 
-/**
- * @brief
- *  Executes a function on all the nodes in the linked list tree, with a depth
- * first traversal pioritizing the last child node, then the silibing nodes in
- * the reverse order of recency, then the parent node. Starts executing a node
- * once it cannot go a layer deeper and is has no older sibling node (in terms
- * of time added) or the layer below and it's older silibing Node(s) has already
- * been executed.
- *
- * @param root      root node of the tree
- * @param depth     starting depth level (larger values are deeper)
- * @param func      function to execute
- */
 void LListTreePostOrder(struct LListTreeNode *root, int depth,
                         void (*func)(void *, int))
 {

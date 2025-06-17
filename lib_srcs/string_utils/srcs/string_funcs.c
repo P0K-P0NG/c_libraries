@@ -79,7 +79,7 @@ size_t splitStr(char str[], char *substrs[], size_t count, const char delim[])
     return idx;
 }
 
-size_t removeRegexMatches(char str[], const char pattern[])
+bool removeRegexMatches(char str[], const char pattern[])
 {
     assert(str != NULL);
 
@@ -91,19 +91,17 @@ size_t removeRegexMatches(char str[], const char pattern[])
     char *copy_buf = calloc(str_len + 1, sizeof(char));
     if (copy_buf == NULL) {
         regfree(&regex_buf);
-        return 0;
+        return false;
     }
 
     char *curr = str;
     int status = 0;
     size_t remove_len = 0;
-    size_t count = 0;
     regmatch_t offsets;
     status = regexec(&regex_buf, curr, 1, &offsets, 0);
     if (status == 0) {
         curr += offsets.rm_eo;
         remove_len += offsets.rm_eo - offsets.rm_so;
-        count++;
     }
     while (status == 0) {
         status = regexec(&regex_buf, curr, 1, &offsets, 0);
@@ -114,19 +112,16 @@ size_t removeRegexMatches(char str[], const char pattern[])
         memcpy(curr - remove_len, copy_buf, offsets.rm_so);
         curr += offsets.rm_eo;
         remove_len += offsets.rm_eo - offsets.rm_so;
-        count++;
     }
     regfree(&regex_buf);
 
-    if (status != REG_NOMATCH) {
-        count = 0;
-    } else if (remove_len != 0) {
+    if (status == REG_NOMATCH && remove_len != 0) {
         size_t len = str + str_len + 1 - curr;
         memcpy(copy_buf, curr, len);
         memcpy(curr - remove_len, copy_buf, len);
     }
     free(copy_buf);
-    return count;
+    return (status == REG_NOMATCH)? true : false;
 }
 
 char *strAddBuffer(struct String str_block, int buffer_len[2], char buffer_char)

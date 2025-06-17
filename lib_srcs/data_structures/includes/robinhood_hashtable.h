@@ -64,8 +64,8 @@ RobinHashTableCreate(size_t bucket_count, float max_load_prop,
  *  if provided with a function do so.
  *
  * @param[in,out] p_table       hashtable to delete
- * @param free_data     function to free data; NULL if not needed
- * @param free_key      function to free keys; NULL if not needed
+ * @param[in] free_data     function to free data; NULL if not needed
+ * @param[in] free_key      function to free keys; NULL if not needed
  */
 extern void RobinHashTableClear(struct RobinHashTable **p_table,
                                 void (*free_data)(void *),

@@ -12,6 +12,7 @@
 #define STRING_FUNCS_H
 
 #include "string_block.h"
+#include <stdbool.h>
 #include <stddef.h>
 
 /**
@@ -51,12 +52,16 @@ extern size_t splitStr(char str[], char *substrs[], size_t count,
 
 /**
  * @brief
+ *  Removes all matches of the specified regex pattern in a string.
  *
- * @param str
- * @param pattern
- * @return size_t
+ * @param[in,out] str`      string to modify
+ * @param[in]     pattern   pattern to remove
+ *
+ * @return
+ *  true  : execution successful
+ *  false : execution failed
  */
-size_t removeRegexMatches(char str[], const char pattern[]);
+bool removeRegexMatches(char str[], const char pattern[]);
 
 /**
  * @brief

@@ -7,7 +7,7 @@
  * @brief
  *  hash function for strings using the djb2 algorithm.
  *
- * @param str   string to hash
+ * @param[in] str   string to hash
  *
  * @return hashed index
  */
