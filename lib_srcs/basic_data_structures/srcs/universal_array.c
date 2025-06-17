@@ -1,3 +1,16 @@
+/**
+ * @file universal_array.c
+ * 
+ * @brief 
+ *  Struct and functions of an universal array type.
+ * 
+ * @implements
+ *  universal_array.h
+ * 
+ * @author Sarutch Supaibulpipat (Pokpong) (8pokpong8@gmail.com)
+ * @version 0.1
+ * @date 2025-06-17
+ */
 #include "universal_array.h"
 #include "swap_funcs.h"
 #include <assert.h>

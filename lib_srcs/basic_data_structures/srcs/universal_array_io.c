@@ -1,3 +1,16 @@
+/**
+ * @file universal_array_io.c
+ *
+ * @brief
+ *  Streaming function for the struct Array type.
+ *
+ * @implements
+ *  universal_array_io.h
+ *
+ * @author Sarutch Supaibulpipat (Pokpong) (8pokpong8@gmail.com)
+ * @version 0.1
+ * @date 2025-06-17
+ */
 #include "universal_array_io.h"
 #include "swap_funcs.h"
 #include <assert.h>
@@ -38,18 +51,18 @@ bool ArrayWriteBinary(struct Array *arr, FILE *file_dest)
     return true;
 }
 
-bool ArrayWrite(struct Array *arr, char type[TYPE_LEN], char *delim,
+bool ArrayWrite(struct Array *arr, const char *type_format, const char *delim,
                 FILE *file_dest)
 {
     assert(arr != NULL);
     assert(file_dest != NULL);
 
-    if (fprintf(file_dest, type, ArrayGet(arr, 0)) < 0) {
+    if (fprintf(file_dest, type_format, ArrayGet(arr, 0)) < 0) {
         return false;
     }
     for (int i = 1; i < arr->len; i++) {
         if (fprintf(file_dest, "%s", delim) < 0
-            || fprintf(file_dest, type, ArrayGet(arr, i)) < 0) {
+            || fprintf(file_dest, type_format, ArrayGet(arr, i)) < 0) {
             return false;
         }
     }

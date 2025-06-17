@@ -3,6 +3,7 @@
  * @file universal_array_io.h
  *
  * @brief
+ *  Streaming function for the struct Array type.
  *
  * @author Sarutch Supaibulpipat (Pokpong) (8pokpong8@gmail.com)
  * @version 0.1
@@ -20,7 +21,7 @@ extern bool ArrayReadBinary(struct Array **p_arr, FILE *file_src);
 
 extern bool ArrayWriteBinary(struct Array *arr, FILE *file_dest);
 
-extern bool ArrayWrite(struct Array *arr, char type[TYPE_LEN], char *delim,
-                       FILE *file_dest);
+extern bool ArrayWrite(struct Array *arr, const char *type_format,
+                       const char *delim, FILE *file_dest);
 
 #endif

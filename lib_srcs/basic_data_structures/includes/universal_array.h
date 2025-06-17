@@ -1,10 +1,18 @@
+/**
+ * @file universal_array.h
+ * 
+ * @brief 
+ *  Struct and functions of an universal array type.
+ * 
+ * @author Sarutch Supaibulpipat (Pokpong) (8pokpong8@gmail.com)
+ * @version 0.1
+ * @date 2025-06-17
+ */
 #ifndef UNIVERSAL_ARRAY_H
 #define UNIVERSAL_ARRAY_H
 
 #include <stdbool.h>
 #include <stddef.h>
-
-#define TYPE_LEN 5
 
 struct Array {
     void *items;
@@ -17,12 +25,44 @@ struct Array {
     ((struct Array){(void *)items, (item_size), (len)})
 #define ArrayItemsStackInit(type, len, ...) ((type[len]){__VA_ARGS__})
 
+/**
+ * @brief
+ *  Creates an array struct.
+ *
+ * @param[in] item_size     size of an item
+ * @param[in] len           length of array
+ * 
+ * @return Pointer to new array, NULL if memory allocation failed.
+ */
 extern struct Array *ArrayCreate(size_t item_size, size_t len);
 
+/**
+ * @brief 
+ *  Deletes an array struct.
+ * 
+ * @param p_arr     array to delete
+ */
 extern void ArrayClear(struct Array **p_arr);
 
+/**
+ * @brief 
+ *  Sets the value of an item in an array struct at the speficied index.
+ * 
+ * @param arr   array to set
+ * @param idx   index to set
+ * @param item  value to set
+ */
 extern void ArraySet(struct Array *arr, size_t idx, void *item);
 
+/**
+ * @brief 
+ *  Gets the value of an item in an array struct at the speficied index.
+ * 
+ * @param arr   array to retrieve
+ * @param idx   index to retrieve
+ * 
+ * @return Pointer to the retrieve value. 
+ */
 extern void *ArrayGet(struct Array *arr, size_t idx);
 
 /**

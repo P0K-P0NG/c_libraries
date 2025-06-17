@@ -59,9 +59,8 @@ extern LListDigraphNode_t *LListDigraphAdd(LListDigraph_t *graph, void *data);
  * @param[in]     vert_node     node containg the vertex to remove
  * @param[in]     free_data     function to free data, NULL if not needed
  *
- * @return
- *  true  : removal successful @n
- *  false : node pointer is NULL @n
+ * @return true  : removal successful 
+ * @return false : node pointer is NULL
  */
 extern bool LListDigraphRemove(LListDigraph_t *graph,
                                LListDigraphNode_t *vert_node,
@@ -74,9 +73,8 @@ extern bool LListDigraphRemove(LListDigraph_t *graph,
  * @param[in,out] start     node of vertex the edge starts at
  * @param[in,out] end       node of vertex the edge ends at
  *
- * @return
- *  true  : connection successful @n
- *  false : memory allocation failed @n
+ * @return true  : connection successful 
+ * @return false : memory allocation failed
  */
 extern bool LListDigraphConnect(LListDigraphNode_t *start,
                                 LListDigraphNode_t *end);
@@ -88,9 +86,8 @@ extern bool LListDigraphConnect(LListDigraphNode_t *start,
  * @param[in,out] start     node of vertex the edge starts at
  * @param[in,out] end       node of vertex the edge ends at
  *
- * @return
- *  true  : disconnection successful @n
- *  false : no edge found @n
+ * @return true  : disconnection successful 
+ * @return false : no edge found
  */
 extern bool LListDigraphDisconnect(LListDigraphNode_t *start,
                                    LListDigraphNode_t *end);
@@ -102,9 +99,8 @@ extern bool LListDigraphDisconnect(LListDigraphNode_t *start,
  * @param[in,out] start     node of vertex the edge starts at
  * @param[in,out] end       node of vertex the edge ends at
  *
- * @return
- *  true  : an edge exist @n
- *  false : an edge doesn't exit @n
+ * @return true  : an edge exist 
+ * @return false : an edge doesn't exit
  */
 extern bool LListDigraphIsConnected(LListDigraphNode_t *start,
                                     LListDigraphNode_t *end);
@@ -172,9 +168,8 @@ extern void LListDigraphSetAdjState(LListDigraphNode_t *vert_node,
  * traversal
  * @param[in]     func          function to execute
  *
- * @return
- *  true  : traversal successful @n
- *  false : memory allocation failed @n
+ * @return true  : traversal successful 
+ * @return false : memory allocation failed
  */
 extern bool LListDigraphBreathTraverse(LListDigraphNode_t *vert_node,
                                        int max_lvl, void (*func)(void *));

@@ -103,9 +103,8 @@ extern void *ChainHashTableFind(struct ChainHashTable *table, const void *key);
  * @param[out] ptr_arr      dynamic pointer array to the data
  * @param[out] count        variable to store the number of matches
  *
- * @return
- *  true  : execution successful @n
- *  false : memory allocation failed @n
+ * @return true  : execution successful 
+ * @return false : memory allocation failed
  */
 extern bool ChainHashTableFindAll(struct ChainHashTable *table, const void *key,
                                   void ***ptr_arr, size_t *count);

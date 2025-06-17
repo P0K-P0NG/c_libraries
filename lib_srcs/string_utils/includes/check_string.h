@@ -23,9 +23,8 @@
  * @param[in] str   string to check
  * @param[in] len   length to check
  *
- * @return
- *  true  : substring is valid @n
- *  false : substring is invalid @n
+ * @return true  : substring is valid 
+ * @return false : substring is invalid
  */
 extern bool isStrAlpha(const char str[], size_t len);
 
@@ -37,9 +36,8 @@ extern bool isStrAlpha(const char str[], size_t len);
  * @param[in] str   string to check
  * @param[in] len   length to check
  *
- * @return
- *  true  : substring is valid @n
- *  false : substring is invalid @n
+ * @return true  : substring is valid 
+ * @return false : substring is invalid
  */
 extern bool isStrDigit(const char str[], size_t len);
 
@@ -51,9 +49,8 @@ extern bool isStrDigit(const char str[], size_t len);
  * @param[in] str   string to check
  * @param[in] len   length to check
  *
- * @return
- *  true  : substring is valid @n
- *  false : substring is invalid @n
+ * @return true  : substring is valid 
+ * @return false : substring is invalid
  */
 extern bool isStrInt(const char str[], size_t len);
 
@@ -91,9 +88,8 @@ extern bool isDelimStrInt(const char str[], const char delim[]);
  * @param[in] str       string to check
  * @param[in] delim     delimiter to check up to
  *
- * @return
- *  true  : substring is valid @n
- *  false : substring is invalid @n
+ * @return true  : substring is valid 
+ * @return false : substring is invalid
  */
 bool isDelimStrFloat(const char str[], const char delim[]);
 

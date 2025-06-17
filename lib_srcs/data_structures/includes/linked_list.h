@@ -51,9 +51,8 @@ extern void LListClear(struct LList **p_list, void (*free_data)(void *));
  * @param[in,out] list          linked list to remove from
  * @param[in]     free_data     function to free data, NULL if not needed
  *
- * @return
- *  true  : removal successful @n
- *  false : linked list is empty @n
+ * @return true  : removal successful 
+ * @return false : linked list is empty
  */
 extern bool LListRemoveHead(struct LList *list, void (*free_data)(void *));
 
@@ -66,9 +65,8 @@ extern bool LListRemoveHead(struct LList *list, void (*free_data)(void *));
  * @param[in]     idx           index of the node to delete
  * @param[in]     free_data     function to free data, NULL if not needed
  *
- * @return
- *  true  : removal successful @n
- *  false : invalid index @n
+ * @return true  : removal successful 
+ * @return false : invalid index
  */
 extern bool LListRemoveAt(struct LList *list, size_t idx,
                           void (*free_data)(void *));
@@ -90,9 +88,8 @@ extern void LListRemoveAll(struct LList *list, void (*free_data)(void *));
  * @param[in,out] list  linked list add to
  * @param[in]     data  data of the new node
  *
- * @return
- *  true  : node added successfully @n
- *  false : memory allocation falied @n
+ * @return true  : node added successfully 
+ * @return false : memory allocation falied
  */
 extern bool LListAddHead(struct LList *list, void *data);
 
@@ -103,9 +100,8 @@ extern bool LListAddHead(struct LList *list, void *data);
  * @param[in,out] list  linked list add to
  * @param[in]     data  data of the new node
  *
- * @return
- *  true  : node added successfully @n
- *  false : memory allocation falied @n
+ * @return true  : node added successfully 
+ * @return false : memory allocation falied
  */
 extern bool LListAddTail(struct LList *list, void *data);
 
@@ -138,9 +134,8 @@ extern int LListAddAt(struct LList *list, void *data, size_t idx);
  * @param[in]     data          data of the new node
  * @param[in]     comp_func     function to compare data with
  *
- * @return
- *  true  : added successfully @n
- *  false : memory allocation falied @n
+ * @return true  : added successfully 
+ * @return false : memory allocation falied
  */
 extern bool LListAddByCompare(struct LList *list, void *data,
                               int (*comp_func)(const void *, const void *));
@@ -153,9 +148,8 @@ extern bool LListAddByCompare(struct LList *list, void *data,
  * @param[in]     data  new data
  * @param[in]     idx   index of the node to edit
  *
- * @return
- *  true  : edit successful @n
- *  false : invalid index @n
+ * @return true  : edit successful 
+ * @return false : invalid index
  */
 extern bool LListEditAt(struct LList *list, void *data, size_t idx);
 
@@ -211,9 +205,8 @@ extern void *LListData(struct LList *list, const void *key,
  * @param[out] count        number of found data
  * @param[in]  comp_func    function to compare data and key
  *
- * @return
- *  true  : execution successful @n
- *  false : memory allocation failed @n
+ * @return true  : execution successful 
+ * @return false : memory allocation failed
  */
 extern bool LListAllData(struct LList *list, const void *key, void ***ptr_arr,
                          size_t *count,

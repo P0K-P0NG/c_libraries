@@ -65,30 +65,30 @@ void RobinHashTableClear(struct RobinHashTable **p_table,
     *p_table = NULL;
 }
 
-int RobinHashTableAdd(struct RobinHashTable *table, void *key, void *data)
+bool RobinHashTableAdd(struct RobinHashTable *table, void *key, void *data)
 {
     assert(table != NULL);
 
     if (table->max_load == 0) {
         if (table->count.used >= table->count.max) {
-            return 0;
+            return false;
         }
     } else if ((float)table->count.used / table->count.max >= table->max_load
                || table->count.used >= table->count.max) {
         if (RobinHashTableRehash(table, 2 * table->count.max) == 0) {
-            return 0;
+            return false;
         }
     }
     struct RobinHTBucket *new_bucket = calloc(1, sizeof(struct RobinHTBucket));
     if (new_bucket == NULL) {
-        return 0;
+        return false;
     }
     new_bucket->data = data;
     new_bucket->key = key;
     size_t i = table->hash(key) % table->count.max;
     _addBucket(table->buckets, new_bucket, i, table->count.max);
     table->count.used += 1;
-    return 1;
+    return true;
 }
 
 void *RobinHashTableRemove(struct RobinHashTable *table, void *key,

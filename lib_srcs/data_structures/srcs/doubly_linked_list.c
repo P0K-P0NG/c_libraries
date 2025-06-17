@@ -6,6 +6,7 @@
  *
  * @implements
  *  doubly_linked_list.h
+ *  _extend_doubly_linked_list.h
  *
  * @author Pokpong
  * @version 0.1

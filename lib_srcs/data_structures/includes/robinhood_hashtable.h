@@ -12,6 +12,7 @@
 #define ROBINHOOD_HASHTABLE_H
 
 #include <stddef.h>
+#include <stdbool.h>
 
 struct RobinHTBucket { // robinhood open address hashtable bucket
     void *key;         // Pointer to the key
@@ -82,10 +83,10 @@ extern void RobinHashTableClear(struct RobinHashTable **p_table,
  * @param[in]     data          data of the new item
  *
  * @return
- *  1 : added successfully @n
- *  0 : memory allocation falied @n
+ *  true  : added successfully @n
+ *  false : memory allocation falied @n
  */
-extern int RobinHashTableAdd(struct RobinHashTable *table, void *key,
+extern bool RobinHashTableAdd(struct RobinHashTable *table, void *key,
                              void *data);
 
 /**

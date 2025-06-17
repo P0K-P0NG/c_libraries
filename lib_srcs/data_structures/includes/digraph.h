@@ -40,9 +40,8 @@ extern struct DigraphVert *DigraphInitVert(void *data);
  * @param[in,out] p_vert        vertex to delete
  * @param[in]     free_data     function to free the data, NULL if not needed
  *
- * @return
- *  true  : removal successful @n
- *  false : memory allocation failed @n
+ * @return true  : removal successful 
+ * @return false : memory allocation failed
  */
 extern bool DigraphRemoveVert(struct DigraphVert **p_vert,
                               void (*free_data)(void *));
@@ -54,9 +53,8 @@ extern bool DigraphRemoveVert(struct DigraphVert **p_vert,
  * @param[in,out] start     vertex the edge starts at
  * @param[in,out] end       vertex the edge ends at
  *
- * @return
- *  true  : connection successful @n
- *  false : memory allocation failed @n
+ * @return true  : connection successful 
+ * @return false : memory allocation failed
  */
 extern bool DigraphConnect(struct DigraphVert *start, struct DigraphVert *end);
 
@@ -67,9 +65,8 @@ extern bool DigraphConnect(struct DigraphVert *start, struct DigraphVert *end);
  * @param[in,out] start     vertex the edge starts at
  * @param[in,out] end       vertex the edge ends at
  *
- * @return
- *  true  : disconnection successful @n
- *  false : no edge found @n
+ * @return true  : disconnection successful 
+ * @return false : no edge found
  */
 extern bool DigraphDisconnect(struct DigraphVert *start,
                               struct DigraphVert *end);
@@ -81,9 +78,8 @@ extern bool DigraphDisconnect(struct DigraphVert *start,
  * @param[in,out] start     vertex the edge starts at
  * @param[in,out] end       vertex the edge ends at
  *
- * @return
- *  true  : an edge exist @n
- *  false : an edge doesn't exit @n
+ * @return true  : an edge exist 
+ * @return false : an edge doesn't exit
  */
 extern bool DigraphIsConnected(struct DigraphVert *start,
                                struct DigraphVert *end);
@@ -116,9 +112,8 @@ extern void DigraphSetAdjState(struct DigraphVert *vert, unsigned char state);
  * @param[in]     max_lvl   further level to traverse; -1 for unbound traversal
  * @param[in]     func      function to execute
  *
- * @return
- *  true  : traversal successful @n
- *  false : memory allocation failed @n
+ * @return true  : traversal successful 
+ * @return false : memory allocation failed
  */
 extern bool DigraphBreathTraverse(struct DigraphVert *vert, int max_lvl,
                                   void (*func)(void *));

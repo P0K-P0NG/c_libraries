@@ -70,9 +70,8 @@ extern void LListKVPClear(struct LListKVP **p_list, void (*free_key)(void *),
  * @param[in]     free_key      function to free keys, NULL if not needed
  * @param[in]     free_data     function to free data, NULL if not needed
  *
- * @return
- *  true  : removal successful @n
- *  false : list is empty @n
+ * @return true  : removal successful 
+ * @return false : list is empty
  */
 extern bool LListKVPRemoveHead(struct LListKVP *list, void (*free_key)(void *),
                                void (*free_data)(void *));
@@ -111,9 +110,8 @@ extern void LListKVPRemoveAll(struct LListKVP *list, void (*free_key)(void *),
  * @param[in]     key   key of the new node
  * @param[in]     data  data of the new node
  *
- * @return
- *  true  : node added successfully @n
- *  false : memory allocation falied @n
+ * @return true  : node added successfully 
+ * @return false : memory allocation falied
  */
 extern bool LListKVPAddHead(struct LListKVP *list, void *key, void *data);
 
@@ -125,9 +123,8 @@ extern bool LListKVPAddHead(struct LListKVP *list, void *key, void *data);
  * @param[in]     key   key of the new node
  * @param[in]     data  data of the new node
  *
- * @return
- *  true  : node added successfully @n
- *  false : memory allocation falied @n
+ * @return true  : node added successfully 
+ * @return false : memory allocation falied
  */
 extern bool LListKVPAddTail(struct LListKVP *list, void *key, void *data);
 
@@ -140,9 +137,8 @@ extern bool LListKVPAddTail(struct LListKVP *list, void *key, void *data);
  * @param[in]     key   key of the new node
  * @param[in]     data  data of the new node
  *
- * @return
- *  true  : added successfully @n
- *  false : memory allocation falied @n
+ * @return true  : added successfully 
+ * @return false : memory allocation falied
  */
 extern bool LListKVPAdd(struct LListKVP *list, void *key, void *data);
 
@@ -168,9 +164,8 @@ extern void *LListKVPFind(struct LListKVP *list, const void *key);
  * @param[out] ptr_arr      dynamic array to store the data
  * @param[out] count        variable to store the number of pairs found
  *
- * @return
- *  true  : execution successful @n
- *  false : memory allocation failed @n
+ * @return true  : execution successful 
+ * @return false : memory allocation failed
  */
 extern bool LListKVPFindAll(struct LListKVP *list, const void *key,
                             void ***ptr_arr, size_t *count);
