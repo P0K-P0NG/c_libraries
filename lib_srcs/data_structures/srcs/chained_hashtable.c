@@ -75,11 +75,13 @@ void *ChainHashTableFind(struct ChainHashTable *table, const void *key)
     return LListKVPFind(&table->buckets[idx], key);
 }
 
-int ChainHashTableFindAll(struct ChainHashTable *table, const void *key,
-                          void ***data_arr)
+bool ChainHashTableFindAll(struct ChainHashTable *table, const void *key,
+                           void ***ptr_arr, size_t *count)
 {
+    assert(table != NULL);
+
     size_t idx = table->hash(key) % table->length;
-    return LListKVPFindAll(&table->buckets[idx], key, data_arr);
+    return LListKVPFindAll(&table->buckets[idx], key, ptr_arr, count);
 }
 
 int ChainHashTableCountRepeats(struct ChainHashTable *table, const void *key)

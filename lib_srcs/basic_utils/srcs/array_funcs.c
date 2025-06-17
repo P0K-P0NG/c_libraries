@@ -51,7 +51,7 @@ bool insertSortArr(void *arr, size_t item_size, int count,
         for (int j = i; j >= 1; j--) {
             void *item1 = arr + (j - 1) * item_size;
             void *item2 = arr + j * item_size;
-            if (comp_func(item1, item2) >= 0) {
+            if (comp_func(item1, item2) > 0) {
                 swapBuf(item1, item2, swap_buf, item_size);
             } else {
                 break;

@@ -35,8 +35,8 @@ extern struct LListStack *LListStackCreate();
  * @brief
  *  Pushes new data to a linked list stack
  *
- * @param stack     linked list stack to push to
- * @param data      new data
+ * @param[in,out] stack     linked list stack to push to
+ * @param[in]     data      new data
  *
  * @return
  *   true  : pushed successfully @n
@@ -48,7 +48,7 @@ extern bool LListStackPush(struct LListStack *stack, void *data);
  * @brief
  *  Pops data from a linked list stack
  *
- * @param stack     linked list stack to pop
+ * @param[in,out] stack     linked list stack to pop
  *
  * @return Pointer to the popped data, NULL if the stack is empty.
  */
@@ -58,9 +58,9 @@ extern void *LListStackPop(struct LListStack *stack);
  * @brief
  *  Deletes a linked list stack and frees its data if given a function to do so.
  *
- * @param stack         linked list stack to delete
- * @param free_data     function to free data, NULL if not needed
+ * @param[in,out] p_stack       linked list stack to delete
+ * @param[in]     free_data     function to free data, NULL if not needed
  */
-extern void LListStackClear(struct LListStack **stack,
+extern void LListStackClear(struct LListStack **p_stack,
                             void (*free_data)(void *));
 #endif

@@ -12,6 +12,7 @@
  * @date 2023-05-22
  */
 #include "linked_list_stack.h"
+#include <assert.h>
 #include <stdlib.h>
 
 struct LListStack *LListStackCreate()
@@ -21,6 +22,8 @@ struct LListStack *LListStackCreate()
 
 bool LListStackPush(struct LListStack *stack, void *data)
 {
+    assert(stack != NULL);
+
     struct LListStackNode *new_head = calloc(1, sizeof(struct LListStackNode));
     if (new_head == NULL) {
         return false;
@@ -37,6 +40,8 @@ bool LListStackPush(struct LListStack *stack, void *data)
 
 void *LListStackPop(struct LListStack *stack)
 {
+    assert(stack != NULL);
+
     void *data;
     struct LListStackNode *prev_head = stack->head;
     if (prev_head == NULL) {
@@ -51,9 +56,12 @@ void *LListStackPop(struct LListStack *stack)
     return data;
 }
 
-void LListStackClear(struct LListStack **stack, void (*free_data)(void *))
+void LListStackClear(struct LListStack **p_stack, void (*free_data)(void *))
 {
-    struct LListStackNode *curr = (*stack)->head;
+    assert(p_stack != NULL);
+    assert(*p_stack != NULL);
+
+    struct LListStackNode *curr = (*p_stack)->head;
     while (curr != NULL) {
         struct LListStackNode *prev = curr;
         curr = curr->next;
@@ -62,6 +70,6 @@ void LListStackClear(struct LListStack **stack, void (*free_data)(void *))
         }
         free(prev);
     }
-    free(*stack);
-    *stack = NULL;
+    free(*p_stack);
+    *p_stack = NULL;
 }

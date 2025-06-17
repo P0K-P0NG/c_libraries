@@ -11,6 +11,7 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
+#include <stdbool.h>
 #include <stddef.h>
 
 struct LListNode {          // node in a linked list
@@ -37,48 +38,48 @@ extern struct LList *LListCreate();
  * @brief
  *  Deletes a linked list and it's data if a function for freeing it is given.
  *
- * @param list          linked list to delete
- * @param free_data     function to free data, NULL if not needed
+ * @param[in,out] p_list        inked list to delete
+ * @param[in]     free_data     function to free data, NULL if not needed
  */
-extern void LListClear(struct LList **list, void (*free_data)(void *));
+extern void LListClear(struct LList **p_list, void (*free_data)(void *));
 
 /**
  * @brief
  *  Deletes the first node in a linked list and it's data if a function for
- * freeing it is given.
+ *  freeing it is given.
  *
- * @param list          linked list to remove from
- * @param free_data     function to free data, NULL if not needed
+ * @param[in,out] list          linked list to remove from
+ * @param[in]     free_data     function to free data, NULL if not needed
  *
  * @return
- *  1 : removal successful @n
- *  0 : linked list is empty @n
+ *  true  : removal successful @n
+ *  false : linked list is empty @n
  */
-extern int LListPop(struct LList *list, void (*free_data)(void *));
+extern bool LListRemoveHead(struct LList *list, void (*free_data)(void *));
 
 /**
  * @brief
  *  Deletes a node at the given index of a linked list and it's data
  *  if a function for freeing it is given.
  *
- * @param list          linked list to remove from
- * @param idx           index of the node to delete
- * @param free_data     function to free data, NULL if not needed
+ * @param[in,out] list          linked list to remove from
+ * @param[in]     idx           index of the node to delete
+ * @param[in]     free_data     function to free data, NULL if not needed
  *
  * @return
- *  1 : removal successful @n
- *  0 : invalid index @n
+ *  true  : removal successful @n
+ *  false : invalid index @n
  */
-extern int LListRemoveAt(struct LList *list, int idx,
-                         void (*free_data)(void *));
+extern bool LListRemoveAt(struct LList *list, size_t idx,
+                          void (*free_data)(void *));
 
 /**
  * @brief
  *  Deletes all nodes of linked list (but not the list itself) and it's data
  *  if a function for freeing it is given.
  *
- * @param list          linked list to remove from
- * @param free_data     function to free data, NULL if not needed
+ * @param[in,out] list          linked list to remove from
+ * @param[in]     free_data     function to free data, NULL if not needed
  */
 extern void LListRemoveAll(struct LList *list, void (*free_data)(void *));
 
@@ -86,42 +87,42 @@ extern void LListRemoveAll(struct LList *list, void (*free_data)(void *));
  * @brief
  *  Adds a node to start of a linked list.
  *
- * @param list  linked list add to
- * @param data  data of the new node
+ * @param[in,out] list  linked list add to
+ * @param[in]     data  data of the new node
  *
  * @return
- *  1 : node added successfully @n
- *  0 : memory allocation falied @n
+ *  true  : node added successfully @n
+ *  false : memory allocation falied @n
  */
-extern int LListPush(struct LList *list, void *data);
+extern bool LListAddHead(struct LList *list, void *data);
 
 /**
  * @brief
  *  Adds a node to end of a linked list.
  *
- * @param list  linked list add to
- * @param data  data of the new node
+ * @param[in,out] list  linked list add to
+ * @param[in]     data  data of the new node
  *
  * @return
- *  1 : node added successfully @n
- *  0 : memory allocation falied @n
+ *  true  : node added successfully @n
+ *  false : memory allocation falied @n
  */
-extern int LListAddTail(struct LList *list, void *data);
+extern bool LListAddTail(struct LList *list, void *data);
 
 /**
  * @brief
  *  Adds a node at the given index of a linked list.
  *
- * @param list  linked list to add to
- * @param data  data of the new node
- * @param idx   index of the new node
+ * @param[in,out] list  linked list to add to
+ * @param[in]     data  data of the new node
+ * @param[in]     idx   index of the new node
  *
  * @return
  *   1 : node added successfully @n
  *   0 : memory allocation falied @n
  *  -1 : invalid index @n
  */
-extern int LListAddAt(struct LList *list, void *data, int idx);
+extern int LListAddAt(struct LList *list, void *data, size_t idx);
 
 /**
  * @brief
@@ -133,42 +134,42 @@ extern int LListAddAt(struct LList *list, void *data, int idx);
  *  1) Returns int < 0 if data_1 should come before data_2 @n
  *  2) Returns int >= 0 if data_1 should come after data_2 @n
  *
- * @param list          linked list to add to
- * @param data          data of the new node
- * @param comp_func     function to compare data with
+ * @param[in,out] list          linked list to add to
+ * @param[in]     data          data of the new node
+ * @param[in]     comp_func     function to compare data with
  *
  * @return
- *  1 : added successfully @n
- *  0 : memory allocation falied @n
+ *  true  : added successfully @n
+ *  false : memory allocation falied @n
  */
-extern int LListAddByCompare(struct LList *list, void *data,
-                             int (*comp_func)(const void *, const void *));
+extern bool LListAddByCompare(struct LList *list, void *data,
+                              int (*comp_func)(const void *, const void *));
 
 /**
  * @brief
  *  Edits data from a node at the given index of a linked list.
  *
- * @param list  linked list to edit
- * @param data  new data
- * @param idx   index of the node to edit
+ * @param[in,out] list  linked list to edit
+ * @param[in]     data  new data
+ * @param[in]     idx   index of the node to edit
  *
  * @return
- *  1 : edit successful @n
- *  0 : invalid index @n
+ *  true  : edit successful @n
+ *  false : invalid index @n
  */
-extern int LListEditAt(struct LList *list, void *data, int idx);
+extern bool LListEditAt(struct LList *list, void *data, size_t idx);
 
 /**
  * @brief
  *  Gets the pointer to data stored in the linked list by the given index.
  *
- * @param list  linked list cointaing the data
- * @param idx   index to get data from
+ * @param[in] list  linked list cointaing the data
+ * @param[in] idx   index to get data from
  *
  * @return Pointer to the data, NULL if data is not found or the index is
  * invalid.
  */
-extern void *LListDataAt(struct LList *list, int idx);
+extern void *LListDataAt(struct LList *list, size_t idx);
 
 /**
  * @brief
@@ -177,12 +178,14 @@ extern void *LListDataAt(struct LList *list, int idx);
  *
  * @note
  *  The compare function must return 0 when keys match, and not 0 when it
- * doesn't. @n Compare function input No. : @n 1) data from the linked list @n
+ *  doesn't. @n
+ *  Compare function input No. : @n
+ *  1) data from the linked list @n
  *  2) key @n
  *
- * @param list          linked list to search
- * @param key           key to compare the data with
- * @param comp_func     function to compare data and key
+ * @param[in] list          linked list to search
+ * @param[in] key           key to compare the data with
+ * @param[in] comp_func     function to compare data and key
  *
  * @return Pointer to the data, NULL if data is not found
  */
@@ -196,19 +199,25 @@ extern void *LListData(struct LList *list, const void *key,
  *
  * @note
  *  The compare function must return 0 when keys match, and not 0 when it
- * doesn't. @n Compare function input No. : @n 1) data from the linked list @n
+ *  doesn't. @n
+ *  Compare function input No. : @n
+ *  1) data from the linked list @n
  *  2) key @n
  *  Highly advised to free the dynamic array after use. @n
  *
- * @param list          linked list to search
- * @param key           key to compare the data with
- * @param data_arr      dynamic array to store the data
- * @param comp_func     function to compare data and key
+ * @param[in]  list         linked list to search
+ * @param[in]  key          key to compare the data with
+ * @param[out] ptr_arr      dynamic array to store the data
+ * @param[out] count        number of found data
+ * @param[in]  comp_func    function to compare data and key
  *
- * @return Number of data chunks, -1 if memory allocation failed.
+ * @return
+ *  true  : execution successful @n
+ *  false : memory allocation failed @n
  */
-extern int LListAllData(struct LList *list, const void *key, void ***data_arr,
-                        int (*comp_func)(const void *, const void *));
+extern bool LListAllData(struct LList *list, const void *key, void ***ptr_arr,
+                         size_t *count,
+                         int (*comp_func)(const void *, const void *));
 
 /**
  * @brief
@@ -217,18 +226,21 @@ extern int LListAllData(struct LList *list, const void *key, void ***data_arr,
  *
  * @note
  *  The compare function must return 0 when keys match, and not 0 when it
- * doesn't. @n Compare function input No. : @n 1) data from the linked list @n
+ *  doesn't. @n
+ *  Compare function input No. : @n
+ *  1) data from the linked list @n
  *  2) key @n
  *
- * @param list          linked list to search
- * @param key           key to compare the data with
- * @param comp_func     function to compare data and key
+ * @param[in]  list         linked list to search
+ * @param[in]  key          key to compare the data with
+ * @param[out] idx          variable to store index found
+ * @param[in]  comp_func    function to compare data and key
  *
  * @return Index of node conatining the data, -1 if node with the given data
  * doesn't exist.
  */
-extern int LListFindIdx(struct LList *list, const void *key,
-                        int (*comp_func)(const void *, const void *));
+extern bool LListFindIdx(struct LList *list, const void *key, size_t *idx,
+                         int (*comp_func)(const void *, const void *));
 
 /**
  * @brief
@@ -237,27 +249,31 @@ extern int LListFindIdx(struct LList *list, const void *key,
  *
  * @note
  *  The compare function must return 0 when keys match, and not 0 when it
- * doesn't. @n Compare function input No. : @n 1) data from the linked list @n
+ *  doesn't. @n
+ *  Compare function input No. : @n
+ *  1) data from the linked list @n
  *  2) key @n
  *  Highly advised to free the dynamic array after use.
  *
- * @param list          linked list to search
- * @param key           key to compare the data with
- * @param idx_arr       dynamic array to store the indicies
- * @param comp_func     function to compare data and key
+ * @param[in]  list         linked list to search
+ * @param[in]  key          key to compare the data with
+ * @param[out] idx_arr      dynamic array to store the indicies
+ * @param[out] count        number of found indices
+ * @param[in]  comp_func    function to compare data and key
  *
  * @return Number of indices, -1 if memory allocation failed.
  */
-extern int LListFindAllIdx(struct LList *list, const void *key, int **idx_arr,
-                           int (*comp_func)(const void *, const void *));
+extern bool LListFindAllIdx(struct LList *list, const void *key, int **idx_arr,
+                            size_t *count,
+                            int (*comp_func)(const void *, const void *));
 
 /**
  * @brief
  *  Traverses through a linked list head to tail and preforms a given function
  * on all its data.
  *
- * @param list  linked list to traverse
- * @param func  function to preform on data
+ * @param[in,out] list  linked list to traverse
+ * @param[in]     func  function to preform on data
  */
 extern void LListTraverse(struct LList *list, void (*func)(void *));
 
@@ -269,21 +285,21 @@ extern void LListTraverse(struct LList *list, void (*func)(void *));
  *  Only works if all data (not the data pointers) in the linked list have
  * uniform size.
  *
- * @param list          linked list to copy from
- * @param arr           array to store copied data
- * @param len           array length
- * @param item_size     array element size
+ * @param[in]  list         linked list to copy from
+ * @param[out] arr          array to store copied data
+ * @param[in]  len          array length
+ * @param[in]  item_size    array element size
  */
-extern void LListToArr(struct LList *list, void *arr, int len,
+extern void LListToArr(struct LList *list, void *arr, size_t len,
                        size_t item_size);
 
 /**
  * @brief
  *  Copies the pointers to data from a linked list to an array.
  *
- * @param list  linked list to copy from
- * @param arr   array to store copied pointers
- * @param len   array length
+ * @param[in]  list     linked list to copy from
+ * @param[out] arr      array to store copied pointers
+ * @param[in]  len      array length
  */
-extern void LListToPointerArr(struct LList *list, void **arr, int len);
+extern void LListToPointerArr(struct LList *list, void **arr, size_t len);
 #endif

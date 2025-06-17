@@ -16,8 +16,8 @@
 #include <stdbool.h>
 
 // redefining for more clarity
-typedef struct DLListNode LListDigraphNode;
-typedef struct DLList LListDigraph;
+typedef struct DLListNode LListDigraphNode_t;
+typedef struct DLList LListDigraph_t;
 
 /**
  * @brief
@@ -26,72 +26,88 @@ typedef struct DLList LListDigraph;
  * @return Pointer to the new linked list digraph. NULL if memory allocation
  * failed.
  */
-extern LListDigraph *LListDigraphCreate();
+extern LListDigraph_t *LListDigraphCreate();
 
 /**
  * @brief
- *  Deletes a linked list node and frees it's data if given a function to do so.
+ *  Deletes a linked list digraph and frees it's data if given a function to do
+ *  so.
  *
- * @param graph         linked list digraph to delete
- * @param free_data     function to free data, NULL if not needed
+ * @param[in,out] p_graph       linked list digraph to delete
+ * @param[in]     free_data     function to free data, NULL if not needed
  */
-extern void LListDigraphClear(LListDigraph **graph, void (*free_data)(void *));
+extern void LListDigraphClear(LListDigraph_t **p_graph,
+                              void (*free_data)(void *));
 
 /**
  * @brief
  *  Adds a new vertex to a linked list digraph.
  *
- * @param graph     linked list digraph to add to
- * @param data      data of the new vertex
+ * @param[in,out] graph     linked list digraph to add to
+ * @param[in]     data      data of the new vertex
  *
  * @return Pointer to the list node with the vertex. NULL if memory allocation
  * failed.
  */
-extern LListDigraphNode *LListDigraphAdd(LListDigraph *graph, void *data);
+extern LListDigraphNode_t *LListDigraphAdd(LListDigraph_t *graph, void *data);
 
 /**
  * @brief
  *  Removes a vertex from a linked list digraph.
  *
- * @param graph         linked list digraph to remove from
- * @param vertex_node   node containg the vertex to remove
- * @param free_data     function to free data, NULL if not needed
+ * @param[in,out] graph         linked list digraph to remove from
+ * @param[in]     vert_node     node containg the vertex to remove
+ * @param[in]     free_data     function to free data, NULL if not needed
  *
  * @return
  *  true  : removal successful @n
  *  false : node pointer is NULL @n
  */
-extern bool LListDigraphRemove(LListDigraph *graph,
-                               LListDigraphNode *vertex_node,
+extern bool LListDigraphRemove(LListDigraph_t *graph,
+                               LListDigraphNode_t *vert_node,
                                void (*free_data)(void *));
 
 /**
  * @brief
  *  Creates an directional edge from the first vertex to the second.
  *
- * @param start     vertex the edge starts at
- * @param end       vertex the edge ends at
+ * @param[in,out] start     node of vertex the edge starts at
+ * @param[in,out] end       node of vertex the edge ends at
  *
  * @return
- *  true  : connected successful @n
+ *  true  : connection successful @n
  *  false : memory allocation failed @n
  */
-extern bool LListDigraphConnect(struct DigraphVert *start,
-                                struct DigraphVert *end);
+extern bool LListDigraphConnect(LListDigraphNode_t *start,
+                                LListDigraphNode_t *end);
 
 /**
  * @brief
  *  Removes a directional edge from the first vertex to the second.
  *
- * @param start     vertex the edge starts at
- * @param end       vertex the edge ends at
+ * @param[in,out] start     node of vertex the edge starts at
+ * @param[in,out] end       node of vertex the edge ends at
  *
  * @return
- *  true  : removal successful @n
+ *  true  : disconnection successful @n
  *  false : no edge found @n
  */
-extern bool LListDigraphDisconnect(struct DigraphVert *start,
-                                   struct DigraphVert *end);
+extern bool LListDigraphDisconnect(LListDigraphNode_t *start,
+                                   LListDigraphNode_t *end);
+
+/**
+ * @brief
+ *  Checks if an edge from the first vertex to the second exists or not.
+ *
+ * @param[in,out] start     node of vertex the edge starts at
+ * @param[in,out] end       node of vertex the edge ends at
+ *
+ * @return
+ *  true  : an edge exist @n
+ *  false : an edge doesn't exit @n
+ */
+extern bool LListDigraphIsConnected(LListDigraphNode_t *start,
+                                    LListDigraphNode_t *end);
 
 /**
  * @brief
@@ -104,59 +120,46 @@ extern bool LListDigraphDisconnect(struct DigraphVert *start,
  *  1) data from the doubly linked list @n
  *  2) key @n
  *
- * @param graph         linked list digraph to search
- * @param key           key to compare the vertex's data with
- * @param comp_func     function to compare vertex's data and key
+ * @param[in,out] graph         linked list digraph to search
+ * @param[in]     key           key to compare the vertex's data with
+ * @param[in]     comp_func     function to compare vertex's data and key
  *
  * @return Pointer to the node with the vertex search for. NULL if not found.
  */
-extern LListDigraphNode *
-LListDigraphFindNode(LListDigraph *graph, const void *key,
-                     int (*comp_func)(const void *, const void *));
-
-/**
- * @brief
- *  Checks if an edge from the first vertex to the second exists or not.
- *
- * @param start     vertex the edge starts at
- * @param end       vertex the edge ends at
- *
- * @return
- *  true  : an edge exist @n
- *  false : an edge doesn't exit @n
- */
-extern bool LListDigraphIsConnected(struct DigraphVert *start,
-                                    struct DigraphVert *end);
+extern LListDigraphNode_t *
+LListDigraphFind(LListDigraph_t *graph, const void *key,
+                 int (*comp_func)(const void *, const void *));
 
 /**
  * @brief
  *  Traverses the entire list of vertices in a linked list digraph
  *  and preforms a function on the vertices' data
  *
- * @param graph     linked list digraph to traverse
- * @param func      function to execute
+ * @param[in,out] graph     linked list digraph to traverse
+ * @param[in]     func      function to execute
  */
-extern void LListDigraphTraverseAll(LListDigraph *graph, void (*func)(void *));
+extern void LListDigraphTraverseAll(LListDigraph_t *graph,
+                                    void (*func)(void *));
 
 /**
  * @brief
  *  Performs a given function on the data of all the vertices adjacent to the
  *  one passed.
  *
- * @param vertex    vertex with the adjacency list
- * @param func      function to execute
+ * @param[in,out] vert_node     node of vertex with the adjacency list
+ * @param[in]     func          function to execute
  */
-extern void LListDigraphTraverseAdj(struct DigraphVert *vertex,
+extern void LListDigraphTraverseAdj(LListDigraphNode_t *vert_node,
                                     void (*func)(void *));
 
 /**
  * @brief
  *  Sets the state of all the vertices adjacent to the one passed.
  *
- * @param vertex    vertex with the adjacency list
- * @param state     state to set to
+ * @param[in,out] vert_node    node of vertex with the adjacency list
+ * @param[in]     state     state to set to
  */
-extern void LListDigraphSetAdjState(struct DigraphVert *vertex,
+extern void LListDigraphSetAdjState(LListDigraphNode_t *vert_node,
                                     unsigned char state);
 
 /**
@@ -164,14 +167,15 @@ extern void LListDigraphSetAdjState(struct DigraphVert *vertex,
  *  Traverses breath first from the given vertex a specified amount of levels
  *  and performs a function on the data of the every vertex encountered.
  *
- * @param vertex    vertex to start at
- * @param max_lvl   further level to traverse; -1 for unbound traversal
- * @param func      function to execute
+ * @param[in,out] vert_node     node of vertex to start at
+ * @param[in]     max_lvl       further level to traverse; -1 for unbound
+ * traversal
+ * @param[in]     func          function to execute
  *
  * @return
- *  true  : traversed successful @n
+ *  true  : traversal successful @n
  *  false : memory allocation failed @n
  */
-extern bool LListDigraphBreathTraverse(struct DigraphVert *vertex, int max_lvl,
-                                       void (*func)(void *));
+extern bool LListDigraphBreathTraverse(LListDigraphNode_t *vert_node,
+                                       int max_lvl, void (*func)(void *));
 #endif

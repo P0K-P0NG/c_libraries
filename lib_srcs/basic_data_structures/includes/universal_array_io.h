@@ -13,13 +13,14 @@
 
 #include "result_struct.h"
 #include "universal_array.h"
+#include <stdbool.h>
 #include <stdio.h>
 
-extern int ArrayReadBinary(struct Array *arr, FILE *file_src);
+extern bool ArrayReadBinary(struct Array **p_arr, FILE *file_src);
 
-extern int ArrayWriteBinary(struct Array arr, FILE *file_dest);
+extern bool ArrayWriteBinary(struct Array *arr, FILE *file_dest);
 
-extern int ArrayWrite(struct Array arr, char type[TYPE_LEN], char *delim,
-                      FILE *file_dest);
+extern bool ArrayWrite(struct Array *arr, char type[TYPE_LEN], char *delim,
+                       FILE *file_dest);
 
 #endif

@@ -13,9 +13,9 @@
  */
 #include "robinhood_hashtable.h"
 #include "swap_funcs.h"
+#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
-#include <assert.h>
 
 static void _addBucket(struct RobinHTBucket **buckets,
                        struct RobinHTBucket *new_bucket, size_t i,
@@ -85,7 +85,7 @@ int RobinHashTableAdd(struct RobinHashTable *table, void *key, void *data)
     }
     new_bucket->data = data;
     new_bucket->key = key;
-    size_t i =  table->hash(key) % table->count.max;
+    size_t i = table->hash(key) % table->count.max;
     _addBucket(table->buckets, new_bucket, i, table->count.max);
     table->count.used += 1;
     return 1;
@@ -99,9 +99,9 @@ void *RobinHashTableRemove(struct RobinHashTable *table, void *key,
     void *data = NULL;
     int found = 0;
     size_t curr_psl = 0;
-    size_t i =  table->hash(key) % table->count.max;
+    size_t i = table->hash(key) % table->count.max;
     while (table->buckets[i] != NULL && curr_psl <= table->buckets[i]->psl) {
-        if ( table->comp_key(table->buckets[i]->key, key) == 0) {
+        if (table->comp_key(table->buckets[i]->key, key) == 0) {
             data = table->buckets[i]->data;
             if (free_key != NULL) {
                 free_key(table->buckets[i]->key);
@@ -133,9 +133,9 @@ void *RobinHashTableFind(struct RobinHashTable *table, void *key)
 
     void *data = NULL;
     size_t curr_psl = 0;
-    size_t i =  table->hash(key) % table->count.max;
+    size_t i = table->hash(key) % table->count.max;
     while (table->buckets[i] != NULL && curr_psl <= table->buckets[i]->psl) {
-        if ( table->comp_key(table->buckets[i]->key, key) == 0) {
+        if (table->comp_key(table->buckets[i]->key, key) == 0) {
             data = table->buckets[i]->data;
             break;
         }
@@ -148,7 +148,7 @@ void *RobinHashTableFind(struct RobinHashTable *table, void *key)
 int RobinHashTableRehash(struct RobinHashTable *table, size_t new_count)
 {
     assert(table != NULL);
-    
+
     float max_load = table->max_load;
     if (max_load == 0) {
         max_load = 1;
@@ -165,7 +165,7 @@ int RobinHashTableRehash(struct RobinHashTable *table, size_t new_count)
     for (size_t i = 0;
          i < table->count.max && rehash_count <= table->count.used; i++) {
         if (table->buckets[i] != NULL) {
-            size_t new_i =  table->hash(table->buckets[i]->key) % new_count;
+            size_t new_i = table->hash(table->buckets[i]->key) % new_count;
             _addBucket(new_buckets, table->buckets[i], new_i, new_count);
             rehash_count++;
         }

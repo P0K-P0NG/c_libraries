@@ -35,8 +35,8 @@ extern struct LListQueue *LListQueueCreate();
  * @brief
  *  Enqueues new data to a linked list queue
  *
- * @param queue     linked list queue to enqueue to
- * @param data      new data
+ * @param[in,out] queue     linked list queue to enqueue to
+ * @param[in]     data      new data
  *
  * @return
  *   true  : enqueued successfully @n
@@ -48,7 +48,7 @@ extern bool LListQueueEnqueue(struct LListQueue *queue, void *data);
  * @brief
  *  Dequeues data from a linked list queue
  *
- * @param queue     linked list queue to dequeue
+ * @param[in,out] queue     linked list queue to dequeue
  *
  * @return Pointer to the dequeued data, NULL if the queue is empty.
  */
@@ -58,9 +58,9 @@ extern void *LListQueueDequeue(struct LListQueue *queue);
  * @brief
  *  Deletes a linked list queue and frees its data if given a function to do so.
  *
- * @param queue         linked list queue to delete
- * @param free_data     function to free data, NULL if not needed
+ * @param[in,out] p_queue       linked list queue to delete
+ * @param[in]     free_data     function to free data, NULL if not needed
  */
-extern void LListQueueClear(struct LListQueue **queue,
+extern void LListQueueClear(struct LListQueue **p_queue,
                             void (*free_data)(void *));
 #endif

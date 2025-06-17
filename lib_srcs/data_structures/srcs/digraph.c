@@ -15,6 +15,7 @@
 #include "comp_funcs.h"
 #include "doubly_linked_list.h"
 #include "linked_list_queue.h"
+#include <assert.h>
 #include <stdlib.h>
 
 /**
@@ -41,9 +42,9 @@ struct DigraphVert *DigraphInitVert(void *data)
 
 bool DigraphRemoveVert(struct DigraphVert **p_vert, void (*free_data)(void *))
 {
-    if (p_vert == NULL) {
-        return false;
-    }
+    assert(p_vert != NULL);
+    assert(*p_vert != NULL);
+
     if (free_data != NULL) {
         free_data((*p_vert)->data);
     }
@@ -65,6 +66,9 @@ bool DigraphRemoveVert(struct DigraphVert **p_vert, void (*free_data)(void *))
 
 bool DigraphConnect(struct DigraphVert *start, struct DigraphVert *end)
 {
+    assert(start != NULL);
+    assert(end != NULL);
+
     struct DLListNode *end_ref = DLListAddHead(&start->adj_list, end);
     if (end_ref == NULL) {
         return false;
@@ -79,6 +83,9 @@ bool DigraphConnect(struct DigraphVert *start, struct DigraphVert *end)
 
 bool DigraphDisconnect(struct DigraphVert *start, struct DigraphVert *end)
 {
+    assert(start != NULL);
+    assert(end != NULL);
+
     struct DLListNode *connection = DLListFind(&start->adj_list, end, compPtr);
     struct DLListNode *reference = DLListFind(&end->ref_list, start, compPtr);
     if (connection == NULL || reference == NULL) {
@@ -91,6 +98,9 @@ bool DigraphDisconnect(struct DigraphVert *start, struct DigraphVert *end)
 
 bool DigraphIsConnected(struct DigraphVert *start, struct DigraphVert *end)
 {
+    assert(start != NULL);
+    assert(end != NULL);
+
     struct DLListNode *connection = DLListFind(&start->adj_list, end, compPtr);
     if (connection == NULL) {
         return false;
@@ -100,6 +110,9 @@ bool DigraphIsConnected(struct DigraphVert *start, struct DigraphVert *end)
 
 void DigraphTraverseAdj(struct DigraphVert *vert, void (*func)(void *))
 {
+    assert(vert != NULL);
+    assert(func != NULL);
+
     struct DLListNode *curr_node = vert->adj_list.head;
     while (curr_node != NULL) {
         func(((struct DigraphVert *)curr_node->data)->data);
@@ -110,6 +123,9 @@ void DigraphTraverseAdj(struct DigraphVert *vert, void (*func)(void *))
 bool DigraphBreathTraverse(struct DigraphVert *start, int max_lvl,
                            void (*func)(void *))
 {
+    assert(start != NULL);
+    assert(func != NULL);
+
     int curr_lvl = 0;
     if (max_lvl < 0) {
         curr_lvl = max_lvl;

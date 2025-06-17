@@ -1,17 +1,17 @@
 /**
- * @file bin_tree.c
+ * @file binary_tree.c
  *
  * @brief
  *  Structs and functions for binary tree structures
  *
  * @implements
- *  bin_tree.h
+ *  binary_tree.h
  *
  * @author Pokpong
  * @version 0.1
  * @date 2023-04-23
  */
-#include "bin_tree.h"
+#include "binary_tree.h"
 #include <assert.h>
 #include <stdlib.h>
 

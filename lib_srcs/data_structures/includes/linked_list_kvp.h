@@ -23,7 +23,7 @@ struct LListKVPNode {          // node in a key-value pair linked list
 struct LListKVP {
     struct LListKVPNode *head; // head node
     struct LListKVPNode *tail; // tail node
-    int count;
+    size_t count;
     /**
      *  The compare function must operate as follows: @n
      *  1) Returns int < 0 if key_1 should come before key_2 @n
@@ -41,8 +41,8 @@ struct LListKVP {
  *  1) Returns int < 0 if key_1 should come before key_2 @n
  *  2) Returns int >= 0 if key_1 should come after key_2 @n
  *
- * @param comp_key  function to compare the keys
- * 
+ * @param[in] comp_key  function to compare the keys
+ *
  * @return Pointer to new key-value pair linked list, NULL if memory allocation
  * is unsuccessful.
  */
@@ -54,11 +54,11 @@ extern struct LListKVP *LListKVPCreate(int (*comp_key)(const void *,
  *  Deletes a key-value pair linked list and it's data if a function for
  * freeing it is given.
  *
- * @param list          key-value pair linked list to delete
- * @param free_key      function to free keys, NULL if not needed
- * @param free_data     function to free data, NULL if not needed
+ * @param[in,out] p_list        key-value pair linked list to delete
+ * @param[in]     free_key      function to free keys, NULL if not needed
+ * @param[in]     free_data     function to free data, NULL if not needed
  */
-extern void LListKVPClear(struct LListKVP **list, void (*free_key)(void *),
+extern void LListKVPClear(struct LListKVP **p_list, void (*free_key)(void *),
                           void (*free_data)(void *));
 
 /**
@@ -66,13 +66,13 @@ extern void LListKVPClear(struct LListKVP **list, void (*free_key)(void *),
  *  Deletes the first node in a key-value pair linked list and it's data if
  * a function for freeing it is given.
  *
- * @param list          key-value pair linked list to remove from
- * @param free_key      function to free keys, NULL if not needed
- * @param free_data     function to free data, NULL if not needed
+ * @param[in,out] list          key-value pair linked list to remove from
+ * @param[in]     free_key      function to free keys, NULL if not needed
+ * @param[in]     free_data     function to free data, NULL if not needed
  *
  * @return
  *  true  : removal successful @n
- *  false : key-value pair linked list is empty @n
+ *  false : list is empty @n
  */
 extern bool LListKVPRemoveHead(struct LListKVP *list, void (*free_key)(void *),
                                void (*free_data)(void *));
@@ -81,10 +81,10 @@ extern bool LListKVPRemoveHead(struct LListKVP *list, void (*free_key)(void *),
  * @brief
  *  Deletes a node in a key-value pair linked list with the matching key.
  *
- * @param list          key-value pair linked list to remove from
- * @param key           key of the node to delete
- * @param free_key      function to free keys, NULL if not needed
- * @param free_data     function to free data, NULL if not needed
+ * @param[in,out] list          key-value pair linked list to remove from
+ * @param[in]     key           key of the node to delete
+ * @param[in]     free_key      function to free keys, NULL if not needed
+ * @param[in]     free_data     function to free data, NULL if not needed
  *
  * @return Pointer the data of the removed node, NULL if not found.
  */
@@ -96,9 +96,9 @@ extern void *LListKVPRemove(struct LListKVP *list, void *key,
  *  Deletes all nodes of key-value pair linked list (but not the list
  *  itself) and it's keys and data if a function for freeing it is given.
  *
- * @param list          key-value pair linked list to remove from
- * @param free_key      function to free keys, NULL if not needed
- * @param free_data     function to free data, NULL if not needed
+ * @param[in,out] list          key-value pair linked list to remove from
+ * @param[in]     free_key      function to free keys, NULL if not needed
+ * @param[in]     free_data     function to free data, NULL if not needed
  */
 extern void LListKVPRemoveAll(struct LListKVP *list, void (*free_key)(void *),
                               void (*free_data)(void *));
@@ -107,9 +107,9 @@ extern void LListKVPRemoveAll(struct LListKVP *list, void (*free_key)(void *),
  * @brief
  *  Adds a node to start of a key-value pair linked list.
  *
- * @param list  key-value pair linked list add to
- * @param key   key of the new node
- * @param data  data of the new node
+ * @param[in,out] list  key-value pair linked list add to
+ * @param[in]     key   key of the new node
+ * @param[in]     data  data of the new node
  *
  * @return
  *  true  : node added successfully @n
@@ -121,9 +121,9 @@ extern bool LListKVPAddHead(struct LListKVP *list, void *key, void *data);
  * @brief
  *  Adds a node to end of a key-value pair linked list.
  *
- * @param list  key-value pair linked list add to
- * @param key   key of the new node
- * @param data  data of the new node
+ * @param[in,out] list  key-value pair linked list add to
+ * @param[in]     key   key of the new node
+ * @param[in]     data  data of the new node
  *
  * @return
  *  true  : node added successfully @n
@@ -136,9 +136,9 @@ extern bool LListKVPAddTail(struct LListKVP *list, void *key, void *data);
  *  Adds a node to a key-value pair linked list at the position determined
  *  by the compare funtion.
  *
- * @param list      key-value pair linked list to add to
- * @param key       key of the new node
- * @param data      data of the new node
+ * @param[in,out] list  key-value pair linked list to add to
+ * @param[in]     key   key of the new node
+ * @param[in]     data  data of the new node
  *
  * @return
  *  true  : added successfully @n
@@ -151,8 +151,8 @@ extern bool LListKVPAdd(struct LListKVP *list, void *key, void *data);
  *  Gets the data of first instance of a matching key in a key-value pair
  *  linked list.
  *
- * @param list          key-value pair linked list to search
- * @param key           key of the data to find
+ * @param[in] list  key-value pair linked list to search
+ * @param[in] key   key of the data to find
  *
  * @return Pointer to the data, NULL if data is not found
  */
@@ -163,34 +163,37 @@ extern void *LListKVPFind(struct LListKVP *list, const void *key);
  *  Gets all the data with the matching key in a key-value pair linked list,
  *  and stores it in a dynamic array.
  *
- * @param list          key-value pair linked list to search
- * @param key           key of the data to find
- * @param data_arr      dynamic array to store the data
+ * @param[in]  list         key-value pair linked list to search
+ * @param[in]  key          key of the data to find
+ * @param[out] ptr_arr      dynamic array to store the data
+ * @param[out] count        variable to store the number of pairs found
  *
- * @return Number of data chunks, -1 if memory allocation failed.
+ * @return
+ *  true  : execution successful @n
+ *  false : memory allocation failed @n
  */
-extern int LListKVPFindAll(struct LListKVP *list, const void *key,
-                           void ***data_arr);
+extern bool LListKVPFindAll(struct LListKVP *list, const void *key,
+                            void ***ptr_arr, size_t *count);
 
 /**
  * @brief
  *  Counts the number of times a given key is matched in a key-value pair
  * linked list.
  *
- * @param list          key-value pair linked list to search
- * @param key           key to match
+ * @param[in] list  key-value pair linked list to search
+ * @param[in] key   key to match
  *
  * @return The numebr of times the provided key is matched.
  */
-extern int LListKVPCountRepeats(struct LListKVP *list, const void *key);
+extern size_t LListKVPCountRepeats(struct LListKVP *list, const void *key);
 
 /**
  * @brief
  *  Traverses through a key-value pair linked list head to tail and preforms
  * a given function on all its data.
  *
- * @param list  key-value pair linked list to traverse
- * @param func  function to preform on key and data, in this order
+ * @param[in,out] list  key-value pair linked list to traverse
+ * @param[in]     func  function to preform on key and data, in this order
  */
 extern void LListKVPTraverse(struct LListKVP *list,
                              void (*func)(void *, void *));
@@ -203,12 +206,12 @@ extern void LListKVPTraverse(struct LListKVP *list,
  *  Only works if all data (not the data pointers) in the key-value pair
  * linked list have uniform size.
  *
- * @param list          key-value pair linked list to copy from
- * @param arr           array to store copied data
- * @param len           array length
- * @param item_size     array element size
+ * @param[in]  list         key-value pair linked list to copy from
+ * @param[out] arr          array to store copied data
+ * @param[in]  len          array length
+ * @param[in]  item_size    array element size
  */
-extern void LListKVPToArr(struct LListKVP *list, void *arr, int len,
+extern void LListKVPToArr(struct LListKVP *list, void *arr, size_t len,
                           size_t item_size);
 
 /**
@@ -216,9 +219,9 @@ extern void LListKVPToArr(struct LListKVP *list, void *arr, int len,
  *  Copies the pointers to data from a key-value pair linked list to an
  * array.
  *
- * @param list  key-value pair linked list to copy from
- * @param arr   array to store copied pointers
- * @param len   array length
+ * @param[in]  list     key-value pair linked list to copy from
+ * @param[out] arr      array to store copied pointers
+ * @param[in]  len      array length
  */
-extern void LListKVPToPointerArr(struct LListKVP *list, void **arr, int len);
+extern void LListKVPToPointerArr(struct LListKVP *list, void **arr, size_t len);
 #endif

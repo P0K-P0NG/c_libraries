@@ -23,7 +23,7 @@ static bool _test_isStrAlpha()
            {"AdqwdfY", 3, true}, {"ad sb", 3, false},
            {"17689", -1, false}, {" 8", 1, false},
            {"0", -1, false},     {"scfa34d678f", 5, false}};
-           
+
     size_t test_count = sizeof(test_cases) / sizeof(struct _TestCase);
 
     printf("BEGIN %s\n", __func__);
@@ -139,26 +139,36 @@ static bool _test_isStrFloat()
         size_t input2;
         bool ans;
     };
-    struct _TestCase test_cases[] = {
-        {"acbcie", 0, true},      {"A", 0, true},       {" d", 0, true},
-        {"d", 0, true},           {"AdqwdfY", 0, true}, {"ad sb", 0, true},
-        {"17689", 5, true},       {" 8", 0, true},      {"0", 1, true},
-        {"scfa34d678f", 0, true}, {"-10", 3, true},     {"- 10", 0, true},
-        {"01", 0, true},          {"-0", 2, true},      {"-14a", 3, true},
-        {"oo-10", 0, true},       {"oo10", 0, true},    {"--0", 0, true},
-        {"1.03", 4, true},        {"0.0023", 6, true},  {"-108.028", 8, true},
-        {"oo1.0", 0, true},       {"1.a03", 1, true},   {"1.03a", 3, true},
-        {"--0.0023", 0, true},    {".028", 0, true},    {"-.028", 0, true},
+    struct _TestCase test_cases[]
+        = {{"acbcie", 0, true},    {"A", 0, true},
+           {" d", 0, true},        {"d", 0, true},
+           {"AdqwdfY", 0, true},   {"ad sb", 0, true},
+           {"17689", 5, true},     {" 8", 0, true},
+           {"0", 1, true},         {"scfa34d678f", 0, true},
+           {"-10", 3, true},       {"- 10", 0, true},
+           {"01", 0, true},        {"-0", 2, true},
+           {"-14a", 3, true},      {"oo-10", 0, true},
+           {"oo10", 0, true},      {"--0", 0, true},
+           {"1.03", 4, true},      {"0.0023", 6, true},
+           {"-108.028", 8, true},  {"oo1.0", 0, true},
+           {"1.a03", 1, true},     {"1.03a", 3, true},
+           {"--0.0023", 0, true},  {".028", 0, true},
+           {"-.028", 0, true},
 
-        {"acbcie", -1, false},      {"A", -1, false},       {" d", -1, false},
-        {"d", -1, false},           {"AdqwdfY", -1, false}, {"ad sb", -1, false},
-        {"17689", -1, true},       {" 8", -1, false},      {"0", -1, true},
-        {"scfa34d678f", -1, false}, {"-10", -1, true},     {"- 10", -1, false},
-        {"01", -1, false},          {"-0", -1, true},      {"-14a", -1, false},
-        {"oo-10", -1, false},       {"oo10", -1, false},    {"--0", -1, false},
-        {"1.03", -1, true},        {"0.0023", 3, true},  {"-108.028", -1, true},
-        {"oo1.0", -1, false},       {"1.a03", 2, false},   {"1.03a", -1, false},
-        {"--0.0023", 1, false},    {".028", -1, false},    {"-.028", -1, false}};
+           {"acbcie", -1, false},  {"A", -1, false},
+           {" d", -1, false},      {"d", -1, false},
+           {"AdqwdfY", -1, false}, {"ad sb", -1, false},
+           {"17689", -1, true},    {" 8", -1, false},
+           {"0", -1, true},        {"scfa34d678f", -1, false},
+           {"-10", -1, true},      {"- 10", -1, false},
+           {"01", -1, false},      {"-0", -1, true},
+           {"-14a", -1, false},    {"oo-10", -1, false},
+           {"oo10", -1, false},    {"--0", -1, false},
+           {"1.03", -1, true},     {"0.0023", 3, true},
+           {"-108.028", -1, true}, {"oo1.0", -1, false},
+           {"1.a03", 2, false},    {"1.03a", -1, false},
+           {"--0.0023", 1, false}, {".028", -1, false},
+           {"-.028", -1, false}};
 
     size_t test_count = sizeof(test_cases) / sizeof(struct _TestCase);
 

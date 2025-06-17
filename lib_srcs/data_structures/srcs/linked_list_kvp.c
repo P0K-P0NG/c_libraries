@@ -25,10 +25,13 @@ struct LListKVP *LListKVPCreate(int (*comp_key)(const void *, const void *))
     return new_list;
 }
 
-void LListKVPClear(struct LListKVP **list, void (*free_key)(void *),
+void LListKVPClear(struct LListKVP **p_list, void (*free_key)(void *),
                    void (*free_data)(void *))
 {
-    struct LListKVPNode *curr = (*list)->head;
+    assert(p_list != NULL);
+    assert(*p_list != NULL);
+
+    struct LListKVPNode *curr = (*p_list)->head;
     while (curr != NULL) {
         struct LListKVPNode *prev = curr;
         curr = curr->next;
@@ -40,13 +43,15 @@ void LListKVPClear(struct LListKVP **list, void (*free_key)(void *),
         }
         free(prev);
     }
-    free(*list);
-    *list = NULL;
+    free(*p_list);
+    *p_list = NULL;
 }
 
 bool LListKVPRemoveHead(struct LListKVP *list, void (*free_key)(void *),
                         void (*free_data)(void *))
 {
+    assert(list != NULL);
+
     if (list->count == 0) {
         return false;
     }
@@ -69,6 +74,8 @@ bool LListKVPRemoveHead(struct LListKVP *list, void (*free_key)(void *),
 
 void *LListKVPRemove(struct LListKVP *list, void *key, void (*free_key)(void *))
 {
+    assert(list != NULL);
+
     struct LListKVPNode *expired = list->head;
     struct LListKVPNode *prev = NULL;
     void *data;
@@ -100,6 +107,8 @@ void *LListKVPRemove(struct LListKVP *list, void *key, void (*free_key)(void *))
 void LListKVPRemoveAll(struct LListKVP *list, void (*free_key)(void *),
                        void (*free_data)(void *))
 {
+    assert(list != NULL);
+
     struct LListKVPNode *curr = list->head;
     while (curr != NULL) {
         struct LListKVPNode *prev = curr;
@@ -117,6 +126,8 @@ void LListKVPRemoveAll(struct LListKVP *list, void (*free_key)(void *),
 
 bool LListKVPAddHead(struct LListKVP *list, void *key, void *data)
 {
+    assert(list != NULL);
+
     struct LListKVPNode *new_head = calloc(1, sizeof(struct LListKVPNode));
     if (new_head == NULL) {
         return false;
@@ -135,6 +146,8 @@ bool LListKVPAddHead(struct LListKVP *list, void *key, void *data)
 
 bool LListKVPAddTail(struct LListKVP *list, void *key, void *data)
 {
+    assert(list != NULL);
+
     struct LListKVPNode *new_tail = calloc(1, sizeof(struct LListKVPNode));
     if (new_tail == NULL) {
         return false;
@@ -154,6 +167,8 @@ bool LListKVPAddTail(struct LListKVP *list, void *key, void *data)
 
 bool LListKVPAdd(struct LListKVP *list, void *key, void *data)
 {
+    assert(list != NULL);
+
     struct LListKVPNode *new_node = calloc(1, sizeof(struct LListKVPNode));
     if (new_node == NULL) {
         return false;
@@ -181,6 +196,8 @@ bool LListKVPAdd(struct LListKVP *list, void *key, void *data)
 
 void *LListKVPFind(struct LListKVP *list, const void *key)
 {
+    assert(list != NULL);
+
     struct LListKVPNode *curr = list->head;
     while (curr != NULL && list->comp_key(curr->key, key) != 0) {
         curr = curr->next;
@@ -188,33 +205,37 @@ void *LListKVPFind(struct LListKVP *list, const void *key)
     return curr->data;
 }
 
-int LListKVPFindAll(struct LListKVP *list, const void *key, void ***data_arr)
+bool LListKVPFindAll(struct LListKVP *list, const void *key, void ***ptr_arr,
+                     size_t *count)
 {
+    assert(list != NULL);
     struct LListKVP *data_list = LListKVPCreate(list->comp_key);
     if (data_list == NULL) {
-        return -1;
+        return false;
     }
     struct LListKVPNode *curr = list->head;
-    for (int i = 0; curr != NULL; i++) {
+    for (size_t i = 0; curr != NULL; i++) {
         if (list->comp_key(curr->key, key) == 0
             && LListKVPAddTail(data_list, NULL, curr->data) == 0) {
-            return -1;
+            return false;
         }
         curr = curr->next;
     }
-    int count = data_list->count;
-    *data_arr = malloc(count * sizeof(void *));
-    if (*data_arr == NULL) {
-        return -1;
+    *ptr_arr = malloc(data_list->count * sizeof(void *));
+    if (*ptr_arr == NULL) {
+        return false;
     }
-    LListKVPToPointerArr(data_list, *data_arr, count);
+    LListKVPToPointerArr(data_list, *ptr_arr, data_list->count);
     LListKVPClear(&data_list, NULL, NULL);
-    return count;
+    *count = data_list->count;
+    return true;
 }
 
-int LListKVPCountRepeats(struct LListKVP *list, const void *key)
+size_t LListKVPCountRepeats(struct LListKVP *list, const void *key)
 {
-    int count = 0;
+    assert(list != NULL);
+
+    size_t count = 0;
     struct LListKVPNode *curr = list->head;
     while (curr != NULL) {
         if (list->comp_key(curr->key, key) == 0) {
@@ -227,6 +248,8 @@ int LListKVPCountRepeats(struct LListKVP *list, const void *key)
 
 void LListKVPTraverse(struct LListKVP *list, void (*func)(void *, void *))
 {
+    assert(list != NULL);
+
     struct LListKVPNode *curr = list->head;
     while (curr != NULL) {
         func(curr->key, curr->data);
@@ -234,27 +257,34 @@ void LListKVPTraverse(struct LListKVP *list, void (*func)(void *, void *))
     }
 }
 
-void LListKVPToPointerArr(struct LListKVP *list, void **arr, int len)
+void LListKVPToPointerArr(struct LListKVP *list, void **arr, size_t len)
 {
-    int min_len = len;
+    assert(list != NULL);
+    assert(arr != NULL);
+
+    size_t min_len = len;
     if (min_len > list->count) {
         min_len = list->count;
     }
     struct LListKVPNode *curr = list->head;
-    for (int i = 0; i < min_len; i++) {
+    for (size_t i = 0; i < min_len; i++) {
         arr[i] = curr->data;
         curr = curr->next;
     }
 }
 
-void LListKVPToArr(struct LListKVP *list, void *arr, int len, size_t item_size)
+void LListKVPToArr(struct LListKVP *list, void *arr, size_t len,
+                   size_t item_size)
 {
-    int min_len = len;
+    assert(list != NULL);
+    assert(arr != NULL);
+
+    size_t min_len = len;
     if (min_len > list->count) {
         min_len = list->count;
     }
     struct LListKVPNode *curr = list->head;
-    for (int i = 0; i < min_len; i++) {
+    for (size_t i = 0; i < min_len; i++) {
         memcpy(arr + i * item_size, curr->data, item_size);
         curr = curr->next;
     }

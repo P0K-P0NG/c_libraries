@@ -255,11 +255,11 @@ static int _deepestNodesRec(struct LListTreeNode *node, int depth, int deepest,
     else if (depth > deepest) {
         deepest = depth;
         LListRemoveAll(node_list, NULL);
-        if (LListPush(node_list, node) == 0) {
+        if (LListAddHead(node_list, node) == false) {
             deepest = -1;
         }
     } else if (depth == deepest) {
-        if (LListPush(node_list, node) == 0) {
+        if (LListAddHead(node_list, node) == false) {
             deepest = -1;
         }
     }

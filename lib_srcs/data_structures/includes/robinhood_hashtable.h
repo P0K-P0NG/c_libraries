@@ -45,11 +45,11 @@ struct RobinHashTable {             // robinhood open address hastable
  *  1) Returns int < 0 if key_1 should come before key_2 @n
  *  2) Returns int >= 0 if key_1 should come after key_2 @n
  *
- * @param bucket_count      initial number of buckets
- * @param max_load_prop     load proportion to rehash at; 0-1;
+ * @param[in] bucket_count      initial number of buckets
+ * @param[in] max_load_prop     load proportion to rehash at; 0-1;
  *                          0 if no rehash wanted
- * @param hash_func         function to hash keys
- * @param comp_key          function to compare the keys
+ * @param[in] hash_func         function to hash keys
+ * @param[in] comp_key          function to compare the keys
  *
  * @return Pointer to the new hashtable, NULL if unable to allocate memory.
  */
@@ -63,11 +63,11 @@ RobinHashTableCreate(size_t bucket_count, float max_load_prop,
  *  Deletes a robinhood open address hashtable. and frees it's contents
  *  if provided with a function do so.
  *
- * @param table         hashtable to delete
+ * @param[in,out] p_table       hashtable to delete
  * @param free_data     function to free data; NULL if not needed
  * @param free_key      function to free keys; NULL if not needed
  */
-extern void RobinHashTableClear(struct RobinHashTable **table,
+extern void RobinHashTableClear(struct RobinHashTable **p_table,
                                 void (*free_data)(void *),
                                 void (*free_key)(void *));
 
@@ -77,9 +77,9 @@ extern void RobinHashTableClear(struct RobinHashTable **table,
  *  Rehashes if the max load limit has been reached by doubling the current
  *  number of buckets.
  *
- * @param table         hashtable to add to
- * @param key           key of the new item
- * @param data          data of the new item
+ * @param[in,out] table         hashtable to add to
+ * @param[in]     key           key of the new item
+ * @param[in]     data          data of the new item
  *
  * @return
  *  1 : added successfully @n
@@ -93,10 +93,10 @@ extern int RobinHashTableAdd(struct RobinHashTable *table, void *key,
  *  Removes a key-value pair from a robinhood open address hashtable
  *  and frees it's contents if provided with a function do so.
  *
- * @param table         hashtable to remove from
- * @param key           key of the item to remove=
- * @param free_data     function to free data; NULL if not needed
- * @param free_key      function to free keys; NULL if not needed
+ * @param[in,out] table         hashtable to remove from
+ * @param[in]     key           key of the item to remove=
+ * @param[in]     free_data     function to free data; NULL if not needed
+ * @param[in]     free_key      function to free keys; NULL if not needed
  *
  * @return Pointer the data of the removed item, NULL if not found.
  */
@@ -108,8 +108,8 @@ extern void *RobinHashTableRemove(struct RobinHashTable *table, void *key,
  * @brief
  *  Finds the data given the key in a robinhood open address hashtable.
  *
- * @param table         hashtable to search
- * @param key           key of the data
+ * @param[in] table         hashtable to search
+ * @param[in] key           key of the data
  *
  * @return Data corresponding to the key, NULL if not found.
  */
@@ -119,8 +119,8 @@ extern void *RobinHashTableFind(struct RobinHashTable *table, void *key);
  * @brief
  *  Rehashes a robinhood open address hashtable.
  *
- * @param table         hashtable to rehash
- * @param new_count     new number of buckets
+ * @param[in,out] table         hashtable to rehash
+ * @param[in]     new_count     new number of buckets
  *
  * @return
  *   1 : rehashed successfully @n

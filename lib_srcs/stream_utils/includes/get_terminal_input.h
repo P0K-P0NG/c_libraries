@@ -23,24 +23,24 @@
  * @note
  *  For strings only the first word is resgistered.
  *
- * @param max_len   max length of the input string
- * @param ptr       pointer to store to
- * @param prompt    input prompt
+ * @param[in] max_len   max length of the input string
+ * @param[out] ptr       pointer to store to
+ * @param[in] prompt    input prompt
  *
  * @return
  *   1 : successful @n
  *   0 : parsing unsuccessful @n
  *  -1 : no input or contains only the newline character @n
  */
-extern int getInput(const size_t max_len, struct Pointer ptr,
+extern int getInput(struct Pointer ptr, const size_t max_len,
                     const char prompt[]);
 
 /**
  * @brief
  *  Gets full string input from console/terminal.
  *
- * @param str       string to store to
- * @param prompt    input prompt
+ * @param[out] str       string to store to
+ * @param[in]  prompt    input prompt
  *
  * @return Pointer to the string unless it is emtpy, then NULL is returned.
  */
@@ -51,8 +51,8 @@ extern char *getFullStr(struct String str, const char prompt[]);
  *  Gets a string input from console/terminal and removes the trailing newline
  *  character.
  *
- * @param str       string to store to
- * @param prompt    input prompt
+ * @param[out] str       string to store to
+ * @param[in]  prompt    input prompt
  *
  * @return Pointer to the string unless it is emtpy, then NULL is returned.
  */

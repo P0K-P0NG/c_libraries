@@ -14,7 +14,6 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-
 typedef unsigned char byte_t;
 
 /**

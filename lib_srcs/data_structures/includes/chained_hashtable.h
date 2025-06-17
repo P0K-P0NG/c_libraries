@@ -29,9 +29,9 @@ struct ChainHashTable {
  *  1) Returns int < 0 if key_1 should come before key_2 @n
  *  2) Returns int >= 0 if key_1 should come after key_2 @n
  *
- * @param bucket_count  number of buckets
- * @param hash_func     function to hash keys
- * @param comp_key      function to compare the keys
+ * @param[in] bucket_count  number of buckets
+ * @param[in] hash_func     function to hash keys
+ * @param[in] comp_key      function to compare the keys
  *
  * @return New chained hashtable. NULL if unable to allocate memory.
  */
@@ -44,11 +44,11 @@ ChainHashTableCreate(size_t bucket_count, size_t (*hash_func)(const void *),
  *  Frees the entire chained hashtable and its data if given a function to free
  *  it.
  *
- * @param table         chained hashtable to free
- * @param free_key      function to free the keys, NULL if not needed
- * @param free_data     function to free the data, NULL if not needed
+ * @param[in,out] p_table       chained hashtable to free
+ * @param[in]     free_key      function to free the keys, NULL if not needed
+ * @param[in]     free_data     function to free the data, NULL if not needed
  */
-extern void ChainHashTableClear(struct ChainHashTable **table,
+extern void ChainHashTableClear(struct ChainHashTable **p_table,
                                 void (*free_key)(void *),
                                 void (*free_data)(void *));
 
@@ -57,9 +57,9 @@ extern void ChainHashTableClear(struct ChainHashTable **table,
  *  Adds a new key-value pair to a chained hash table, with the option to place
  *  it in a specific position in the bucket using a data compare function.
  *
- * @param table         chained hash table to add to
- * @param key           key of the new data
- * @param data          data to add
+ * @param[in,out] table     chained hash table to add to
+ * @param[in]     key       key of the new data
+ * @param[in]     data      data to add
  *
  * @return
  *   1 : added successfully @n
@@ -72,9 +72,9 @@ extern int ChainHashTableAdd(struct ChainHashTable *table, void *key,
  * @brief
  *  Removes an key-value pair from a chained hash table
  *
- * @param table         chained hash table to remove from
- * @param key           key of the data to remove
- * @param free_key      function to free the keys, NULL if not needed
+ * @param[in,out] table     chained hash table to remove from
+ * @param[in]     key       key of the data to remove
+ * @param[in]     free_key  function to free the keys, NULL if not needed
  *
  * @return Pointer to the removed data, NULL if not found.
  */
@@ -86,8 +86,8 @@ extern void *ChainHashTableRemove(struct ChainHashTable *table, void *key,
  *  Gets first instance data with a matching key in a specific bucket of a
  *  chained hashtable.
  *
- * @param table         chained hashtable to search
- * @param key           key of the data
+ * @param[in] table     chained hashtable to search
+ * @param[in] key       key of the data
  *
  * @return Pointer to the data, NULL if not found.
  */
@@ -98,22 +98,24 @@ extern void *ChainHashTableFind(struct ChainHashTable *table, const void *key);
  *  Gets all the data (in the form a dynamic pointer array) with a matching key
  *  in a chained hashtable.
  *
- * @param table         chained hashtable to search
- * @param key           key of the data
- * @param data_arr      dynamic pointer array to the data
+ * @param[in]  table        chained hashtable to search
+ * @param[in]  key          key of the data
+ * @param[out] ptr_arr      dynamic pointer array to the data
+ * @param[out] count        variable to store the number of matches
  *
  * @return
- *  Number of matching data found, -1 if memory allocation falied.
+ *  true  : execution successful @n
+ *  false : memory allocation failed @n
  */
-extern int ChainHashTableFindAll(struct ChainHashTable *table, const void *key,
-                                 void ***data_arr);
+extern bool ChainHashTableFindAll(struct ChainHashTable *table, const void *key,
+                                  void ***ptr_arr, size_t *count);
 
 /**
  * @brief
  *  Counts the number of times a given key is matched in a chained hashtable.
  *
- * @param table         chained hashtable to search
- * @param key           key of the data
+ * @param[in] table     chained hashtable to search
+ * @param[in] key       key of the data
  *
  * @return The numebr of times the provided key is matched.
  */
@@ -125,8 +127,8 @@ extern int ChainHashTableCountRepeats(struct ChainHashTable *table,
  *  Preforms a given function on all the keys and data (passed in this order) in
  *  the chained hashtable
  *
- * @param table     chained hashtable to traverse
- * @param func      function to execute
+ * @param[in,out] table     chained hashtable to traverse
+ * @param[in]     func      function to execute
  */
 extern void ChainHashTableTraverse(struct ChainHashTable *table,
                                    void (*func)(void *, void *));
@@ -136,8 +138,8 @@ extern void ChainHashTableTraverse(struct ChainHashTable *table,
  *  Gets the length of the bucket pointed to by the given key. Doesn't check
  *  whether the key is in  the bucket or not.
  *
- * @param table         chained hastable to check
- * @param key           key to search for
+ * @param[in] table     chained hastable to check
+ * @param[in] key       key to search for
  *
  * @return Length of the bucket.
  */

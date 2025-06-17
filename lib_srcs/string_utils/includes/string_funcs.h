@@ -50,11 +50,11 @@ extern size_t splitStr(char str[], char *substrs[], size_t count,
                        const char delim[]);
 
 /**
- * @brief 
- * 
- * @param str 
- * @param pattern 
- * @return size_t 
+ * @brief
+ *
+ * @param str
+ * @param pattern
+ * @return size_t
  */
 size_t removeRegexMatches(char str[], const char pattern[]);
 

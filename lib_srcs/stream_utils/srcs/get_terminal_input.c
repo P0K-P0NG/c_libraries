@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <string.h>
 
-int getInput(const size_t max_len, struct Pointer ptr, const char prompt[])
+int getInput(struct Pointer ptr, const size_t max_len, const char prompt[])
 {
     char str[max_len];
     printf("%s", prompt);

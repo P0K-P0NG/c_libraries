@@ -15,7 +15,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 char *joinStrs(char joined_str[], size_t max_len, char *str_list[],
                size_t count, const char delim[])
 {

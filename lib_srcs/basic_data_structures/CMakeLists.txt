@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project("generics")
+project("basic_data_structures")
 
 if (NOT CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     message(STATUS "This project has a top-level one called [${CMAKE_PROJECT_NAME}]")

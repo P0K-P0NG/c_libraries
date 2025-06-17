@@ -22,7 +22,7 @@ struct DLListNode {          // node in a doubly linked list
 struct DLList {
     struct DLListNode *head; // head node
     struct DLListNode *tail; // tail node
-    int count;
+    size_t count;
 };
 
 /**
@@ -39,34 +39,30 @@ extern struct DLList *DLListCreate();
  *  Deletes a doubly linked list and it's data if a function for freeing it is
  *  given.
  *
- * @param list          doubly linked list to delete
- * @param free_data     function to free data, NULL if not needed
+ * @param[in,out] p_list        doubly linked list to delete
+ * @param[in]     free_data     function to free data, NULL if not needed
  */
-extern void DLListClear(struct DLList **list, void (*free_data)(void *));
+extern void DLListClear(struct DLList **p_list, void (*free_data)(void *));
 
 /**
  * @brief
  *  Deletes a given node in a doubly linked list and it's data
  *  if a function for freeing it is given.
  *
- * @param list          doubly linked list to remove from
- * @param node          pointer to the node to delete
- * @param free_data     function to free data, NULL if not needed
- *
- * @return
- *  1 : removal successful @n
- *  0 : node pointer is NULL @n
+ * @param[in,out] list          doubly linked list to remove from
+ * @param[in]     node          pointer to the node to delete
+ * @param[in]     free_data     function to free data, NULL if not needed
  */
-extern int DLListRemove(struct DLList *list, struct DLListNode *node,
-                        void (*free_data)(void *));
+extern void DLListRemove(struct DLList *list, struct DLListNode *node,
+                         void (*free_data)(void *));
 
 /**
  * @brief
  *  Deletes all nodes of doubly linked list (but not the list itself) and it's
  *  data if a function for freeing it is given.
  *
- * @param list          doubly linked list to remove from
- * @param free_data     function to free data, NULL if not needed
+ * @param[in,out] list          doubly linked list to remove from
+ * @param[in]     free_data     function to free data, NULL if not needed
  */
 extern void DLListRemoveAll(struct DLList *list, void (*free_data)(void *));
 
@@ -74,8 +70,8 @@ extern void DLListRemoveAll(struct DLList *list, void (*free_data)(void *));
  * @brief
  *  Adds a node to start of a doubly linked list.
  *
- * @param list  doubly linked list to add to
- * @param data  data of the new node
+ * @param[in,out] list  doubly linked list to add to
+ * @param[in]     data  data of the new node
  *
  * @return Pointer to the new node, NULL if memory allocation failed.
  */
@@ -85,8 +81,8 @@ extern struct DLListNode *DLListAddHead(struct DLList *list, void *data);
  * @brief
  *  Adds a node to end of a doubly linked list.
  *
- * @param list  doubly linked list add to
- * @param data  data of the new node
+ * @param[in,out] list  doubly linked list to add to
+ * @param[in]     data  data of the new node
  *
  * @return Pointer to the new node, NULL if memory allocation failed.
  */
@@ -97,10 +93,10 @@ extern struct DLListNode *DLListAddTail(struct DLList *list, void *data);
  *  Adds a node at the postion of an already existing node in a doubly linked
  *  list. And pushes the old node back.
  *
- * @param list          doubly linked list to add to
- * @param curr_node     current node at the postion to add to; NULL to add as
- * new tail
- * @param data          data of the new node
+ * @param[in,out] list          doubly linked list to add to
+ * @param[in,out] curr_node     current node at the postion to add to; NULL to
+ *                              add as new tail
+ * @param[in]     data          data of the new node
  *
  * @return Pointer to the new node, NULL if memory allocation failed.
  */
@@ -117,9 +113,9 @@ extern struct DLListNode *DLListAddAt(struct DLList *list,
  *  1) Returns int < 0 if data_1 should come before data_2 @n
  *  2) Returns int >= 0 if data_1 should come after data_2 @n
  *
- * @param list          doubly linked list to add to
- * @param data          data of the new node
- * @param comp_func     function to compare data with
+ * @param[in,out] list          doubly linked list to add to
+ * @param[in]     data          data of the new node
+ * @param[in]     comp_func     function to compare data with
  *
  * @return Pointer to the new node, NULL if memory allocation failed.
  */
@@ -131,13 +127,13 @@ extern struct DLListNode *DLListAddByCompare(struct DLList *list, void *data,
  * @brief
  *  Gets the node at the given index in a doubly linked list.
  *
- * @param list  doubly linked list cointaing the node
- * @param idx   index to get data from
+ * @param[in] list  doubly linked list cointaing the node
+ * @param[in] idx   index to get data from
  *
  * @return Pointer to the node, NULL if node is not found or the index is
  * invalid.
  */
-extern struct DLListNode *DLListAt(struct DLList *list, int idx);
+extern struct DLListNode *DLListAt(struct DLList *list, size_t idx);
 
 /**
  * @brief
@@ -151,9 +147,9 @@ extern struct DLListNode *DLListAt(struct DLList *list, int idx);
  *  1) data from the doubly linked list @n
  *  2) key @n
  *
- * @param list          doubly linked list to search
- * @param key           key to compare the data with
- * @param comp_func     function to compare data and key
+ * @param[in] list          doubly linked list to search
+ * @param[in] key           key to compare the data with
+ * @param[in] comp_func     function to compare data and key
  *
  * @return Pointer to the data, NULL if data is not found
  */
@@ -166,8 +162,8 @@ extern struct DLListNode *DLListFind(struct DLList *list, const void *key,
  *  Traverses through a doubly linked list head to tail and preforms a given
  *  function on all its data.
  *
- * @param list  doubly linked list to traverse
- * @param func  function to preform on data
+ * @param[in,out] list  doubly linked list to traverse
+ * @param[in]     func  function to preform on data
  */
 extern void DLListTraverse(struct DLList *list, void (*func)(void *));
 #endif

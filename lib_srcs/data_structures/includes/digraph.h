@@ -23,92 +23,103 @@ struct DigraphVert {     // linked list digraph vertex
     struct DLList ref_list; // list of vertices this vertex is adjacent to
 };
 
-struct DigraphVert *DigraphInitVert(void *data);
+/**
+ * @brief
+ *  Creates a digraph vertex;
+ *
+ * @param[in] data  data to store
+ *
+ * @return Pointer to new digraph vertex
+ */
+extern struct DigraphVert *DigraphInitVert(void *data);
 
 /**
  * @brief
- *  Remove an vertex from the digraph.
+ *  Deletes a digraph vertex.
  *
- * @param start     vertex the edge starts at
- * @param end       vertex the edge ends at
+ * @param[in,out] p_vert        vertex to delete
+ * @param[in]     free_data     function to free the data, NULL if not needed
  *
  * @return
- *  true  : connected successful @n
+ *  true  : removal successful @n
  *  false : memory allocation failed @n
  */
-bool DigraphRemoveVert(struct DigraphVert **vert, void (*free_data)(void *));
+extern bool DigraphRemoveVert(struct DigraphVert **p_vert,
+                              void (*free_data)(void *));
 
 /**
  * @brief
- *  Creates an directional edge from the first vertex to the second.
+ *  Creates a directional edge from the first vertex to the second.
  *
- * @param start     vertex the edge starts at
- * @param end       vertex the edge ends at
+ * @param[in,out] start     vertex the edge starts at
+ * @param[in,out] end       vertex the edge ends at
  *
  * @return
- *  true  : connected successful @n
+ *  true  : connection successful @n
  *  false : memory allocation failed @n
  */
-bool DigraphConnect(struct DigraphVert *start, struct DigraphVert *end);
+extern bool DigraphConnect(struct DigraphVert *start, struct DigraphVert *end);
 
 /**
  * @brief
  *  Removes a directional edge from the first vertex to the second.
  *
- * @param start     vertex the edge starts at
- * @param end       vertex the edge ends at
+ * @param[in,out] start     vertex the edge starts at
+ * @param[in,out] end       vertex the edge ends at
  *
  * @return
- *  true  : removal successful @n
+ *  true  : disconnection successful @n
  *  false : no edge found @n
  */
-bool DigraphDisconnect(struct DigraphVert *start, struct DigraphVert *end);
+extern bool DigraphDisconnect(struct DigraphVert *start,
+                              struct DigraphVert *end);
 
 /**
  * @brief
  *  Checks if an edge from the first vertex to the second exists or not.
  *
- * @param start     vertex the edge starts at
- * @param end       vertex the edge ends at
+ * @param[in,out] start     vertex the edge starts at
+ * @param[in,out] end       vertex the edge ends at
  *
  * @return
  *  true  : an edge exist @n
  *  false : an edge doesn't exit @n
  */
-bool DigraphIsConnected(struct DigraphVert *start, struct DigraphVert *end);
+extern bool DigraphIsConnected(struct DigraphVert *start,
+                               struct DigraphVert *end);
 
 /**
  * @brief
  *  Performs a given function on the data of all the vertices adjacent to the
- * one passed.
+ *  one passed.
  *
- * @param vertex    vertex with the adjacency list
- * @param func      function to execute
+ * @param[in,out] vert      vertex with the adjacency list
+ * @param[in]     func      function to execute
  */
-void DigraphTraverseAdj(struct DigraphVert *vertex, void (*func)(void *));
+extern void DigraphTraverseAdj(struct DigraphVert *vert, void (*func)(void *));
 
 /**
  * @brief
  *  Sets the state of all the vertices adjacent to the one passed.
  *
- * @param vertex    vertex with the adjacency list
- * @param state     state to set to
+ * @param[in,out] vert      vertex with the adjacency list
+ * @param[in]     state     state to set to
  */
-void DigraphSetAdjState(struct DigraphVert *vertex, unsigned char state);
+extern void DigraphSetAdjState(struct DigraphVert *vert, unsigned char state);
 
 /**
  * @brief
  *  Traverses breath first from the given vertex a specified amount of levels
- * and performs a function on the data of the every vertex encountered.
+ *  and performs a function on the data of the every vertex encountered.
  *
- * @param vertex    vertex to start at
- * @param max_lvl   further level to traverse; -1 for unbound traversal
- * @param func      function to execute
+ * @param[in,out] vert      vertex to start at
+ * @param[in]     max_lvl   further level to traverse; -1 for unbound traversal
+ * @param[in]     func      function to execute
  *
  * @return
- *  true  : traversed successful @n
+ *  true  : traversal successful @n
  *  false : memory allocation failed @n
  */
-bool DigraphBreathTraverse(struct DigraphVert *vertex, int max_lvl,
-                           void (*func)(void *));
+extern bool DigraphBreathTraverse(struct DigraphVert *vert, int max_lvl,
+                                  void (*func)(void *));
 #endif
