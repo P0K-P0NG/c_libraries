@@ -26,13 +26,13 @@ int getInput(struct Pointer ptr, const size_t max_len, const char prompt[])
 char *getFullStr(struct String str, const char prompt[])
 {
     printf("%s", prompt);
-    char *ptr = fgets(str.items, str.len, stdin);
+    char *ptr = fgets(str.data, str.len, stdin);
     return ptr;
 }
 
 char *getStr(struct String str_block, const char prompt[])
 {
-    char *str = str_block.items;
+    char *str = str_block.data;
     char max_len = str_block.len;
 
     printf("%s", prompt);

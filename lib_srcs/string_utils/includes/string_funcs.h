@@ -54,14 +54,27 @@ extern size_t splitStr(char str[], char *substrs[], size_t count,
  * @brief
  *  Removes all matches of the specified regex pattern in a string.
  *
- * @param[in,out] str`      string to modify
+ * @param[in,out] str       string to modify
  * @param[in]     pattern   pattern to remove
  *
  * @return
  *  true  : execution successful
  *  false : execution failed
  */
-bool removeRegexMatches(char str[], const char pattern[]);
+extern bool removeRegexMatches(char str[], const char pattern[]);
+
+/**
+ * @brief
+ *  Fills the out string with the provided filler string consecutively until
+ *  full.
+ *
+ * @param[in,out] str       string to fill
+ * @param[in]     len       length of string to fill
+ * @param[in]     filler    filler string
+ *
+ * @return char*
+ */
+extern void fillStr(char str[], size_t len, const char filler[]);
 
 /**
  * @brief
@@ -69,12 +82,13 @@ bool removeRegexMatches(char str[], const char pattern[]);
  *  of the string by the specified amount.
  *
  * @param[in,out] str           string to add the buffer to
+ * @param[in]     max_len       string buffer's size
  * @param[in]     buffer_len    buffer length from the front and back
  * @param[in]     buffer_char   buffer character
  *
  * @return Pointer to the formatted string.
  */
-extern char *strAddBuffer(struct String str, int buffer_len[2],
+extern char *addStrBuffer(char str[], size_t max_len, size_t buffer_len[2],
                           char buffer_char);
 
 /**
@@ -86,12 +100,13 @@ extern char *strAddBuffer(struct String str, int buffer_len[2],
  *  Surronded by the given buffer character. @n
  *
  * @param[in,out] str           string to align
+ * @param[in]     max_len       string buffer's size
  * @param[in]     mode          alignment mode
  * @param[in]     buffer_char   buffer character
  *
- * @return Pointer to the formatted string.
+ * @return Pointer to the formatted string. NULL if memory allocation failed.
  */
-extern char *strAlign(struct String str, char mode, char buffer_char);
+extern char *alignStr(char str[], size_t max_len, char mode, char buffer_char);
 
 /**
  * @brief

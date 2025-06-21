@@ -14,8 +14,8 @@
 #include <stddef.h>
 
 struct String {
-    char *const items;
-    const size_t len;
+    char *data;
+    size_t len;
 };
 
 #endif

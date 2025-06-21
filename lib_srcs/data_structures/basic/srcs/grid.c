@@ -1,12 +1,12 @@
 /**
  * @file grid.c
- * 
- * @brief 
+ *
+ * @brief
  *  Struct and functions for a grid or 2D array.
- * 
+ *
  * @implements
  *  grid.h
- * 
+ *
  * @author Sarutch Supaibulpipat (Pokpong) (8pokpong8@gmail.com)
  * @version 0.1
  * @date 2025-06-17
@@ -46,12 +46,16 @@ void GridClear(struct Grid **p_grid, void (*free_data)(void *))
     *p_grid = NULL;
 }
 
-bool GridSet(struct Grid *grid, size_t row_idx, size_t col_idx, void *data)
+bool GridSet(struct Grid *grid, size_t row_idx, size_t col_idx, void *data,
+             void (*free_data)(void *))
 {
     assert(grid != NULL);
 
     if (col_idx < grid->col_count && row_idx < grid->row_count) {
-        grid->items[row_idx + col_idx * grid->row_count] = data;
+        size_t idx = row_idx + col_idx * grid->row_count;
+        if (free_data != NULL && grid->items[idx] != NULL)
+            free_data(grid->items[idx]);
+        grid->items[idx] = data;
         return true;
     } else {
         return false;

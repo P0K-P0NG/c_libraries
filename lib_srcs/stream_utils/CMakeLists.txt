@@ -12,10 +12,11 @@ add_library(${PROJECT_NAME})
 
 # Optionally set common flags, include paths, etc.
 set(CMAKE_C_STANDARD 11)
-set(dependencies basic_utils string_utils basic_data_structures)
+set(dependencies basic_utils string_utils data_structures.basic)
 set(dependency_includes)
 foreach(dep IN LISTS dependencies)
-    list(APPEND dependency_includes "${CMAKE_SOURCE_DIR}/lib_srcs/${dep}/includes")
+    string(REPLACE "." "/" path ${dep})
+    list(APPEND dependency_includes "${CMAKE_SOURCE_DIR}/lib_srcs/${path}/includes")
 endforeach()
 
 file(GLOB srcs ${CMAKE_CURRENT_SOURCE_DIR}/srcs/*.c)

@@ -1,6 +1,8 @@
 #ifndef BASIC_STATS_H
 #define BASIC_STATS_H
 
+#include <stddef.h>
+
 /**
  * @brief
  *  Finds the larger of two inputted integers.
@@ -66,4 +68,15 @@ extern double maxDouble(const double num1, const double num2);
  * @return Smaller double.
  */
 extern double minDouble(const double num1, const double num2);
+
+/**
+ * @brief 
+ *  Sums an array of size_t numbers.
+ * 
+ * @param[in] arr       array to sum
+ * @param[in] count     number of array items
+ *  
+ * @return Summed result. 
+ */
+extern size_t sumSizeT(const size_t *arr, size_t count);
 #endif

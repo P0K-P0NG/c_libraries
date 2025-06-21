@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project("basic_data_structures")
+project("data_structures.basic")
 
 if (NOT CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     message(STATUS "This project has a top-level one called [${CMAKE_PROJECT_NAME}]")
@@ -15,7 +15,8 @@ set(CMAKE_C_STANDARD 11)
 set(dependencies basic_utils)
 set(dependency_includes)
 foreach(dep IN LISTS dependencies)
-    list(APPEND dependency_includes "${CMAKE_SOURCE_DIR}/lib_srcs/${dep}/includes")
+    string(REPLACE "." "/" path ${dep})
+    list(APPEND dependency_includes "${CMAKE_SOURCE_DIR}/lib_srcs/${path}/includes")
 endforeach()
 
 file(GLOB srcs ${CMAKE_CURRENT_SOURCE_DIR}/srcs/*.c)

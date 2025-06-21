@@ -121,35 +121,46 @@ bool removeRegexMatches(char str[], const char pattern[])
         memcpy(curr - remove_len, copy_buf, len);
     }
     free(copy_buf);
-    return (status == REG_NOMATCH)? true : false;
+    return (status == REG_NOMATCH) ? true : false;
 }
 
-char *strAddBuffer(struct String str_block, int buffer_len[2], char buffer_char)
+void fillStr(char str[], size_t len, const char filler[])
 {
-    char *str = str_block.items;
-    int max_len = str_block.len;
-
     assert(str != NULL);
 
-    char temp_str[strlen(str) + 1];
+    size_t filler_len = strlen(filler);
+    size_t safe_len = (len > filler_len) ? len - filler_len : 0;
+    size_t i = 0;
+    for (; i < safe_len; i += filler_len)
+        memcpy(&str[i], filler, filler_len);
+    memcpy(&str[i], filler, len - i);
+}
+
+char *addStrBuffer(char str[], size_t max_len, size_t buffer_len[2],
+                   char buffer_char)
+{
+    assert(str != NULL);
+
+    size_t str_len = strlen(str);
+    char *temp_str = calloc(str_len + 1, sizeof(char));
+    if (temp_str == NULL)
+        return NULL;
     strcpy(temp_str, str);
     memset(str, buffer_char, buffer_len[0]);
     strcpy(&str[buffer_len[0]], temp_str);
-    memset(&str[buffer_len[0] + strlen(temp_str)], buffer_char, buffer_len[1]);
+    memset(&str[buffer_len[0] + str_len], buffer_char, buffer_len[1]);
     str[max_len - 1] = '\0';
+    free(temp_str);
     return str;
 }
 
-char *strAlign(struct String str_block, char mode, char buffer_char)
+char *alignStr(char str[], size_t max_len, char mode, char buffer_char)
 {
-    char *str = str_block.items;
-    int max_len = str_block.len;
-
     assert(str != NULL);
 
-    int front_len = 0;
-    int back_len = 0;
-    int buffer_len = max_len - strlen(str) - 1;
+    size_t front_len = 0;
+    size_t back_len = 0;
+    size_t buffer_len = max_len - strlen(str) - 1;
     switch (mode) {
     case 'l':
         back_len = buffer_len;
@@ -164,12 +175,7 @@ char *strAlign(struct String str_block, char mode, char buffer_char)
     default:
         break;
     }
-    char temp_str[strlen(str) + 1];
-    strcpy(temp_str, str);
-    memset(str, buffer_char, front_len);
-    strcpy(&str[front_len], temp_str);
-    memset(&str[front_len + strlen(temp_str)], buffer_char, back_len);
-    str[max_len - 1] = '\0';
+    addStrBuffer(str, max_len, (size_t[2]){front_len, back_len}, buffer_char);
     return str;
 }
 

@@ -8,25 +8,13 @@ else()
     message(STATUS "This project is a top-level one")
 endif()
 
-add_library(${PROJECT_NAME})
-
 # Optionally set common flags, include paths, etc.
 set(CMAKE_C_STANDARD 11)
-set(dependencies basic_utils)
-set(dependency_includes)
-foreach(dep IN LISTS dependencies)
-    list(APPEND dependency_includes "${CMAKE_SOURCE_DIR}/lib_srcs/${dep}/includes")
-endforeach()
 
-file(GLOB srcs ${CMAKE_CURRENT_SOURCE_DIR}/srcs/*.c)
-target_sources(${PROJECT_NAME} 
-    PRIVATE 
-        ${srcs})
-target_include_directories(${PROJECT_NAME} 
-    PRIVATE 
-        ${CMAKE_CURRENT_SOURCE_DIR}/includes    
-        ${dependency_includes}   
-)
-target_link_libraries(${PROJECT_NAME} 
-    PUBLIC
-        ${dependencies})
+file(GLOB lib_dirs */)
+foreach(dir ${lib_dirs})
+    if(IS_DIRECTORY "${dir}")
+        get_filename_component(lib_name "${dir}" NAME)
+        add_subdirectory(${dir} ${CMAKE_BINARY_DIR}/${lib_name})
+    endif()
+endforeach()

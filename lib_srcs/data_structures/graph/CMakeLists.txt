@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project("miscs")
+project("data_structures.graph")
 
 if (NOT CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     message(STATUS "This project has a top-level one called [${CMAKE_PROJECT_NAME}]")
@@ -12,7 +12,7 @@ add_library(${PROJECT_NAME})
 
 # Optionally set common flags, include paths, etc.
 set(CMAKE_C_STANDARD 11)
-set(dependencies basic_utils string_utils data_structures.basic data_structures.lists)
+set(dependencies data_structures.lists basic_utils)
 set(dependency_includes)
 foreach(dep IN LISTS dependencies)
     string(REPLACE "." "/" path ${dep})
