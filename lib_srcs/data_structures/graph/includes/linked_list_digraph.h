@@ -16,8 +16,8 @@
 #include <stdbool.h>
 
 // redefining for more clarity
-typedef struct DLListNode LListDigraphNode_t;
-typedef struct DLList LListDigraph_t;
+typedef DLListNode_t LListDigraphNode_t;
+typedef DLList_t LListDigraph_t;
 
 /**
  * @brief

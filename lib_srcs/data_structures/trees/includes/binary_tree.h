@@ -13,16 +13,16 @@
 
 #include <stddef.h>
 
-struct BinTreeNode { // node of a binary tree structure
+typedef struct BinTreeNode { // node of a binary tree structure
     void *data;      // pointer to data
     int count;
     struct BinTreeNode *left;  // left child, less "value",
     struct BinTreeNode *right; // right child, greater "value"
-};
+} BinTreeNode_t;
 
-struct BinTree {              // binary tree
-    struct BinTreeNode *root; // root of the tree
-};
+typedef struct BinTree {              // binary tree
+    BinTreeNode_t *root; // root of the tree
+} BinTree_t;
 
 /**
  * @brief
@@ -35,7 +35,7 @@ struct BinTree {              // binary tree
  *
  * @return Pointer to the new binary tree, NULL if unable to allocate memory.
  */
-extern struct BinTree *BinTreeCreate();
+extern BinTree_t *BinTreeCreate();
 
 /**
  * @brief
@@ -44,7 +44,7 @@ extern struct BinTree *BinTreeCreate();
  * @param[in,out] p_tree        binary tree to delete
  * @param[in]     free_data     function to free the data, NULL if not needed
  */
-extern void BinTreeClear(struct BinTree **p_tree, void (*free_data)(void *));
+extern void BinTreeClear(BinTree_t **p_tree, void (*free_data)(void *));
 
 /**
  * @brief
@@ -53,7 +53,7 @@ extern void BinTreeClear(struct BinTree **p_tree, void (*free_data)(void *));
  * @param[in,out] tree  binary tree to execute on
  * @param[in]     func  function to execute on the data
  */
-extern void BinTreeInOrder(struct BinTree *tree, void (*func)(void *));
+extern void BinTreeInOrder(BinTree_t *tree, void (*func)(void *));
 
 /**
  * @brief
@@ -62,7 +62,7 @@ extern void BinTreeInOrder(struct BinTree *tree, void (*func)(void *));
  * @param[in,out] tree  binary tree to execute on
  * @param[in]     func  function to execute on the data
  */
-extern void BinTreePreOrder(struct BinTree *tree, void (*func)(void *));
+extern void BinTreePreOrder(BinTree_t *tree, void (*func)(void *));
 
 /**
  * @brief
@@ -71,7 +71,7 @@ extern void BinTreePreOrder(struct BinTree *tree, void (*func)(void *));
  * @param[in,out] tree  binary tree to execute on
  * @param[in]     func  function to execute on the data
  */
-extern void BinTreePostOrder(struct BinTree *tree, void (*func)(void *));
+extern void BinTreePostOrder(BinTree_t *tree, void (*func)(void *));
 
 /**
  * @brief
@@ -91,7 +91,7 @@ extern void BinTreePostOrder(struct BinTree *tree, void (*func)(void *));
  *   1 : new unique node added @n
  *   0 : unable to allocate memory @n
  */
-extern int BinTreeAdd(struct BinTree *tree, void *data,
+extern int BinTreeAdd(BinTree_t *tree, void *data,
                       int (*comp_func)(const void *, const void *));
 
 /**
@@ -113,7 +113,7 @@ extern int BinTreeAdd(struct BinTree *tree, void *data,
  *
  * @return Pointer to the matching data, NULL if not found.
  */
-extern void *BinTreeFind(struct BinTree *tree, void *key,
+extern void *BinTreeFind(BinTree_t *tree, void *key,
                          int (*comp_func)(const void *, const void *));
 
 /**
@@ -124,5 +124,5 @@ extern void *BinTreeFind(struct BinTree *tree, void *key,
  *
  * @return The number of nodes in the tree.
  */
-extern size_t BinTreeCount(struct BinTree *tree);
+extern size_t BinTreeCount(BinTree_t *tree);
 #endif

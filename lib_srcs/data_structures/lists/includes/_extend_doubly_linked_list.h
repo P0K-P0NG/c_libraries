@@ -22,7 +22,7 @@
  * @param[in]     extract_func  funcdtion to extract the appropriate data
  * @param[in]     func          function to preform on data
  */
-extern void _extend_DLListTraverse(struct DLList *list,
+extern void _extend_DLListTraverse(DLList_t *list,
                                    void *(*extract_func)(void *),
                                    void (*func)(void *));
 #endif

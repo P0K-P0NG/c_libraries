@@ -18,9 +18,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct Array *ArrayCreate(size_t item_size, size_t len)
+Array_t *ArrayCreate(size_t item_size, size_t len)
 {
-    struct Array *new_arr = calloc(1, sizeof(struct Array));
+    Array_t *new_arr = calloc(1, sizeof(Array_t));
     if (new_arr == NULL)
         return NULL;
     new_arr->items = calloc(len, item_size);
@@ -33,7 +33,7 @@ struct Array *ArrayCreate(size_t item_size, size_t len)
     return new_arr;
 }
 
-void ArrayClear(struct Array **p_arr)
+void ArrayClear(Array_t **p_arr)
 {
     assert(p_arr != NULL);
     assert(*p_arr != NULL);
@@ -43,17 +43,17 @@ void ArrayClear(struct Array **p_arr)
     *p_arr = NULL;
 }
 
-void ArraySet(struct Array *arr, size_t idx, void *item)
+void ArraySet(Array_t *arr, size_t idx, void *item)
 {
     memcpy(arr->items + idx * arr->item_size, item, arr->item_size);
 }
 
-void *ArrayGet(struct Array *arr, size_t idx)
+void *ArrayGet(Array_t *arr, size_t idx)
 {
     return arr->items + idx * arr->item_size;
 }
 
-bool ArrayFind(struct Array *arr, size_t *idx, const void *item,
+bool ArrayFind(Array_t *arr, size_t *idx, const void *item,
                int (*comp_func)(const void *, const void *))
 {
     assert(arr != NULL);
@@ -72,7 +72,7 @@ bool ArrayFind(struct Array *arr, size_t *idx, const void *item,
     return is_found;
 }
 
-bool ArrayInsertSort(struct Array *arr,
+bool ArrayInsertSort(Array_t *arr,
                      int (*comp_func)(const void *, const void *))
 {
     assert(arr != NULL);
@@ -98,7 +98,7 @@ bool ArrayInsertSort(struct Array *arr,
     return true;
 }
 
-int ArrayToInt(struct Array *arr)
+int ArrayToInt(Array_t *arr)
 {
     int result = 0;
     for (int i = 0; i < arr->len; i++) {

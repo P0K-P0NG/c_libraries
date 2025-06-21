@@ -13,17 +13,17 @@
 
 #include <stddef.h>
 
-struct DLListNode {          // node in a doubly linked list
+typedef struct DLListNode {          // node in a doubly linked list
     void *data;              // pointer to data
     struct DLListNode *next; // next node in doubly linked list
     struct DLListNode *prev; // next node in doubly linked list
-};
+} DLListNode_t;
 
-struct DLList {
+typedef struct DLList {
     struct DLListNode *head; // head node
     struct DLListNode *tail; // tail node
     size_t count;
-};
+} DLList_t;
 
 /**
  * @brief
@@ -32,7 +32,7 @@ struct DLList {
  * @return Pointer to new doubly linked list, NULL if memory allocation is
  * unsuccessful.
  */
-extern struct DLList *DLListCreate();
+extern DLList_t *DLListCreate();
 
 /**
  * @brief
@@ -42,7 +42,7 @@ extern struct DLList *DLListCreate();
  * @param[in,out] p_list        doubly linked list to delete
  * @param[in]     free_data     function to free data, NULL if not needed
  */
-extern void DLListClear(struct DLList **p_list, void (*free_data)(void *));
+extern void DLListClear(DLList_t **p_list, void (*free_data)(void *));
 
 /**
  * @brief
@@ -53,7 +53,7 @@ extern void DLListClear(struct DLList **p_list, void (*free_data)(void *));
  * @param[in]     node          pointer to the node to delete
  * @param[in]     free_data     function to free data, NULL if not needed
  */
-extern void DLListRemove(struct DLList *list, struct DLListNode *node,
+extern void DLListRemove(DLList_t *list, DLListNode_t *node,
                          void (*free_data)(void *));
 
 /**
@@ -64,7 +64,7 @@ extern void DLListRemove(struct DLList *list, struct DLListNode *node,
  * @param[in,out] list          doubly linked list to remove from
  * @param[in]     free_data     function to free data, NULL if not needed
  */
-extern void DLListRemoveAll(struct DLList *list, void (*free_data)(void *));
+extern void DLListRemoveAll(DLList_t *list, void (*free_data)(void *));
 
 /**
  * @brief
@@ -75,7 +75,7 @@ extern void DLListRemoveAll(struct DLList *list, void (*free_data)(void *));
  *
  * @return Pointer to the new node, NULL if memory allocation failed.
  */
-extern struct DLListNode *DLListAddHead(struct DLList *list, void *data);
+extern DLListNode_t *DLListAddHead(DLList_t *list, void *data);
 
 /**
  * @brief
@@ -86,7 +86,7 @@ extern struct DLListNode *DLListAddHead(struct DLList *list, void *data);
  *
  * @return Pointer to the new node, NULL if memory allocation failed.
  */
-extern struct DLListNode *DLListAddTail(struct DLList *list, void *data);
+extern DLListNode_t *DLListAddTail(DLList_t *list, void *data);
 
 /**
  * @brief
@@ -100,8 +100,8 @@ extern struct DLListNode *DLListAddTail(struct DLList *list, void *data);
  *
  * @return Pointer to the new node, NULL if memory allocation failed.
  */
-extern struct DLListNode *DLListAddAt(struct DLList *list,
-                                      struct DLListNode *curr_node, void *data);
+extern DLListNode_t *DLListAddAt(DLList_t *list,
+                                      DLListNode_t *curr_node, void *data);
 
 /**
  * @brief
@@ -119,7 +119,7 @@ extern struct DLListNode *DLListAddAt(struct DLList *list,
  *
  * @return Pointer to the new node, NULL if memory allocation failed.
  */
-extern struct DLListNode *DLListAddByCompare(struct DLList *list, void *data,
+extern DLListNode_t *DLListAddByCompare(DLList_t *list, void *data,
                                              int (*comp_func)(const void *,
                                                               const void *));
 
@@ -133,7 +133,7 @@ extern struct DLListNode *DLListAddByCompare(struct DLList *list, void *data,
  * @return Pointer to the node, NULL if node is not found or the index is
  * invalid.
  */
-extern struct DLListNode *DLListAt(struct DLList *list, size_t idx);
+extern DLListNode_t *DLListAt(DLList_t *list, size_t idx);
 
 /**
  * @brief
@@ -153,7 +153,7 @@ extern struct DLListNode *DLListAt(struct DLList *list, size_t idx);
  *
  * @return Pointer to the data, NULL if data is not found
  */
-extern struct DLListNode *DLListFind(struct DLList *list, const void *key,
+extern DLListNode_t *DLListFind(DLList_t *list, const void *key,
                                      int (*comp_func)(const void *,
                                                       const void *));
 
@@ -165,5 +165,5 @@ extern struct DLListNode *DLListFind(struct DLList *list, const void *key,
  * @param[in,out] list  doubly linked list to traverse
  * @param[in]     func  function to preform on data
  */
-extern void DLListTraverse(struct DLList *list, void (*func)(void *));
+extern void DLListTraverse(DLList_t *list, void (*func)(void *));
 #endif

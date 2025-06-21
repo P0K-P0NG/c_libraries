@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <string.h>
 
-int getInput(struct Pointer ptr, const size_t max_len, const char prompt[])
+int getInput(Pointer_t ptr, const size_t max_len, const char prompt[])
 {
     char str[max_len];
     printf("%s", prompt);
@@ -23,14 +23,14 @@ int getInput(struct Pointer ptr, const size_t max_len, const char prompt[])
     return sscanf(str, ptr.type, ptr.ptr);
 }
 
-char *getFullStr(struct String str, const char prompt[])
+char *getFullStr(String_t str, const char prompt[])
 {
     printf("%s", prompt);
     char *ptr = fgets(str.data, str.len, stdin);
     return ptr;
 }
 
-char *getStr(struct String str_block, const char prompt[])
+char *getStr(String_t str_block, const char prompt[])
 {
     char *str = str_block.data;
     char max_len = str_block.len;

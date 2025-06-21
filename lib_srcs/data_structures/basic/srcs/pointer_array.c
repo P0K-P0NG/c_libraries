@@ -15,9 +15,9 @@
 #include <assert.h>
 #include <stdlib.h>
 
-struct PointerArray *PointerArrayCreate(size_t len)
+PointerArray_t *PointerArrayCreate(size_t len)
 {
-    struct PointerArray *new_arr = calloc(1, sizeof(struct PointerArray));
+    PointerArray_t *new_arr = calloc(1, sizeof(PointerArray_t));
     if (new_arr == NULL)
         return NULL;
     new_arr->len = len;
@@ -28,7 +28,7 @@ struct PointerArray *PointerArrayCreate(size_t len)
     }
     return new_arr;
 }
-void PointerArrayClear(struct PointerArray **p_arr,
+void PointerArrayClear(PointerArray_t **p_arr,
                        void (*free_data)(void *data))
 {
     assert(p_arr != NULL);
@@ -43,11 +43,11 @@ void PointerArrayClear(struct PointerArray **p_arr,
     free(*p_arr);
     *p_arr = NULL;
 }
-void *PointerArrayGet(struct PointerArray *arr, size_t idx)
+void *PointerArrayGet(PointerArray_t *arr, size_t idx)
 {
     return (idx < arr->len) ? arr->ptrs[idx] : NULL;
 }
-bool PointerArraySet(struct PointerArray *arr, size_t idx, void *data,
+bool PointerArraySet(PointerArray_t *arr, size_t idx, void *data,
                      void (*free_data)(void *data))
 {
     if (idx < arr->len) {

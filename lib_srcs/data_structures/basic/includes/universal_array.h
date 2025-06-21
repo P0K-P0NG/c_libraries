@@ -14,15 +14,15 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-struct Array {
+typedef struct Array {
     void *items;
     size_t item_size;
     size_t len;
-};
+} Array_t;
 
 #define IDX(type, arr, i) (*(type *)((arr).items + (i) * (arr).item_size))
 #define ArrayStackInit(items, item_size, len)                                  \
-    ((struct Array){(void *)items, (item_size), (len)})
+    ((Array_t){(void *)items, (item_size), (len)})
 #define ArrayItemsStackInit(type, len, ...) ((type[len]){__VA_ARGS__})
 
 /**
@@ -34,7 +34,7 @@ struct Array {
  * 
  * @return Pointer to new array, NULL if memory allocation failed.
  */
-extern struct Array *ArrayCreate(size_t item_size, size_t len);
+extern Array_t *ArrayCreate(size_t item_size, size_t len);
 
 /**
  * @brief 
@@ -42,7 +42,7 @@ extern struct Array *ArrayCreate(size_t item_size, size_t len);
  * 
  * @param p_arr     array to delete
  */
-extern void ArrayClear(struct Array **p_arr);
+extern void ArrayClear(Array_t **p_arr);
 
 /**
  * @brief 
@@ -52,7 +52,7 @@ extern void ArrayClear(struct Array **p_arr);
  * @param idx   index to set
  * @param item  value to set
  */
-extern void ArraySet(struct Array *arr, size_t idx, void *item);
+extern void ArraySet(Array_t *arr, size_t idx, void *item);
 
 /**
  * @brief 
@@ -63,7 +63,7 @@ extern void ArraySet(struct Array *arr, size_t idx, void *item);
  * 
  * @return Pointer to the retrieve value. 
  */
-extern void *ArrayGet(struct Array *arr, size_t idx);
+extern void *ArrayGet(Array_t *arr, size_t idx);
 
 /**
  * @brief
@@ -102,9 +102,9 @@ extern bool ArrayFind(struct Array *arr, size_t *idx, const void *item,
  * @param[in,out] arr           array to sort
  * @param[in]     comp_func     function compare the items
  */
-extern bool ArrayInsertSort(struct Array *arr,
+extern bool ArrayInsertSort(Array_t *arr,
                             int (*comp_func)(const void *, const void *));
 
-extern int ArrayToInt(struct Array *arr);
+extern int ArrayToInt(Array_t *arr);
 
 #endif

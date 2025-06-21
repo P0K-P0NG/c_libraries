@@ -14,16 +14,16 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-struct LListNode {          // node in a linked list
+typedef struct LListNode {          // node in a linked list
     void *data;             // pointer to data
     struct LListNode *next; // next node in linked list
-};
+} LListNode_t;
 
-struct LList {
-    struct LListNode *head; // head node
-    struct LListNode *tail; // tail node
+typedef struct LList {
+    LListNode_t *head; // head node
+    LListNode_t *tail; // tail node
     int count;
-};
+} LList_t;
 
 /**
  * @brief
@@ -32,7 +32,7 @@ struct LList {
  * @return Pointer to new linked list, NULL if memory allocation is
  * unsuccessful.
  */
-extern struct LList *LListCreate();
+extern LList_t *LListCreate();
 
 /**
  * @brief
@@ -41,7 +41,7 @@ extern struct LList *LListCreate();
  * @param[in,out] p_list        inked list to delete
  * @param[in]     free_data     function to free data, NULL if not needed
  */
-extern void LListClear(struct LList **p_list, void (*free_data)(void *));
+extern void LListClear(LList_t **p_list, void (*free_data)(void *));
 
 /**
  * @brief
@@ -54,7 +54,7 @@ extern void LListClear(struct LList **p_list, void (*free_data)(void *));
  * @return true  : removal successful 
  * @return false : linked list is empty
  */
-extern bool LListRemoveHead(struct LList *list, void (*free_data)(void *));
+extern bool LListRemoveHead(LList_t *list, void (*free_data)(void *));
 
 /**
  * @brief
@@ -68,7 +68,7 @@ extern bool LListRemoveHead(struct LList *list, void (*free_data)(void *));
  * @return true  : removal successful 
  * @return false : invalid index
  */
-extern bool LListRemoveAt(struct LList *list, size_t idx,
+extern bool LListRemoveAt(LList_t *list, size_t idx,
                           void (*free_data)(void *));
 
 /**
@@ -79,7 +79,7 @@ extern bool LListRemoveAt(struct LList *list, size_t idx,
  * @param[in,out] list          linked list to remove from
  * @param[in]     free_data     function to free data, NULL if not needed
  */
-extern void LListRemoveAll(struct LList *list, void (*free_data)(void *));
+extern void LListRemoveAll(LList_t *list, void (*free_data)(void *));
 
 /**
  * @brief
@@ -91,7 +91,7 @@ extern void LListRemoveAll(struct LList *list, void (*free_data)(void *));
  * @return true  : node added successfully 
  * @return false : memory allocation falied
  */
-extern bool LListAddHead(struct LList *list, void *data);
+extern bool LListAddHead(LList_t *list, void *data);
 
 /**
  * @brief
@@ -103,7 +103,7 @@ extern bool LListAddHead(struct LList *list, void *data);
  * @return true  : node added successfully 
  * @return false : memory allocation falied
  */
-extern bool LListAddTail(struct LList *list, void *data);
+extern bool LListAddTail(LList_t *list, void *data);
 
 /**
  * @brief
@@ -118,7 +118,7 @@ extern bool LListAddTail(struct LList *list, void *data);
  *   0 : memory allocation falied @n
  *  -1 : invalid index @n
  */
-extern int LListAddAt(struct LList *list, void *data, size_t idx);
+extern int LListAddAt(LList_t *list, void *data, size_t idx);
 
 /**
  * @brief
@@ -137,7 +137,7 @@ extern int LListAddAt(struct LList *list, void *data, size_t idx);
  * @return true  : added successfully 
  * @return false : memory allocation falied
  */
-extern bool LListAddByCompare(struct LList *list, void *data,
+extern bool LListAddByCompare(LList_t *list, void *data,
                               int (*comp_func)(const void *, const void *));
 
 /**
@@ -151,7 +151,7 @@ extern bool LListAddByCompare(struct LList *list, void *data,
  * @return true  : edit successful 
  * @return false : invalid index
  */
-extern bool LListEditAt(struct LList *list, void *data, size_t idx);
+extern bool LListEditAt(LList_t *list, void *data, size_t idx);
 
 /**
  * @brief
@@ -163,7 +163,7 @@ extern bool LListEditAt(struct LList *list, void *data, size_t idx);
  * @return Pointer to the data, NULL if data is not found or the index is
  * invalid.
  */
-extern void *LListDataAt(struct LList *list, size_t idx);
+extern void *LListDataAt(LList_t *list, size_t idx);
 
 /**
  * @brief
@@ -183,7 +183,7 @@ extern void *LListDataAt(struct LList *list, size_t idx);
  *
  * @return Pointer to the data, NULL if data is not found
  */
-extern void *LListData(struct LList *list, const void *key,
+extern void *LListData(LList_t *list, const void *key,
                        int (*comp_func)(const void *, const void *));
 
 /**
@@ -208,7 +208,7 @@ extern void *LListData(struct LList *list, const void *key,
  * @return true  : execution successful 
  * @return false : memory allocation failed
  */
-extern bool LListAllData(struct LList *list, const void *key, void ***ptr_arr,
+extern bool LListAllData(LList_t *list, const void *key, void ***ptr_arr,
                          size_t *count,
                          int (*comp_func)(const void *, const void *));
 
@@ -232,7 +232,7 @@ extern bool LListAllData(struct LList *list, const void *key, void ***ptr_arr,
  * @return Index of node conatining the data, -1 if node with the given data
  * doesn't exist.
  */
-extern bool LListFindIdx(struct LList *list, const void *key, size_t *idx,
+extern bool LListFindIdx(LList_t *list, const void *key, size_t *idx,
                          int (*comp_func)(const void *, const void *));
 
 /**
@@ -256,7 +256,7 @@ extern bool LListFindIdx(struct LList *list, const void *key, size_t *idx,
  *
  * @return Number of indices, -1 if memory allocation failed.
  */
-extern bool LListFindAllIdx(struct LList *list, const void *key, int **idx_arr,
+extern bool LListFindAllIdx(LList_t *list, const void *key, int **idx_arr,
                             size_t *count,
                             int (*comp_func)(const void *, const void *));
 
@@ -268,7 +268,7 @@ extern bool LListFindAllIdx(struct LList *list, const void *key, int **idx_arr,
  * @param[in,out] list  linked list to traverse
  * @param[in]     func  function to preform on data
  */
-extern void LListTraverse(struct LList *list, void (*func)(void *));
+extern void LListTraverse(LList_t *list, void (*func)(void *));
 
 /**
  * @brief
@@ -283,7 +283,7 @@ extern void LListTraverse(struct LList *list, void (*func)(void *));
  * @param[in]  len          array length
  * @param[in]  item_size    array element size
  */
-extern void LListToArr(struct LList *list, void *arr, size_t len,
+extern void LListToArr(LList_t *list, void *arr, size_t len,
                        size_t item_size);
 
 /**
@@ -294,5 +294,5 @@ extern void LListToArr(struct LList *list, void *arr, size_t len,
  * @param[out] arr      array to store copied pointers
  * @param[in]  len      array length
  */
-extern void LListToPointerArr(struct LList *list, void **arr, size_t len);
+extern void LListToPointerArr(LList_t *list, void **arr, size_t len);
 #endif

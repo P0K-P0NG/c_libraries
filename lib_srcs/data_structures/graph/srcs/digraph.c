@@ -25,14 +25,14 @@
  * intended to be acessed directly.
  */
 static void _freeVert(void *vert);
-static void _resetVert(struct DigraphVert *vert);
-static bool _enqueueVert(struct DigraphVert *vert, int lvl,
-                         struct LListQueue *queue,
-                         struct LListQueue *verts_passed);
+static void _resetVert(DigraphVert_t *vert);
+static bool _enqueueVert(DigraphVert_t *vert, int lvl,
+                         LListQueue_t *queue,
+                         LListQueue_t *verts_passed);
 
-struct DigraphVert *DigraphInitVert(void *data)
+DigraphVert_t *DigraphInitVert(void *data)
 {
-    struct DigraphVert *new_vert = calloc(1, sizeof(struct DigraphVert));
+    DigraphVert_t *new_vert = calloc(1, sizeof(DigraphVert_t));
     if (new_vert == NULL) {
         return NULL;
     }
@@ -40,7 +40,7 @@ struct DigraphVert *DigraphInitVert(void *data)
     return new_vert;
 }
 
-bool DigraphRemoveVert(struct DigraphVert **p_vert, void (*free_data)(void *))
+bool DigraphRemoveVert(DigraphVert_t **p_vert, void (*free_data)(void *))
 {
     assert(p_vert != NULL);
     assert(*p_vert != NULL);
@@ -50,12 +50,12 @@ bool DigraphRemoveVert(struct DigraphVert **p_vert, void (*free_data)(void *))
     }
 
     // remove references
-    struct DLListNode *ref_node = (*p_vert)->ref_list.head;
+    DLListNode_t *ref_node = (*p_vert)->ref_list.head;
     while (ref_node != NULL) {
-        struct DLListNode *vert_ref
-            = DLListFind(&((struct DigraphVert *)ref_node->data)->adj_list,
+        DLListNode_t *vert_ref
+            = DLListFind(&((DigraphVert_t *)ref_node->data)->adj_list,
                          *p_vert, compPtr);
-        DLListRemove(&((struct DigraphVert *)ref_node->data)->adj_list,
+        DLListRemove(&((DigraphVert_t *)ref_node->data)->adj_list,
                      vert_ref, NULL);
         ref_node = ref_node->next;
     }
@@ -64,16 +64,16 @@ bool DigraphRemoveVert(struct DigraphVert **p_vert, void (*free_data)(void *))
     return true;
 }
 
-bool DigraphConnect(struct DigraphVert *start, struct DigraphVert *end)
+bool DigraphConnect(DigraphVert_t *start, DigraphVert_t *end)
 {
     assert(start != NULL);
     assert(end != NULL);
 
-    struct DLListNode *end_ref = DLListAddHead(&start->adj_list, end);
+    DLListNode_t *end_ref = DLListAddHead(&start->adj_list, end);
     if (end_ref == NULL) {
         return false;
     }
-    struct DLListNode *start_ref = DLListAddHead(&end->ref_list, start);
+    DLListNode_t *start_ref = DLListAddHead(&end->ref_list, start);
     if (start_ref == NULL) {
         DLListRemove(&start->adj_list, end_ref, NULL);
         return false;
@@ -81,13 +81,13 @@ bool DigraphConnect(struct DigraphVert *start, struct DigraphVert *end)
     return true;
 }
 
-bool DigraphDisconnect(struct DigraphVert *start, struct DigraphVert *end)
+bool DigraphDisconnect(DigraphVert_t *start, DigraphVert_t *end)
 {
     assert(start != NULL);
     assert(end != NULL);
 
-    struct DLListNode *connection = DLListFind(&start->adj_list, end, compPtr);
-    struct DLListNode *reference = DLListFind(&end->ref_list, start, compPtr);
+    DLListNode_t *connection = DLListFind(&start->adj_list, end, compPtr);
+    DLListNode_t *reference = DLListFind(&end->ref_list, start, compPtr);
     if (connection == NULL || reference == NULL) {
         return false;
     }
@@ -96,31 +96,31 @@ bool DigraphDisconnect(struct DigraphVert *start, struct DigraphVert *end)
     return true;
 }
 
-bool DigraphIsConnected(struct DigraphVert *start, struct DigraphVert *end)
+bool DigraphIsConnected(DigraphVert_t *start, DigraphVert_t *end)
 {
     assert(start != NULL);
     assert(end != NULL);
 
-    struct DLListNode *connection = DLListFind(&start->adj_list, end, compPtr);
+    DLListNode_t *connection = DLListFind(&start->adj_list, end, compPtr);
     if (connection == NULL) {
         return false;
     }
     return true;
 }
 
-void DigraphTraverseAdj(struct DigraphVert *vert, void (*func)(void *))
+void DigraphTraverseAdj(DigraphVert_t *vert, void (*func)(void *))
 {
     assert(vert != NULL);
     assert(func != NULL);
 
-    struct DLListNode *curr_node = vert->adj_list.head;
+    DLListNode_t *curr_node = vert->adj_list.head;
     while (curr_node != NULL) {
-        func(((struct DigraphVert *)curr_node->data)->data);
+        func(((DigraphVert_t *)curr_node->data)->data);
         curr_node = curr_node->next;
     }
 }
 
-bool DigraphBreathTraverse(struct DigraphVert *start, int max_lvl,
+bool DigraphBreathTraverse(DigraphVert_t *start, int max_lvl,
                            void (*func)(void *))
 {
     assert(start != NULL);
@@ -130,11 +130,11 @@ bool DigraphBreathTraverse(struct DigraphVert *start, int max_lvl,
     if (max_lvl < 0) {
         curr_lvl = max_lvl;
     }
-    struct LListQueue *queue = LListQueueCreate();
+    LListQueue_t *queue = LListQueueCreate();
     if (queue == NULL) {
         return false;
     }
-    struct LListQueue *verts_passed = LListQueueCreate();
+    LListQueue_t *verts_passed = LListQueueCreate();
     if (verts_passed == NULL) {
         LListQueueClear(&queue, NULL);
         return false;
@@ -146,7 +146,7 @@ bool DigraphBreathTraverse(struct DigraphVert *start, int max_lvl,
         return false;
     }
     start->lvl = curr_lvl;
-    struct DigraphVert *curr_vert;
+    DigraphVert_t *curr_vert;
     while ((curr_vert = LListQueueDequeue(queue)) != NULL) {
         if (curr_vert->state == 0) {
             func(curr_vert->data);
@@ -165,20 +165,20 @@ bool DigraphBreathTraverse(struct DigraphVert *start, int max_lvl,
         curr_vert->state = 1;
     }
 
-    struct DigraphVert *passed_vert;
+    DigraphVert_t *passed_vert;
     while ((passed_vert = LListQueueDequeue(verts_passed)) != NULL) {
         _resetVert(passed_vert);
     }
     return true;
 }
 
-static bool _enqueueVert(struct DigraphVert *vert, int lvl,
-                         struct LListQueue *queue,
-                         struct LListQueue *verts_passed)
+static bool _enqueueVert(DigraphVert_t *vert, int lvl,
+                         LListQueue_t *queue,
+                         LListQueue_t *verts_passed)
 {
-    struct DLListNode *curr_node = vert->adj_list.head;
+    DLListNode_t *curr_node = vert->adj_list.head;
     while (curr_node != NULL) {
-        ((struct DigraphVert *)curr_node->data)->lvl = lvl;
+        ((DigraphVert_t *)curr_node->data)->lvl = lvl;
         if (LListQueueEnqueue(queue, curr_node->data) == 0
             || LListQueueEnqueue(verts_passed, curr_node->data) == 0) {
             return false;
@@ -188,16 +188,16 @@ static bool _enqueueVert(struct DigraphVert *vert, int lvl,
     return true;
 }
 
-void DigraphSetAdjState(struct DigraphVert *vert, unsigned char state)
+void DigraphSetAdjState(DigraphVert_t *vert, unsigned char state)
 {
-    struct DLListNode *curr_node = vert->adj_list.head;
+    DLListNode_t *curr_node = vert->adj_list.head;
     while (curr_node != NULL) {
-        ((struct DigraphVert *)curr_node->data)->state = state;
+        ((DigraphVert_t *)curr_node->data)->state = state;
         curr_node = curr_node->next;
     }
 }
 
-static void _resetVert(struct DigraphVert *vert)
+static void _resetVert(DigraphVert_t *vert)
 {
     vert->state = 0;
     vert->lvl = 0;
@@ -205,8 +205,8 @@ static void _resetVert(struct DigraphVert *vert)
 
 static void _freeVert(void *vert)
 {
-    DLListRemoveAll(&((struct DigraphVert *)vert)->adj_list, NULL);
-    DLListRemoveAll(&((struct DigraphVert *)vert)->ref_list, NULL);
+    DLListRemoveAll(&((DigraphVert_t *)vert)->adj_list, NULL);
+    DLListRemoveAll(&((DigraphVert_t *)vert)->ref_list, NULL);
     free(vert);
     vert = NULL;
 }

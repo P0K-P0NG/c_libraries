@@ -16,24 +16,24 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct LListKVP *LListKVPCreate(int (*comp_key)(const void *, const void *))
+LListKVP_t *LListKVPCreate(int (*comp_key)(const void *, const void *))
 {
     assert(comp_key != NULL);
 
-    struct LListKVP *new_list = calloc(1, sizeof(struct LListKVP));
+    LListKVP_t *new_list = calloc(1, sizeof(LListKVP_t));
     new_list->comp_key = comp_key;
     return new_list;
 }
 
-void LListKVPClear(struct LListKVP **p_list, void (*free_key)(void *),
+void LListKVPClear(LListKVP_t **p_list, void (*free_key)(void *),
                    void (*free_data)(void *))
 {
     assert(p_list != NULL);
     assert(*p_list != NULL);
 
-    struct LListKVPNode *curr = (*p_list)->head;
+    LListKVPNode_t *curr = (*p_list)->head;
     while (curr != NULL) {
-        struct LListKVPNode *prev = curr;
+        LListKVPNode_t *prev = curr;
         curr = curr->next;
         if (free_key != NULL) {
             free_key(prev->key);
@@ -47,7 +47,7 @@ void LListKVPClear(struct LListKVP **p_list, void (*free_key)(void *),
     *p_list = NULL;
 }
 
-bool LListKVPRemoveHead(struct LListKVP *list, void (*free_key)(void *),
+bool LListKVPRemoveHead(LListKVP_t *list, void (*free_key)(void *),
                         void (*free_data)(void *))
 {
     assert(list != NULL);
@@ -56,7 +56,7 @@ bool LListKVPRemoveHead(struct LListKVP *list, void (*free_key)(void *),
         return false;
     }
 
-    struct LListKVPNode *prev_head = list->head;
+    LListKVPNode_t *prev_head = list->head;
     if (list->head == list->tail) {
         list->tail = NULL;
     }
@@ -72,12 +72,12 @@ bool LListKVPRemoveHead(struct LListKVP *list, void (*free_key)(void *),
     return true;
 }
 
-void *LListKVPRemove(struct LListKVP *list, void *key, void (*free_key)(void *))
+void *LListKVPRemove(LListKVP_t *list, void *key, void (*free_key)(void *))
 {
     assert(list != NULL);
 
-    struct LListKVPNode *expired = list->head;
-    struct LListKVPNode *prev = NULL;
+    LListKVPNode_t *expired = list->head;
+    LListKVPNode_t *prev = NULL;
     void *data;
     while (expired != NULL && list->comp_key(expired->key, key) != 0) {
         prev = expired;
@@ -104,14 +104,14 @@ void *LListKVPRemove(struct LListKVP *list, void *key, void (*free_key)(void *))
     return data;
 }
 
-void LListKVPRemoveAll(struct LListKVP *list, void (*free_key)(void *),
+void LListKVPRemoveAll(LListKVP_t *list, void (*free_key)(void *),
                        void (*free_data)(void *))
 {
     assert(list != NULL);
 
-    struct LListKVPNode *curr = list->head;
+    LListKVPNode_t *curr = list->head;
     while (curr != NULL) {
-        struct LListKVPNode *prev = curr;
+        LListKVPNode_t *prev = curr;
         curr = curr->next;
         if (free_key != NULL) {
             free_key(prev->key);
@@ -121,14 +121,14 @@ void LListKVPRemoveAll(struct LListKVP *list, void (*free_key)(void *),
         }
         free(prev);
     }
-    memset(list, 0, sizeof(struct LListKVP));
+    memset(list, 0, sizeof(LListKVP_t));
 }
 
-bool LListKVPAddHead(struct LListKVP *list, void *key, void *data)
+bool LListKVPAddHead(LListKVP_t *list, void *key, void *data)
 {
     assert(list != NULL);
 
-    struct LListKVPNode *new_head = calloc(1, sizeof(struct LListKVPNode));
+    LListKVPNode_t *new_head = calloc(1, sizeof(LListKVPNode_t));
     if (new_head == NULL) {
         return false;
     }
@@ -144,11 +144,11 @@ bool LListKVPAddHead(struct LListKVP *list, void *key, void *data)
     return true;
 }
 
-bool LListKVPAddTail(struct LListKVP *list, void *key, void *data)
+bool LListKVPAddTail(LListKVP_t *list, void *key, void *data)
 {
     assert(list != NULL);
 
-    struct LListKVPNode *new_tail = calloc(1, sizeof(struct LListKVPNode));
+    LListKVPNode_t *new_tail = calloc(1, sizeof(LListKVPNode_t));
     if (new_tail == NULL) {
         return false;
     }
@@ -165,17 +165,17 @@ bool LListKVPAddTail(struct LListKVP *list, void *key, void *data)
     return true;
 }
 
-bool LListKVPAdd(struct LListKVP *list, void *key, void *data)
+bool LListKVPAdd(LListKVP_t *list, void *key, void *data)
 {
     assert(list != NULL);
 
-    struct LListKVPNode *new_node = calloc(1, sizeof(struct LListKVPNode));
+    LListKVPNode_t *new_node = calloc(1, sizeof(LListKVPNode_t));
     if (new_node == NULL) {
         return false;
     }
 
-    struct LListKVPNode *prev = NULL;
-    struct LListKVPNode *curr = list->head;
+    LListKVPNode_t *prev = NULL;
+    LListKVPNode_t *curr = list->head;
     while (curr != NULL && list->comp_key(curr->key, key) < 0) {
         prev = curr;
         curr = curr->next;
@@ -194,26 +194,26 @@ bool LListKVPAdd(struct LListKVP *list, void *key, void *data)
     return true;
 }
 
-void *LListKVPFind(struct LListKVP *list, const void *key)
+void *LListKVPFind(LListKVP_t *list, const void *key)
 {
     assert(list != NULL);
 
-    struct LListKVPNode *curr = list->head;
+    LListKVPNode_t *curr = list->head;
     while (curr != NULL && list->comp_key(curr->key, key) != 0) {
         curr = curr->next;
     }
     return curr->data;
 }
 
-bool LListKVPFindAll(struct LListKVP *list, const void *key, void ***ptr_arr,
+bool LListKVPFindAll(LListKVP_t *list, const void *key, void ***ptr_arr,
                      size_t *count)
 {
     assert(list != NULL);
-    struct LListKVP *data_list = LListKVPCreate(list->comp_key);
+    LListKVP_t *data_list = LListKVPCreate(list->comp_key);
     if (data_list == NULL) {
         return false;
     }
-    struct LListKVPNode *curr = list->head;
+    LListKVPNode_t *curr = list->head;
     for (size_t i = 0; curr != NULL; i++) {
         if (list->comp_key(curr->key, key) == 0
             && LListKVPAddTail(data_list, NULL, curr->data) == 0) {
@@ -231,12 +231,12 @@ bool LListKVPFindAll(struct LListKVP *list, const void *key, void ***ptr_arr,
     return true;
 }
 
-size_t LListKVPCountRepeats(struct LListKVP *list, const void *key)
+size_t LListKVPCountRepeats(LListKVP_t *list, const void *key)
 {
     assert(list != NULL);
 
     size_t count = 0;
-    struct LListKVPNode *curr = list->head;
+    LListKVPNode_t *curr = list->head;
     while (curr != NULL) {
         if (list->comp_key(curr->key, key) == 0) {
             count++;
@@ -246,18 +246,18 @@ size_t LListKVPCountRepeats(struct LListKVP *list, const void *key)
     return count;
 }
 
-void LListKVPTraverse(struct LListKVP *list, void (*func)(void *, void *))
+void LListKVPTraverse(LListKVP_t *list, void (*func)(void *, void *))
 {
     assert(list != NULL);
 
-    struct LListKVPNode *curr = list->head;
+    LListKVPNode_t *curr = list->head;
     while (curr != NULL) {
         func(curr->key, curr->data);
         curr = curr->next;
     }
 }
 
-void LListKVPToPointerArr(struct LListKVP *list, void **arr, size_t len)
+void LListKVPToPointerArr(LListKVP_t *list, void **arr, size_t len)
 {
     assert(list != NULL);
     assert(arr != NULL);
@@ -266,14 +266,14 @@ void LListKVPToPointerArr(struct LListKVP *list, void **arr, size_t len)
     if (min_len > list->count) {
         min_len = list->count;
     }
-    struct LListKVPNode *curr = list->head;
+    LListKVPNode_t *curr = list->head;
     for (size_t i = 0; i < min_len; i++) {
         arr[i] = curr->data;
         curr = curr->next;
     }
 }
 
-void LListKVPToArr(struct LListKVP *list, void *arr, size_t len,
+void LListKVPToArr(LListKVP_t *list, void *arr, size_t len,
                    size_t item_size)
 {
     assert(list != NULL);
@@ -283,7 +283,7 @@ void LListKVPToArr(struct LListKVP *list, void *arr, size_t len,
     if (min_len > list->count) {
         min_len = list->count;
     }
-    struct LListKVPNode *curr = list->head;
+    LListKVPNode_t *curr = list->head;
     for (size_t i = 0; i < min_len; i++) {
         memcpy(arr + i * item_size, curr->data, item_size);
         curr = curr->next;

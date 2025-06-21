@@ -14,14 +14,14 @@
 #include "doubly_linked_list.h"
 #include <stdbool.h>
 
-struct DigraphVert {     // linked list digraph vertex
-    void *data;          // pointer to data
+typedef struct DigraphVert { // linked list digraph vertex
+    void *data;              // pointer to data
     int lvl;             // tracks the level/depth of the vertex in a traversal
     unsigned char state; // indicates the vertex state in a traversal;
                          // 0 = have not passed, 1 = have passed, 2 = skip
-    struct DLList adj_list; // list of adjacent vertices
-    struct DLList ref_list; // list of vertices this vertex is adjacent to
-};
+    DLList_t adj_list;   // list of adjacent vertices
+    DLList_t ref_list;   // list of vertices this vertex is adjacent to
+} DigraphVert_t;
 
 /**
  * @brief
@@ -31,7 +31,7 @@ struct DigraphVert {     // linked list digraph vertex
  *
  * @return Pointer to new digraph vertex
  */
-extern struct DigraphVert *DigraphInitVert(void *data);
+extern DigraphVert_t *DigraphInitVert(void *data);
 
 /**
  * @brief
@@ -40,10 +40,10 @@ extern struct DigraphVert *DigraphInitVert(void *data);
  * @param[in,out] p_vert        vertex to delete
  * @param[in]     free_data     function to free the data, NULL if not needed
  *
- * @return true  : removal successful 
+ * @return true  : removal successful
  * @return false : memory allocation failed
  */
-extern bool DigraphRemoveVert(struct DigraphVert **p_vert,
+extern bool DigraphRemoveVert(DigraphVert_t **p_vert,
                               void (*free_data)(void *));
 
 /**
@@ -53,10 +53,10 @@ extern bool DigraphRemoveVert(struct DigraphVert **p_vert,
  * @param[in,out] start     vertex the edge starts at
  * @param[in,out] end       vertex the edge ends at
  *
- * @return true  : connection successful 
+ * @return true  : connection successful
  * @return false : memory allocation failed
  */
-extern bool DigraphConnect(struct DigraphVert *start, struct DigraphVert *end);
+extern bool DigraphConnect(DigraphVert_t *start, DigraphVert_t *end);
 
 /**
  * @brief
@@ -65,11 +65,10 @@ extern bool DigraphConnect(struct DigraphVert *start, struct DigraphVert *end);
  * @param[in,out] start     vertex the edge starts at
  * @param[in,out] end       vertex the edge ends at
  *
- * @return true  : disconnection successful 
+ * @return true  : disconnection successful
  * @return false : no edge found
  */
-extern bool DigraphDisconnect(struct DigraphVert *start,
-                              struct DigraphVert *end);
+extern bool DigraphDisconnect(DigraphVert_t *start, DigraphVert_t *end);
 
 /**
  * @brief
@@ -78,11 +77,10 @@ extern bool DigraphDisconnect(struct DigraphVert *start,
  * @param[in,out] start     vertex the edge starts at
  * @param[in,out] end       vertex the edge ends at
  *
- * @return true  : an edge exist 
+ * @return true  : an edge exist
  * @return false : an edge doesn't exit
  */
-extern bool DigraphIsConnected(struct DigraphVert *start,
-                               struct DigraphVert *end);
+extern bool DigraphIsConnected(DigraphVert_t *start, DigraphVert_t *end);
 
 /**
  * @brief
@@ -92,7 +90,7 @@ extern bool DigraphIsConnected(struct DigraphVert *start,
  * @param[in,out] vert      vertex with the adjacency list
  * @param[in]     func      function to execute
  */
-extern void DigraphTraverseAdj(struct DigraphVert *vert, void (*func)(void *));
+extern void DigraphTraverseAdj(DigraphVert_t *vert, void (*func)(void *));
 
 /**
  * @brief
@@ -101,7 +99,7 @@ extern void DigraphTraverseAdj(struct DigraphVert *vert, void (*func)(void *));
  * @param[in,out] vert      vertex with the adjacency list
  * @param[in]     state     state to set to
  */
-extern void DigraphSetAdjState(struct DigraphVert *vert, unsigned char state);
+extern void DigraphSetAdjState(DigraphVert_t *vert, unsigned char state);
 
 /**
  * @brief
@@ -112,9 +110,9 @@ extern void DigraphSetAdjState(struct DigraphVert *vert, unsigned char state);
  * @param[in]     max_lvl   further level to traverse; -1 for unbound traversal
  * @param[in]     func      function to execute
  *
- * @return true  : traversal successful 
+ * @return true  : traversal successful
  * @return false : memory allocation failed
  */
-extern bool DigraphBreathTraverse(struct DigraphVert *vert, int max_lvl,
+extern bool DigraphBreathTraverse(DigraphVert_t *vert, int max_lvl,
                                   void (*func)(void *));
 #endif

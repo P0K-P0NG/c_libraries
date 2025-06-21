@@ -13,15 +13,15 @@
 
 #include <stdbool.h>
 
-struct LListQueueNode {          // linked list queue node
+typedef struct LListQueueNode {          // linked list queue node
     void *data;                  // Pointer to data
     struct LListQueueNode *next; // next node in the queue
-};
+} LListQueueNode_t;
 
-struct LListQueue {              // linked list queue
-    struct LListQueueNode *head; // head node
-    struct LListQueueNode *tail; // tail node
-};
+typedef struct LListQueue {              // linked list queue
+    LListQueueNode_t *head; // head node
+    LListQueueNode_t *tail; // tail node
+} LListQueue_t;
 
 /**
  * @brief
@@ -29,7 +29,7 @@ struct LListQueue {              // linked list queue
  *
  * @return Pointer to the linked list queue. NULL if memory allocation failed.
  */
-extern struct LListQueue *LListQueueCreate();
+extern LListQueue_t *LListQueueCreate();
 
 /**
  * @brief
@@ -42,7 +42,7 @@ extern struct LListQueue *LListQueueCreate();
  *   true  : enqueued successfully @n
  *   false : unable to allocate memory @n
  */
-extern bool LListQueueEnqueue(struct LListQueue *queue, void *data);
+extern bool LListQueueEnqueue(LListQueue_t *queue, void *data);
 
 /**
  * @brief
@@ -52,7 +52,7 @@ extern bool LListQueueEnqueue(struct LListQueue *queue, void *data);
  *
  * @return Pointer to the dequeued data, NULL if the queue is empty.
  */
-extern void *LListQueueDequeue(struct LListQueue *queue);
+extern void *LListQueueDequeue(LListQueue_t *queue);
 
 /**
  * @brief
@@ -61,6 +61,6 @@ extern void *LListQueueDequeue(struct LListQueue *queue);
  * @param[in,out] p_queue       linked list queue to delete
  * @param[in]     free_data     function to free data, NULL if not needed
  */
-extern void LListQueueClear(struct LListQueue **p_queue,
+extern void LListQueueClear(LListQueue_t **p_queue,
                             void (*free_data)(void *));
 #endif

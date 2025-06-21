@@ -15,16 +15,16 @@
 #include <assert.h>
 #include <stdlib.h>
 
-struct LListStack *LListStackCreate()
+LListStack_t *LListStackCreate()
 {
-    return calloc(1, sizeof(struct LListStack));
+    return calloc(1, sizeof(LListStack_t));
 }
 
-bool LListStackPush(struct LListStack *stack, void *data)
+bool LListStackPush(LListStack_t *stack, void *data)
 {
     assert(stack != NULL);
 
-    struct LListStackNode *new_head = calloc(1, sizeof(struct LListStackNode));
+    LListStackNode_t *new_head = calloc(1, sizeof(LListStackNode_t));
     if (new_head == NULL) {
         return false;
     }
@@ -38,12 +38,12 @@ bool LListStackPush(struct LListStack *stack, void *data)
     return true;
 }
 
-void *LListStackPop(struct LListStack *stack)
+void *LListStackPop(LListStack_t *stack)
 {
     assert(stack != NULL);
 
     void *data;
-    struct LListStackNode *prev_head = stack->head;
+    LListStackNode_t *prev_head = stack->head;
     if (prev_head == NULL) {
         return NULL;
     }
@@ -56,14 +56,14 @@ void *LListStackPop(struct LListStack *stack)
     return data;
 }
 
-void LListStackClear(struct LListStack **p_stack, void (*free_data)(void *))
+void LListStackClear(LListStack_t **p_stack, void (*free_data)(void *))
 {
     assert(p_stack != NULL);
     assert(*p_stack != NULL);
 
-    struct LListStackNode *curr = (*p_stack)->head;
+    LListStackNode_t *curr = (*p_stack)->head;
     while (curr != NULL) {
-        struct LListStackNode *prev = curr;
+        LListStackNode_t *prev = curr;
         curr = curr->next;
         if (free_data != NULL) {
             free_data(prev->data);

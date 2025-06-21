@@ -15,11 +15,11 @@
 extern const int days_in_month[12];
 extern const char month_names[12][10];
 
-struct Date {
+typedef struct Date {
     int day;   // range depends on the month and year
     int month; // 1-12
     int year;  // defined by the user
-};
+} Date_t;
 
 /**
  * @brief
@@ -31,5 +31,5 @@ struct Date {
  *
  * @return 1 if is valid; 0 if is not valid.
  */
-extern int checkDate(struct Date date, int min_year, int max_year);
+extern int checkDate(Date_t date, int min_year, int max_year);
 #endif

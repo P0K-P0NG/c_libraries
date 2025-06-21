@@ -11,9 +11,9 @@
 #ifndef UNIVERSAL_POINTER_H
 #define UNIVERSAL_POINTER_H
 
-struct Pointer {
+typedef struct Pointer {
     void *const ptr;
     char type[5];
-};
+} Pointer_t;
 
 #endif

@@ -14,10 +14,10 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-struct PointerArray {
+typedef struct PointerArray {
     void **ptrs;
     size_t len;
-};
+} PointerArray_t;
 
 /**
  * @brief
@@ -27,7 +27,7 @@ struct PointerArray {
  *
  * @return Pointer to the array of pointers. NULL if memory allocation failed.
  */
-extern struct PointerArray *PointerArrayCreate(size_t len);
+extern PointerArray_t *PointerArrayCreate(size_t len);
 
 /**
  * @brief
@@ -37,7 +37,7 @@ extern struct PointerArray *PointerArrayCreate(size_t len);
  * @param[in,out] p_arr         pointer array to delete
  * @param[in]     free_data     function to free data in the pointers
  */
-extern void PointerArrayClear(struct PointerArray **p_arr,
+extern void PointerArrayClear(PointerArray_t **p_arr,
                               void (*free_data)(void *data));
 
 /**
@@ -49,7 +49,7 @@ extern void PointerArrayClear(struct PointerArray **p_arr,
  * 
  * @return Pointer at the specificed index. NULL if index is out of bounds.
  */
-extern void *PointerArrayGet(struct PointerArray *arr, size_t idx);
+extern void *PointerArrayGet(PointerArray_t *arr, size_t idx);
 
 /**
  * @brief  
@@ -64,7 +64,7 @@ extern void *PointerArrayGet(struct PointerArray *arr, size_t idx);
  * @return true  : pointer set sucessfully
  * @return false : index out of bounds
  */
-extern bool PointerArraySet(struct PointerArray *arr, size_t idx, void *data,
+extern bool PointerArraySet(PointerArray_t *arr, size_t idx, void *data,
                             void (*free_data)(void *data));
 
 #endif

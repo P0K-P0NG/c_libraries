@@ -16,13 +16,13 @@
 #include <assert.h>
 #include <stdlib.h>
 
-struct ChainHashTable *
+ChainHashTable_t *
 ChainHashTableCreate(size_t bucket_count, size_t (*hash_func)(const void *),
                      int (*comp_key)(const void *, const void *))
 {
     assert(hash_func != NULL);
 
-    struct ChainHashTable *table = calloc(1, sizeof(struct ChainHashTable));
+    ChainHashTable_t *table = calloc(1, sizeof(ChainHashTable_t));
     if (table == NULL) {
         return NULL;
     }
@@ -36,7 +36,7 @@ ChainHashTableCreate(size_t bucket_count, size_t (*hash_func)(const void *),
     return table;
 }
 
-void ChainHashTableClear(struct ChainHashTable **p_table,
+void ChainHashTableClear(ChainHashTable_t **p_table,
                          void (*free_key)(void *), void (*free_data)(void *))
 {
     assert(p_table != NULL);
@@ -50,7 +50,7 @@ void ChainHashTableClear(struct ChainHashTable **p_table,
     *p_table = NULL;
 }
 
-int ChainHashTableAdd(struct ChainHashTable *table, void *key, void *data)
+int ChainHashTableAdd(ChainHashTable_t *table, void *key, void *data)
 {
     assert(table != NULL);
 
@@ -58,7 +58,7 @@ int ChainHashTableAdd(struct ChainHashTable *table, void *key, void *data)
     return LListKVPAdd(&table->buckets[idx], key, data);
 }
 
-void *ChainHashTableRemove(struct ChainHashTable *table, void *key,
+void *ChainHashTableRemove(ChainHashTable_t *table, void *key,
                            void (*free_key)(void *))
 {
     assert(table != NULL);
@@ -67,7 +67,7 @@ void *ChainHashTableRemove(struct ChainHashTable *table, void *key,
     return LListKVPRemove(&table->buckets[idx], key, free_key);
 }
 
-void *ChainHashTableFind(struct ChainHashTable *table, const void *key)
+void *ChainHashTableFind(ChainHashTable_t *table, const void *key)
 {
     assert(table != NULL);
 
@@ -75,7 +75,7 @@ void *ChainHashTableFind(struct ChainHashTable *table, const void *key)
     return LListKVPFind(&table->buckets[idx], key);
 }
 
-bool ChainHashTableFindAll(struct ChainHashTable *table, const void *key,
+bool ChainHashTableFindAll(ChainHashTable_t *table, const void *key,
                            void ***ptr_arr, size_t *count)
 {
     assert(table != NULL);
@@ -84,7 +84,7 @@ bool ChainHashTableFindAll(struct ChainHashTable *table, const void *key,
     return LListKVPFindAll(&table->buckets[idx], key, ptr_arr, count);
 }
 
-int ChainHashTableCountRepeats(struct ChainHashTable *table, const void *key)
+int ChainHashTableCountRepeats(ChainHashTable_t *table, const void *key)
 {
     assert(table != NULL);
 
@@ -92,7 +92,7 @@ int ChainHashTableCountRepeats(struct ChainHashTable *table, const void *key)
     return LListKVPCountRepeats(&table->buckets[idx], key);
 }
 
-void ChainHashTableTraverse(struct ChainHashTable *table,
+void ChainHashTableTraverse(ChainHashTable_t *table,
                             void (*func)(void *, void *))
 {
     assert(table != NULL);
@@ -103,7 +103,7 @@ void ChainHashTableTraverse(struct ChainHashTable *table,
     }
 }
 
-int ChainHashTableChainLength(struct ChainHashTable *table, const void *key)
+int ChainHashTableChainLength(ChainHashTable_t *table, const void *key)
 {
     assert(table != NULL);
 

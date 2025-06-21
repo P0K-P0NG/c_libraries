@@ -14,11 +14,11 @@
 #include "linked_list_kvp.h"
 #include <stddef.h>
 
-struct ChainHashTable {
-    struct LListKVP *buckets; // array of linked list buckets
+typedef struct ChainHashTable {
+    LListKVP_t *buckets; // array of linked list buckets
     size_t length;            // length of the bucket array
     size_t (*hash)(const void *);
-};
+} ChainHashTable_t;
 
 /**
  * @brief
@@ -35,7 +35,7 @@ struct ChainHashTable {
  *
  * @return New chained hashtable. NULL if unable to allocate memory.
  */
-extern struct ChainHashTable *
+extern ChainHashTable_t *
 ChainHashTableCreate(size_t bucket_count, size_t (*hash_func)(const void *),
                      int (*comp_key)(const void *, const void *));
 
@@ -48,7 +48,7 @@ ChainHashTableCreate(size_t bucket_count, size_t (*hash_func)(const void *),
  * @param[in]     free_key      function to free the keys, NULL if not needed
  * @param[in]     free_data     function to free the data, NULL if not needed
  */
-extern void ChainHashTableClear(struct ChainHashTable **p_table,
+extern void ChainHashTableClear(ChainHashTable_t **p_table,
                                 void (*free_key)(void *),
                                 void (*free_data)(void *));
 
@@ -65,7 +65,7 @@ extern void ChainHashTableClear(struct ChainHashTable **p_table,
  *   1 : added successfully @n
  *   0 : unable to allocate memory @n
  */
-extern int ChainHashTableAdd(struct ChainHashTable *table, void *key,
+extern int ChainHashTableAdd(ChainHashTable_t *table, void *key,
                              void *data);
 
 /**
@@ -78,7 +78,7 @@ extern int ChainHashTableAdd(struct ChainHashTable *table, void *key,
  *
  * @return Pointer to the removed data, NULL if not found.
  */
-extern void *ChainHashTableRemove(struct ChainHashTable *table, void *key,
+extern void *ChainHashTableRemove(ChainHashTable_t *table, void *key,
                                   void (*free_key)(void *));
 
 /**
@@ -91,7 +91,7 @@ extern void *ChainHashTableRemove(struct ChainHashTable *table, void *key,
  *
  * @return Pointer to the data, NULL if not found.
  */
-extern void *ChainHashTableFind(struct ChainHashTable *table, const void *key);
+extern void *ChainHashTableFind(ChainHashTable_t *table, const void *key);
 
 /**
  * @brief
@@ -106,7 +106,7 @@ extern void *ChainHashTableFind(struct ChainHashTable *table, const void *key);
  * @return true  : execution successful 
  * @return false : memory allocation failed
  */
-extern bool ChainHashTableFindAll(struct ChainHashTable *table, const void *key,
+extern bool ChainHashTableFindAll(ChainHashTable_t *table, const void *key,
                                   void ***ptr_arr, size_t *count);
 
 /**
@@ -118,7 +118,7 @@ extern bool ChainHashTableFindAll(struct ChainHashTable *table, const void *key,
  *
  * @return The numebr of times the provided key is matched.
  */
-extern int ChainHashTableCountRepeats(struct ChainHashTable *table,
+extern int ChainHashTableCountRepeats(ChainHashTable_t *table,
                                       const void *key);
 
 /**
@@ -129,7 +129,7 @@ extern int ChainHashTableCountRepeats(struct ChainHashTable *table,
  * @param[in,out] table     chained hashtable to traverse
  * @param[in]     func      function to execute
  */
-extern void ChainHashTableTraverse(struct ChainHashTable *table,
+extern void ChainHashTableTraverse(ChainHashTable_t *table,
                                    void (*func)(void *, void *));
 
 /**
@@ -142,6 +142,6 @@ extern void ChainHashTableTraverse(struct ChainHashTable *table,
  *
  * @return Length of the bucket.
  */
-extern int ChainHashTableChainLength(struct ChainHashTable *table,
+extern int ChainHashTableChainLength(ChainHashTable_t *table,
                                      const void *key);
 #endif

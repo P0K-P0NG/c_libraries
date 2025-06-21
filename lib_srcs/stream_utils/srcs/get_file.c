@@ -26,7 +26,7 @@ int getFilePtr(FILE **file_p, const size_t name_len, const char mode[],
         chdir(cwd);
     }
     *file_p = NULL;
-    if (getStr((struct String){file_name, name_len}, prompt) == NULL) {
+    if (getStr((String_t){file_name, name_len}, prompt) == NULL) {
         err_code = 1;
     } else if (!hasSuffix(file_name, suffix)) {
         err_code = 2;

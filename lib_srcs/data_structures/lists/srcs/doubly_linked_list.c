@@ -18,16 +18,16 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct DLList *DLListCreate() { return calloc(1, sizeof(struct DLList)); }
+DLList_t *DLListCreate() { return calloc(1, sizeof(DLList_t)); }
 
-void DLListClear(struct DLList **p_list, void (*free_data)(void *))
+void DLListClear(DLList_t **p_list, void (*free_data)(void *))
 {
     assert(p_list != NULL);
     assert(*p_list != NULL);
 
-    struct DLListNode *curr_node = (*p_list)->head;
+    DLListNode_t *curr_node = (*p_list)->head;
     while (curr_node != NULL) {
-        struct DLListNode *prev = curr_node;
+        DLListNode_t *prev = curr_node;
         curr_node = curr_node->next;
         if (free_data != NULL) {
             free_data(prev->data);
@@ -38,7 +38,7 @@ void DLListClear(struct DLList **p_list, void (*free_data)(void *))
     *p_list = NULL;
 }
 
-void DLListRemove(struct DLList *list, struct DLListNode *node,
+void DLListRemove(DLList_t *list, DLListNode_t *node,
                   void (*free_data)(void *))
 {
     assert(list != NULL);
@@ -61,27 +61,27 @@ void DLListRemove(struct DLList *list, struct DLListNode *node,
     free(node);
 }
 
-void DLListRemoveAll(struct DLList *list, void (*free_data)(void *))
+void DLListRemoveAll(DLList_t *list, void (*free_data)(void *))
 {
     assert(list != NULL);
 
-    struct DLListNode *curr_node = list->head;
+    DLListNode_t *curr_node = list->head;
     while (curr_node != NULL) {
-        struct DLListNode *prev = curr_node;
+        DLListNode_t *prev = curr_node;
         curr_node = curr_node->next;
         if (free_data != NULL) {
             free_data(prev->data);
         }
         free(prev);
     }
-    memset(list, 0, sizeof(struct DLList));
+    memset(list, 0, sizeof(DLList_t));
 }
 
-struct DLListNode *DLListAddHead(struct DLList *list, void *data)
+DLListNode_t *DLListAddHead(DLList_t *list, void *data)
 {
     assert(list != NULL);
 
-    struct DLListNode *new_head = calloc(1, sizeof(struct DLListNode));
+    DLListNode_t *new_head = calloc(1, sizeof(DLListNode_t));
     if (new_head == NULL) {
         return NULL;
     }
@@ -98,11 +98,11 @@ struct DLListNode *DLListAddHead(struct DLList *list, void *data)
     return new_head;
 }
 
-struct DLListNode *DLListAddTail(struct DLList *list, void *data)
+DLListNode_t *DLListAddTail(DLList_t *list, void *data)
 {
     assert(list != NULL);
 
-    struct DLListNode *new_tail = calloc(1, sizeof(struct DLListNode));
+    DLListNode_t *new_tail = calloc(1, sizeof(DLListNode_t));
     if (new_tail == NULL) {
         return NULL;
     }
@@ -119,13 +119,13 @@ struct DLListNode *DLListAddTail(struct DLList *list, void *data)
     return new_tail;
 }
 
-struct DLListNode *DLListAddAt(struct DLList *list,
-                               struct DLListNode *curr_node, void *data)
+DLListNode_t *DLListAddAt(DLList_t *list,
+                               DLListNode_t *curr_node, void *data)
 {
     assert(list != NULL);
     assert(curr_node != NULL);
 
-    struct DLListNode *new_node = calloc(1, sizeof(struct DLListNode));
+    DLListNode_t *new_node = calloc(1, sizeof(DLListNode_t));
     if (new_node == NULL) {
         return NULL;
     }
@@ -148,19 +148,19 @@ struct DLListNode *DLListAddAt(struct DLList *list,
     return new_node;
 }
 
-struct DLListNode *DLListAddByCompare(struct DLList *list, void *data,
+DLListNode_t *DLListAddByCompare(DLList_t *list, void *data,
                                       int (*comp_func)(const void *,
                                                        const void *))
 {
     assert(list != NULL);
     assert(comp_func != NULL);
 
-    struct DLListNode *new_node = calloc(1, sizeof(struct DLListNode));
+    DLListNode_t *new_node = calloc(1, sizeof(DLListNode_t));
     if (new_node == NULL) {
         return NULL;
     }
 
-    struct DLListNode *curr_node = list->head;
+    DLListNode_t *curr_node = list->head;
     while (curr_node != NULL && comp_func(curr_node->data, data) < 0) {
         curr_node = curr_node->next;
     }
@@ -182,7 +182,7 @@ struct DLListNode *DLListAddByCompare(struct DLList *list, void *data,
     return new_node;
 }
 
-struct DLListNode *DLListAt(struct DLList *list, size_t idx)
+DLListNode_t *DLListAt(DLList_t *list, size_t idx)
 {
     assert(list != NULL);
 
@@ -190,7 +190,7 @@ struct DLListNode *DLListAt(struct DLList *list, size_t idx)
         return NULL;
 
     size_t diff = list->count - idx - 1;
-    struct DLListNode *curr_node;
+    DLListNode_t *curr_node;
     if (diff > idx) {
         curr_node = list->tail;
         for (size_t i = 0; i < diff; i++) {
@@ -205,37 +205,37 @@ struct DLListNode *DLListAt(struct DLList *list, size_t idx)
     return curr_node;
 }
 
-struct DLListNode *DLListFind(struct DLList *list, const void *key,
+DLListNode_t *DLListFind(DLList_t *list, const void *key,
                               int (*comp_func)(const void *, const void *))
 {
     assert(list != NULL);
 
-    struct DLListNode *curr_node = list->head;
+    DLListNode_t *curr_node = list->head;
     while (curr_node != NULL && comp_func(curr_node->data, key) != 0) {
         curr_node = curr_node->next;
     }
     return curr_node;
 }
 
-void DLListTraverse(struct DLList *list, void (*func)(void *))
+void DLListTraverse(DLList_t *list, void (*func)(void *))
 {
     assert(list != NULL);
     assert(func != NULL);
 
-    struct DLListNode *curr_node = list->head;
+    DLListNode_t *curr_node = list->head;
     while (curr_node != NULL) {
         func(curr_node->data);
         curr_node = curr_node->next;
     }
 }
 
-void _extend_DLListTraverse(struct DLList *list, void *(*extract_func)(void *),
+void _extend_DLListTraverse(DLList_t *list, void *(*extract_func)(void *),
                             void (*func)(void *))
 {
     assert(list != NULL);
     assert(func != NULL);
 
-    struct DLListNode *curr_node = list->head;
+    DLListNode_t *curr_node = list->head;
     while (curr_node != NULL) {
         func(extract_func(curr_node->data));
         curr_node = curr_node->next;

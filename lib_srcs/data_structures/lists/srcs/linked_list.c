@@ -16,16 +16,16 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct LList *LListCreate() { return calloc(1, sizeof(struct LList)); }
+LList_t *LListCreate() { return calloc(1, sizeof(LList_t)); }
 
-void LListClear(struct LList **p_list, void (*free_data)(void *))
+void LListClear(LList_t **p_list, void (*free_data)(void *))
 {
     assert(p_list != NULL);
     assert(*p_list != NULL);
 
-    struct LListNode *curr = (*p_list)->head;
+    LListNode_t *curr = (*p_list)->head;
     while (curr != NULL) {
-        struct LListNode *prev = curr;
+        LListNode_t *prev = curr;
         curr = curr->next;
         if (free_data != NULL) {
             free_data(prev->data);
@@ -36,14 +36,14 @@ void LListClear(struct LList **p_list, void (*free_data)(void *))
     *p_list = NULL;
 }
 
-bool LListRemoveHead(struct LList *list, void (*free_data)(void *))
+bool LListRemoveHead(LList_t *list, void (*free_data)(void *))
 {
     assert(list != NULL);
 
     if (list->count == 0)
         return false;
 
-    struct LListNode *prev_head = list->head;
+    LListNode_t *prev_head = list->head;
     if (list->head == list->tail) {
         list->tail = NULL;
     }
@@ -56,15 +56,15 @@ bool LListRemoveHead(struct LList *list, void (*free_data)(void *))
     return true;
 }
 
-bool LListRemoveAt(struct LList *list, size_t idx, void (*free_data)(void *))
+bool LListRemoveAt(LList_t *list, size_t idx, void (*free_data)(void *))
 {
     assert(list != NULL);
 
     if (idx >= list->count || idx < 0)
         return false;
 
-    struct LListNode *expired;
-    struct LListNode *prev = NULL;
+    LListNode_t *expired;
+    LListNode_t *prev = NULL;
     list->count -= 1;
     if (idx == 0) {
         expired = list->head;
@@ -87,27 +87,27 @@ bool LListRemoveAt(struct LList *list, size_t idx, void (*free_data)(void *))
     return true;
 }
 
-void LListRemoveAll(struct LList *list, void (*free_data)(void *))
+void LListRemoveAll(LList_t *list, void (*free_data)(void *))
 {
     assert(list != NULL);
 
-    struct LListNode *curr = list->head;
+    LListNode_t *curr = list->head;
     while (curr != NULL) {
-        struct LListNode *prev = curr;
+        LListNode_t *prev = curr;
         curr = curr->next;
         if (free_data != NULL) {
             free_data(prev->data);
         }
         free(prev);
     }
-    memset(list, 0, sizeof(struct LList));
+    memset(list, 0, sizeof(LList_t));
 }
 
-bool LListAddHead(struct LList *list, void *data)
+bool LListAddHead(LList_t *list, void *data)
 {
     assert(list != NULL);
 
-    struct LListNode *new_head = calloc(1, sizeof(struct LListNode));
+    LListNode_t *new_head = calloc(1, sizeof(LListNode_t));
     if (new_head == NULL)
         return false;
 
@@ -121,11 +121,11 @@ bool LListAddHead(struct LList *list, void *data)
     return true;
 }
 
-bool LListAddTail(struct LList *list, void *data)
+bool LListAddTail(LList_t *list, void *data)
 {
     assert(list != NULL);
 
-    struct LListNode *new_tail = calloc(1, sizeof(struct LListNode));
+    LListNode_t *new_tail = calloc(1, sizeof(LListNode_t));
     if (new_tail == NULL)
         return false;
 
@@ -140,14 +140,14 @@ bool LListAddTail(struct LList *list, void *data)
     return true;
 }
 
-int LListAddAt(struct LList *list, void *data, size_t idx)
+int LListAddAt(LList_t *list, void *data, size_t idx)
 {
     assert(list != NULL);
 
     if (idx >= list->count)
         return -1;
 
-    struct LListNode *new_node = calloc(1, sizeof(struct LListNode));
+    LListNode_t *new_node = calloc(1, sizeof(LListNode_t));
     if (new_node == NULL)
         return 0;
 
@@ -155,7 +155,7 @@ int LListAddAt(struct LList *list, void *data, size_t idx)
         new_node->next = list->head;
         list->head = new_node;
     } else {
-        struct LListNode *prev = list->head;
+        LListNode_t *prev = list->head;
         for (size_t i = 1; i < idx; i++) {
             prev = prev->next;
         }
@@ -167,18 +167,18 @@ int LListAddAt(struct LList *list, void *data, size_t idx)
     return 1;
 }
 
-bool LListAddByCompare(struct LList *list, void *data,
+bool LListAddByCompare(LList_t *list, void *data,
                        int (*comp_func)(const void *, const void *))
 {
     assert(list != NULL);
     assert(comp_func != NULL);
 
-    struct LListNode *new_node = calloc(1, sizeof(struct LListNode));
+    LListNode_t *new_node = calloc(1, sizeof(LListNode_t));
     if (new_node == NULL)
         return false;
 
-    struct LListNode *prev = NULL;
-    struct LListNode *curr = list->head;
+    LListNode_t *prev = NULL;
+    LListNode_t *curr = list->head;
     while (curr != NULL && comp_func(curr->data, data) < 0) {
         prev = curr;
         curr = curr->next;
@@ -197,14 +197,14 @@ bool LListAddByCompare(struct LList *list, void *data,
     return true;
 }
 
-bool LListEditAt(struct LList *list, void *data, size_t idx)
+bool LListEditAt(LList_t *list, void *data, size_t idx)
 {
     assert(list != NULL);
 
     if (idx >= list->count || idx < 0)
         return false;
 
-    struct LListNode *curr = list->head;
+    LListNode_t *curr = list->head;
     for (size_t i = 0; i < idx; i++) {
         curr = curr->next;
     }
@@ -212,45 +212,45 @@ bool LListEditAt(struct LList *list, void *data, size_t idx)
     return true;
 }
 
-void *LListDataAt(struct LList *list, size_t idx)
+void *LListDataAt(LList_t *list, size_t idx)
 {
     assert(list != NULL);
 
     if (idx >= list->count || idx < 0)
         return NULL;
 
-    struct LListNode *curr = list->head;
+    LListNode_t *curr = list->head;
     for (size_t i = 0; i < idx; i++) {
         curr = curr->next;
     }
     return curr->data;
 }
 
-void *LListData(struct LList *list, const void *key,
+void *LListData(LList_t *list, const void *key,
                 int (*comp_func)(const void *, const void *))
 {
     assert(list != NULL);
     assert(comp_func != NULL);
 
-    struct LListNode *curr = list->head;
+    LListNode_t *curr = list->head;
     while (curr != NULL && comp_func(curr->data, key) != 0) {
         curr = curr->next;
     }
     return curr->data;
 }
 
-bool LListAllData(struct LList *list, const void *key, void ***ptr_arr,
+bool LListAllData(LList_t *list, const void *key, void ***ptr_arr,
                   size_t *count, int (*comp_func)(const void *, const void *))
 {
     assert(list != NULL);
     assert(ptr_arr != NULL);
     assert(comp_func != NULL);
 
-    struct LList *data_list = LListCreate();
+    LList_t *data_list = LListCreate();
     if (data_list == NULL)
         return false;
 
-    struct LListNode *curr = list->head;
+    LListNode_t *curr = list->head;
     for (size_t i = 0; curr != NULL; i++) {
         if (comp_func(curr->data, key) == 0) {
             bool is_ok = LListAddTail(data_list, curr->data);
@@ -269,14 +269,14 @@ bool LListAllData(struct LList *list, const void *key, void ***ptr_arr,
     return true;
 }
 
-bool LListFindIdx(struct LList *list, const void *key, size_t *idx,
+bool LListFindIdx(LList_t *list, const void *key, size_t *idx,
                   int (*comp_func)(const void *, const void *))
 {
     assert(list != NULL);
     assert(comp_func != NULL);
 
     size_t i = 0;
-    struct LListNode *curr = list->head;
+    LListNode_t *curr = list->head;
     for (; curr != NULL && comp_func(curr->data, key) != 0; i++) {
         curr = curr->next;
     }
@@ -287,7 +287,7 @@ bool LListFindIdx(struct LList *list, const void *key, size_t *idx,
     return true;
 }
 
-bool LListFindAllIdx(struct LList *list, const void *key, int **idx_arr,
+bool LListFindAllIdx(LList_t *list, const void *key, int **idx_arr,
                      size_t *count,
                      int (*comp_func)(const void *, const void *))
 {
@@ -295,11 +295,11 @@ bool LListFindAllIdx(struct LList *list, const void *key, int **idx_arr,
     assert(idx_arr != NULL);
     assert(comp_func != NULL);
 
-    struct LList *idx_list = LListCreate();
+    LList_t *idx_list = LListCreate();
     if (idx_list == NULL) {
         return false;
     }
-    struct LListNode *curr = list->head;
+    LListNode_t *curr = list->head;
     for (size_t i = 0; curr != NULL; i++) {
         if (comp_func(curr->data, key) == 0) {
             int *new_idx = malloc(sizeof(int));
@@ -323,19 +323,19 @@ bool LListFindAllIdx(struct LList *list, const void *key, int **idx_arr,
     return true;
 }
 
-void LListTraverse(struct LList *list, void (*func)(void *))
+void LListTraverse(LList_t *list, void (*func)(void *))
 {
     assert(list != NULL);
     assert(func != NULL);
 
-    struct LListNode *curr = list->head;
+    LListNode_t *curr = list->head;
     while (curr != NULL) {
         func(curr->data);
         curr = curr->next;
     }
 }
 
-void LListToPointerArr(struct LList *list, void **arr, size_t len)
+void LListToPointerArr(LList_t *list, void **arr, size_t len)
 {
     assert(list != NULL);
     assert(arr != NULL);
@@ -344,14 +344,14 @@ void LListToPointerArr(struct LList *list, void **arr, size_t len)
     if (min_len > list->count) {
         min_len = list->count;
     }
-    struct LListNode *curr = list->head;
+    LListNode_t *curr = list->head;
     for (size_t i = 0; i < min_len; i++) {
         arr[i] = curr->data;
         curr = curr->next;
     }
 }
 
-void LListToArr(struct LList *list, void *arr, size_t len, size_t item_size)
+void LListToArr(LList_t *list, void *arr, size_t len, size_t item_size)
 {
     assert(list != NULL);
     assert(arr != NULL);
@@ -360,7 +360,7 @@ void LListToArr(struct LList *list, void *arr, size_t len, size_t item_size)
     if (min_len > list->count) {
         min_len = list->count;
     }
-    struct LListNode *curr = list->head;
+    LListNode_t *curr = list->head;
     for (size_t i = 0; i < min_len; i++) {
         memcpy(arr + i * item_size, curr->data, item_size);
         curr = curr->next;

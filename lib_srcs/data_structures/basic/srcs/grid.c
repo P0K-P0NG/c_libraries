@@ -15,9 +15,9 @@
 #include <assert.h>
 #include <stdlib.h>
 
-struct Grid *GridCreate(size_t row_count, size_t col_count)
+Grid_t *GridCreate(size_t row_count, size_t col_count)
 {
-    struct Grid *new_grid = calloc(1, sizeof(struct Grid));
+    Grid_t *new_grid = calloc(1, sizeof(Grid_t));
     if (new_grid == NULL)
         return NULL;
     new_grid->items = calloc(row_count * col_count, sizeof(void *));
@@ -30,7 +30,7 @@ struct Grid *GridCreate(size_t row_count, size_t col_count)
     return new_grid;
 }
 
-void GridClear(struct Grid **p_grid, void (*free_data)(void *))
+void GridClear(Grid_t **p_grid, void (*free_data)(void *))
 {
     assert(p_grid != NULL);
     assert(*p_grid != NULL);
@@ -46,7 +46,7 @@ void GridClear(struct Grid **p_grid, void (*free_data)(void *))
     *p_grid = NULL;
 }
 
-bool GridSet(struct Grid *grid, size_t row_idx, size_t col_idx, void *data,
+bool GridSet(Grid_t *grid, size_t row_idx, size_t col_idx, void *data,
              void (*free_data)(void *))
 {
     assert(grid != NULL);
@@ -62,7 +62,7 @@ bool GridSet(struct Grid *grid, size_t row_idx, size_t col_idx, void *data,
     }
 }
 
-void *GridGet(struct Grid *grid, size_t row_idx, size_t col_idx)
+void *GridGet(Grid_t *grid, size_t row_idx, size_t col_idx)
 {
     assert(grid != NULL);
 

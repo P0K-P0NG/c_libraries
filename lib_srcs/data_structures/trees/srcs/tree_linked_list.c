@@ -15,19 +15,19 @@
 #include "linked_list.h"
 #include <stdlib.h>
 
-static int _deepestNodesRec(struct LListTreeNode *node, int depth, int deepest,
-                            struct LList *node_list);
+static int _deepestNodesRec(LListTreeNode_t *node, int depth, int deepest,
+                            LList_t *node_list);
 
-struct LListTreeNode *LListTreeCreate(void *data)
+LListTreeNode_t *LListTreeCreate(void *data)
 {
-    struct LListTreeNode *root = calloc(1, sizeof(struct LListTreeNode));
+    LListTreeNode_t *root = calloc(1, sizeof(LListTreeNode_t));
     if (root != NULL) {
         root->data = data;
     }
     return root;
 }
 
-void LListTreeClear(struct LListTreeNode **root, void (*free_data)(void *))
+void LListTreeClear(LListTreeNode_t **root, void (*free_data)(void *))
 {
     if ((*root)->head_child != NULL) {
         LListTreeClear(&((*root)->head_child), free_data);
@@ -41,10 +41,10 @@ void LListTreeClear(struct LListTreeNode **root, void (*free_data)(void *))
     *root = NULL;
 }
 
-int LListTreeAdd(struct LListTreeNode *parent, void *data)
+int LListTreeAdd(LListTreeNode_t *parent, void *data)
 {
     int is_made = 0;
-    struct LListTreeNode *new_child = calloc(1, sizeof(struct LListTreeNode));
+    LListTreeNode_t *new_child = calloc(1, sizeof(LListTreeNode_t));
     if (new_child != NULL) {
         is_made = 1;
         new_child->parent = parent;
@@ -55,16 +55,16 @@ int LListTreeAdd(struct LListTreeNode *parent, void *data)
     return is_made;
 }
 
-void LListTreeEdit(struct LListTreeNode *node, void *data)
+void LListTreeEdit(LListTreeNode_t *node, void *data)
 {
     node->data = data;
 }
 
-struct LListTreeNode *LListTreeGetNode(struct LListTreeNode *root, void *data,
+LListTreeNode_t *LListTreeGetNode(LListTreeNode_t *root, void *data,
                                        int (*comp_func)(const void *,
                                                         const void *))
 {
-    struct LListTreeNode *target = NULL;
+    LListTreeNode_t *target = NULL;
     if (comp_func(root->data, data) != 0) {
         if (root->head_child != NULL) {
             target = LListTreeGetNode(root->head_child, data, comp_func);
@@ -78,10 +78,10 @@ struct LListTreeNode *LListTreeGetNode(struct LListTreeNode *root, void *data,
     return target;
 }
 
-int LListTreeCountChild(struct LListTreeNode *parent)
+int LListTreeCountChild(LListTreeNode_t *parent)
 {
     int count = 0;
-    struct LListTreeNode *curr = parent->head_child;
+    LListTreeNode_t *curr = parent->head_child;
     while (curr != NULL) {
         count++;
         curr = curr->next;
@@ -89,7 +89,7 @@ int LListTreeCountChild(struct LListTreeNode *parent)
     return count;
 }
 
-void LListTreePreOrder(struct LListTreeNode *root, int depth,
+void LListTreePreOrder(LListTreeNode_t *root, int depth,
                        void (*func)(void *, int))
 {
     func(root->data, depth);
@@ -101,7 +101,7 @@ void LListTreePreOrder(struct LListTreeNode *root, int depth,
     }
 }
 
-void LListTreeInOrder(struct LListTreeNode *root, int depth,
+void LListTreeInOrder(LListTreeNode_t *root, int depth,
                       void (*func)(void *, int))
 {
     if (root->head_child != NULL) {
@@ -113,7 +113,7 @@ void LListTreeInOrder(struct LListTreeNode *root, int depth,
     }
 }
 
-void LListTreePostOrder(struct LListTreeNode *root, int depth,
+void LListTreePostOrder(LListTreeNode_t *root, int depth,
                         void (*func)(void *, int))
 {
     if (root->head_child != NULL) {
@@ -125,28 +125,28 @@ void LListTreePostOrder(struct LListTreeNode *root, int depth,
     func(root->data, depth);
 }
 
-int LListTreeDeepestNodes(struct LListTreeNode *root,
-                          struct LListTreeNode **node_arr)
+int LListTreeDeepestNodes(LListTreeNode_t *root,
+                          LListTreeNode_t **node_arr)
 {
-    struct LList *node_list = LListCreate();
+    LList_t *node_list = LListCreate();
     int deepest = _deepestNodesRec(root, 0, 0, node_list);
     if (deepest == -1) {
         LListClear(&node_list, NULL);
         return -1;
     }
     int count = node_list->count;
-    *node_arr = malloc(count * sizeof(struct LListTreeNode));
+    *node_arr = malloc(count * sizeof(LListTreeNode_t));
     if (*node_arr == NULL) {
         LListClear(&node_list, NULL);
         return -1;
     }
-    LListToArr(node_list, *node_arr, count, sizeof(struct LListTreeNode));
+    LListToArr(node_list, *node_arr, count, sizeof(LListTreeNode_t));
     LListClear(&node_list, NULL);
     return count;
 }
 
-static int _deepestNodesRec(struct LListTreeNode *node, int depth, int deepest,
-                            struct LList *node_list)
+static int _deepestNodesRec(LListTreeNode_t *node, int depth, int deepest,
+                            LList_t *node_list)
 {
     if (node->head_child != NULL) {
         deepest

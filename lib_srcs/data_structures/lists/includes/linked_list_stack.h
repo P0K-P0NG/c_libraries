@@ -13,15 +13,15 @@
 
 #include <stdbool.h>
 
-struct LListStackNode {          // linked list stack node
+typedef struct LListStackNode {          // linked list stack node
     void *data;                  // Pointer to data
     struct LListStackNode *next; // next node in the stack
-};
+} LListStackNode_t;
 
-struct LListStack {              // linked list stack
-    struct LListStackNode *head; // head node
-    struct LListStackNode *tail; // tail node
-};
+typedef struct LListStack {              // linked list stack
+    LListStackNode_t *head; // head node
+    LListStackNode_t *tail; // tail node
+} LListStack_t;
 
 /**
  * @brief
@@ -29,7 +29,7 @@ struct LListStack {              // linked list stack
  *
  * @return Pointer to the linked list stack. NULL if memory allocation failed.
  */
-extern struct LListStack *LListStackCreate();
+extern LListStack_t *LListStackCreate();
 
 /**
  * @brief
@@ -42,7 +42,7 @@ extern struct LListStack *LListStackCreate();
  *   true  : pushed successfully @n
  *   false : unable to allocate memory @n
  */
-extern bool LListStackPush(struct LListStack *stack, void *data);
+extern bool LListStackPush(LListStack_t *stack, void *data);
 
 /**
  * @brief
@@ -52,7 +52,7 @@ extern bool LListStackPush(struct LListStack *stack, void *data);
  *
  * @return Pointer to the popped data, NULL if the stack is empty.
  */
-extern void *LListStackPop(struct LListStack *stack);
+extern void *LListStackPop(LListStack_t *stack);
 
 /**
  * @brief
@@ -61,6 +61,6 @@ extern void *LListStackPop(struct LListStack *stack);
  * @param[in,out] p_stack       linked list stack to delete
  * @param[in]     free_data     function to free data, NULL if not needed
  */
-extern void LListStackClear(struct LListStack **p_stack,
+extern void LListStackClear(LListStack_t **p_stack,
                             void (*free_data)(void *));
 #endif

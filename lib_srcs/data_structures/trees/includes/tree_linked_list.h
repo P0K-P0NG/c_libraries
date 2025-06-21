@@ -11,14 +11,14 @@
 #ifndef TREE_LINKED_LIST_H
 #define TREE_LINKED_LIST_H
 
-struct LListTreeNode {            // struct of a tree node of a tree structure
+typedef struct LListTreeNode {            // struct of a tree node of a tree structure
     void *data;                   // pointer to data
     struct LListTreeNode *parent; // parent node of this node
     struct LListTreeNode *next;   // the next sibling node in reverse of the
                                   // order added
     struct LListTreeNode *head_child; // the most recent child
                                       // added of this node
-};
+} LListTreeNode_t;
 
 /**
  * @brief
@@ -28,7 +28,7 @@ struct LListTreeNode {            // struct of a tree node of a tree structure
  *
  * @return Pointer to the new root node, NULL is unable to allocate memory.
  */
-extern struct LListTreeNode *LListTreeCreate(void *data);
+extern LListTreeNode_t *LListTreeCreate(void *data);
 
 /**
  * @brief
@@ -37,7 +37,7 @@ extern struct LListTreeNode *LListTreeCreate(void *data);
  * @param[in,out] p_root        root node of the tree to delete
  * @param[in]     free_data     function to free the data, NULL if not needed
  */
-extern void LListTreeClear(struct LListTreeNode **p_root,
+extern void LListTreeClear(LListTreeNode_t **p_root,
                            void (*free_data)(void *));
 
 /**
@@ -51,7 +51,7 @@ extern void LListTreeClear(struct LListTreeNode **p_root,
  *   1 : added successfully @n
  *   0 : unable to allocate memory @n
  */
-extern int LListTreeAdd(struct LListTreeNode *parent, void *data);
+extern int LListTreeAdd(LListTreeNode_t *parent, void *data);
 
 /**
  * @brief
@@ -60,7 +60,7 @@ extern int LListTreeAdd(struct LListTreeNode *parent, void *data);
  * @param[in,out] node  node to edit
  * @param[in]     data  data of the new node
  */
-extern void LListTreeEdit(struct LListTreeNode *node, void *data);
+extern void LListTreeEdit(LListTreeNode_t *node, void *data);
 
 /**
  * @brief
@@ -83,8 +83,8 @@ extern void LListTreeEdit(struct LListTreeNode *node, void *data);
  *
  * @return Pointer to the node with matching data, NULL if not found.
  */
-extern struct LListTreeNode *
-LListTreeGetNode(struct LListTreeNode *root, void *data,
+extern LListTreeNode_t *
+LListTreeGetNode(LListTreeNode_t *root, void *data,
                  int (*comp_func)(const void *, const void *));
 
 /**
@@ -95,7 +95,7 @@ LListTreeGetNode(struct LListTreeNode *root, void *data,
  *
  * @return Number of child nodes.
  */
-extern int LListTreeCountChild(struct LListTreeNode *parent);
+extern int LListTreeCountChild(LListTreeNode_t *parent);
 
 /**
  * @brief
@@ -108,7 +108,7 @@ extern int LListTreeCountChild(struct LListTreeNode *parent);
  * @param[in]     depth     starting depth level (larger values are deeper)
  * @param[in]     func      function to execute
  */
-extern void LListTreePreOrder(struct LListTreeNode *root, int depth,
+extern void LListTreePreOrder(LListTreeNode_t *root, int depth,
                               void (*func)(void *, int));
 
 /**
@@ -122,7 +122,7 @@ extern void LListTreePreOrder(struct LListTreeNode *root, int depth,
  * @param[in]     depth     starting depth level (larger values are deeper)
  * @param[in]     func      function to execute
  */
-extern void LListTreeInOrder(struct LListTreeNode *root, int depth,
+extern void LListTreeInOrder(LListTreeNode_t *root, int depth,
                              void (*func)(void *, int));
 
 /**
@@ -138,7 +138,7 @@ extern void LListTreeInOrder(struct LListTreeNode *root, int depth,
  * @param[in]     depth     starting depth level (larger values are deeper)
  * @param[in]     func      function to execute
  */
-extern void LListTreePostOrder(struct LListTreeNode *root, int depth,
+extern void LListTreePostOrder(LListTreeNode_t *root, int depth,
                                void (*func)(void *, int));
 
 /**
@@ -150,6 +150,6 @@ extern void LListTreePostOrder(struct LListTreeNode *root, int depth,
  *
  * @return 1 if executed successfully, 0 if unable to allocate memory.
  */
-extern int LListTreeDeepestNodes(struct LListTreeNode *root,
-                                 struct LListTreeNode **node_arr);
+extern int LListTreeDeepestNodes(LListTreeNode_t *root,
+                                 LListTreeNode_t **node_arr);
 #endif

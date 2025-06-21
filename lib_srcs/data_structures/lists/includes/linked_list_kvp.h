@@ -14,15 +14,15 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-struct LListKVPNode {          // node in a key-value pair linked list
+typedef struct LListKVPNode {          // node in a key-value pair linked list
     void *key;                 // key to identify the node with
     void *data;                // pointer to data
     struct LListKVPNode *next; // next node in key-value pair linked list
-};
+} LListKVPNode_t;
 
-struct LListKVP {
-    struct LListKVPNode *head; // head node
-    struct LListKVPNode *tail; // tail node
+typedef struct LListKVP {
+    LListKVPNode_t *head; // head node
+    LListKVPNode_t *tail; // tail node
     size_t count;
     /**
      *  The compare function must operate as follows: @n
@@ -30,7 +30,7 @@ struct LListKVP {
      *  2) Returns int >= 0 if key_1 should come after key_2 @n
      */
     int (*comp_key)(const void *, const void *);
-};
+} LListKVP_t;
 
 /**
  * @brief
@@ -46,7 +46,7 @@ struct LListKVP {
  * @return Pointer to new key-value pair linked list, NULL if memory allocation
  * is unsuccessful.
  */
-extern struct LListKVP *LListKVPCreate(int (*comp_key)(const void *,
+extern LListKVP_t *LListKVPCreate(int (*comp_key)(const void *,
                                                        const void *));
 
 /**
@@ -58,7 +58,7 @@ extern struct LListKVP *LListKVPCreate(int (*comp_key)(const void *,
  * @param[in]     free_key      function to free keys, NULL if not needed
  * @param[in]     free_data     function to free data, NULL if not needed
  */
-extern void LListKVPClear(struct LListKVP **p_list, void (*free_key)(void *),
+extern void LListKVPClear(LListKVP_t **p_list, void (*free_key)(void *),
                           void (*free_data)(void *));
 
 /**
@@ -73,7 +73,7 @@ extern void LListKVPClear(struct LListKVP **p_list, void (*free_key)(void *),
  * @return true  : removal successful 
  * @return false : list is empty
  */
-extern bool LListKVPRemoveHead(struct LListKVP *list, void (*free_key)(void *),
+extern bool LListKVPRemoveHead(LListKVP_t *list, void (*free_key)(void *),
                                void (*free_data)(void *));
 
 /**
@@ -87,7 +87,7 @@ extern bool LListKVPRemoveHead(struct LListKVP *list, void (*free_key)(void *),
  *
  * @return Pointer the data of the removed node, NULL if not found.
  */
-extern void *LListKVPRemove(struct LListKVP *list, void *key,
+extern void *LListKVPRemove(LListKVP_t *list, void *key,
                             void (*free_key)(void *));
 
 /**
@@ -99,7 +99,7 @@ extern void *LListKVPRemove(struct LListKVP *list, void *key,
  * @param[in]     free_key      function to free keys, NULL if not needed
  * @param[in]     free_data     function to free data, NULL if not needed
  */
-extern void LListKVPRemoveAll(struct LListKVP *list, void (*free_key)(void *),
+extern void LListKVPRemoveAll(LListKVP_t *list, void (*free_key)(void *),
                               void (*free_data)(void *));
 
 /**
@@ -113,7 +113,7 @@ extern void LListKVPRemoveAll(struct LListKVP *list, void (*free_key)(void *),
  * @return true  : node added successfully 
  * @return false : memory allocation falied
  */
-extern bool LListKVPAddHead(struct LListKVP *list, void *key, void *data);
+extern bool LListKVPAddHead(LListKVP_t *list, void *key, void *data);
 
 /**
  * @brief
@@ -126,7 +126,7 @@ extern bool LListKVPAddHead(struct LListKVP *list, void *key, void *data);
  * @return true  : node added successfully 
  * @return false : memory allocation falied
  */
-extern bool LListKVPAddTail(struct LListKVP *list, void *key, void *data);
+extern bool LListKVPAddTail(LListKVP_t *list, void *key, void *data);
 
 /**
  * @brief
@@ -140,7 +140,7 @@ extern bool LListKVPAddTail(struct LListKVP *list, void *key, void *data);
  * @return true  : added successfully 
  * @return false : memory allocation falied
  */
-extern bool LListKVPAdd(struct LListKVP *list, void *key, void *data);
+extern bool LListKVPAdd(LListKVP_t *list, void *key, void *data);
 
 /**
  * @brief
@@ -152,7 +152,7 @@ extern bool LListKVPAdd(struct LListKVP *list, void *key, void *data);
  *
  * @return Pointer to the data, NULL if data is not found
  */
-extern void *LListKVPFind(struct LListKVP *list, const void *key);
+extern void *LListKVPFind(LListKVP_t *list, const void *key);
 
 /**
  * @brief
@@ -167,7 +167,7 @@ extern void *LListKVPFind(struct LListKVP *list, const void *key);
  * @return true  : execution successful 
  * @return false : memory allocation failed
  */
-extern bool LListKVPFindAll(struct LListKVP *list, const void *key,
+extern bool LListKVPFindAll(LListKVP_t *list, const void *key,
                             void ***ptr_arr, size_t *count);
 
 /**
@@ -180,7 +180,7 @@ extern bool LListKVPFindAll(struct LListKVP *list, const void *key,
  *
  * @return The numebr of times the provided key is matched.
  */
-extern size_t LListKVPCountRepeats(struct LListKVP *list, const void *key);
+extern size_t LListKVPCountRepeats(LListKVP_t *list, const void *key);
 
 /**
  * @brief
@@ -190,7 +190,7 @@ extern size_t LListKVPCountRepeats(struct LListKVP *list, const void *key);
  * @param[in,out] list  key-value pair linked list to traverse
  * @param[in]     func  function to preform on key and data, in this order
  */
-extern void LListKVPTraverse(struct LListKVP *list,
+extern void LListKVPTraverse(LListKVP_t *list,
                              void (*func)(void *, void *));
 
 /**
@@ -206,7 +206,7 @@ extern void LListKVPTraverse(struct LListKVP *list,
  * @param[in]  len          array length
  * @param[in]  item_size    array element size
  */
-extern void LListKVPToArr(struct LListKVP *list, void *arr, size_t len,
+extern void LListKVPToArr(LListKVP_t *list, void *arr, size_t len,
                           size_t item_size);
 
 /**
@@ -218,5 +218,5 @@ extern void LListKVPToArr(struct LListKVP *list, void *arr, size_t len,
  * @param[out] arr      array to store copied pointers
  * @param[in]  len      array length
  */
-extern void LListKVPToPointerArr(struct LListKVP *list, void **arr, size_t len);
+extern void LListKVPToPointerArr(LListKVP_t *list, void **arr, size_t len);
 #endif

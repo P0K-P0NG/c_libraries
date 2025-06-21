@@ -14,14 +14,14 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-struct RobinHTBucket { // robinhood open address hashtable bucket
+typedef struct RobinHTBucket { // robinhood open address hashtable bucket
     void *key;         // Pointer to the key
     void *data;        // Pointer to the data
     size_t psl;        // probe sequence lengths, used to manage the hashtable
-};
+} RobinHTBucket_t;
 
-struct RobinHashTable {             // robinhood open address hastable
-    struct RobinHTBucket **buckets; // Dynamic array of pointers to the buckets
+typedef struct RobinHashTable {             // robinhood open address hastable
+    RobinHTBucket_t **buckets; // Dynamic array of pointers to the buckets
     struct {
         size_t max;
         size_t used;
@@ -35,7 +35,7 @@ struct RobinHashTable {             // robinhood open address hastable
      *  2) Returns int >= 0 if key_1 should come after key_2 @n
      */
     int (*comp_key)(const void *, const void *);
-};
+} RobinHashTable_t;
 
 /**
  * @brief
@@ -54,7 +54,7 @@ struct RobinHashTable {             // robinhood open address hastable
  *
  * @return Pointer to the new hashtable, NULL if unable to allocate memory.
  */
-extern struct RobinHashTable *
+extern RobinHashTable_t *
 RobinHashTableCreate(size_t bucket_count, float max_load_prop,
                      size_t (*hash_func)(const void *),
                      int (*comp_key)(const void *, const void *));
@@ -68,7 +68,7 @@ RobinHashTableCreate(size_t bucket_count, float max_load_prop,
  * @param[in] free_data     function to free data; NULL if not needed
  * @param[in] free_key      function to free keys; NULL if not needed
  */
-extern void RobinHashTableClear(struct RobinHashTable **p_table,
+extern void RobinHashTableClear(RobinHashTable_t **p_table,
                                 void (*free_data)(void *),
                                 void (*free_key)(void *));
 
@@ -86,7 +86,7 @@ extern void RobinHashTableClear(struct RobinHashTable **p_table,
  *  true  : added successfully @n
  *  false : memory allocation falied @n
  */
-extern bool RobinHashTableAdd(struct RobinHashTable *table, void *key,
+extern bool RobinHashTableAdd(RobinHashTable_t *table, void *key,
                              void *data);
 
 /**
@@ -101,7 +101,7 @@ extern bool RobinHashTableAdd(struct RobinHashTable *table, void *key,
  *
  * @return Pointer the data of the removed item, NULL if not found.
  */
-extern void *RobinHashTableRemove(struct RobinHashTable *table, void *key,
+extern void *RobinHashTableRemove(RobinHashTable_t *table, void *key,
                                   void (*free_data)(void *),
                                   void (*free_key)(void *));
 
@@ -114,7 +114,7 @@ extern void *RobinHashTableRemove(struct RobinHashTable *table, void *key,
  *
  * @return Data corresponding to the key, NULL if not found.
  */
-extern void *RobinHashTableFind(struct RobinHashTable *table, void *key);
+extern void *RobinHashTableFind(RobinHashTable_t *table, void *key);
 
 /**
  * @brief
@@ -129,5 +129,5 @@ extern void *RobinHashTableFind(struct RobinHashTable *table, void *key);
  *  -1 : new count is less than current limit of available buckets
  *       (max_load_prop*max_count) @n
  */
-extern int RobinHashTableRehash(struct RobinHashTable *table, size_t new_count);
+extern int RobinHashTableRehash(RobinHashTable_t *table, size_t new_count);
 #endif

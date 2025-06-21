@@ -13,9 +13,9 @@
 
 #include <stddef.h>
 
-struct String {
+typedef struct String {
     char *data;
     size_t len;
-};
+} String_t;
 
 #endif

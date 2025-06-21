@@ -32,7 +32,7 @@
  *   0 : parsing unsuccessful @n
  *  -1 : no input or contains only the newline character @n
  */
-extern int getInput(struct Pointer ptr, const size_t max_len,
+extern int getInput(Pointer_t ptr, const size_t max_len,
                     const char prompt[]);
 
 /**
@@ -44,7 +44,7 @@ extern int getInput(struct Pointer ptr, const size_t max_len,
  *
  * @return Pointer to the string unless it is emtpy, then NULL is returned.
  */
-extern char *getFullStr(struct String str, const char prompt[]);
+extern char *getFullStr(String_t str, const char prompt[]);
 
 /**
  * @brief
@@ -56,6 +56,6 @@ extern char *getFullStr(struct String str, const char prompt[]);
  *
  * @return Pointer to the string unless it is emtpy, then NULL is returned.
  */
-extern char *getStr(struct String str, const char prompt[]);
+extern char *getStr(String_t str, const char prompt[]);
 
 #endif

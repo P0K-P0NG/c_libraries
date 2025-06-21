@@ -18,13 +18,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-bool ArrayReadBinary(struct Array **p_arr, FILE *file_src)
+bool ArrayReadBinary(Array_t **p_arr, FILE *file_src)
 {
     assert(p_arr != NULL);
     assert(file_src != NULL);
 
-    struct Array arr_info;
-    if ((fread(&arr_info, sizeof(struct Array), 1, file_src)) != 1) {
+    Array_t arr_info;
+    if ((fread(&arr_info, sizeof(Array_t), 1, file_src)) != 1) {
         return false;
     }
     *p_arr = ArrayCreate(arr_info.item_size, arr_info.len);
@@ -36,14 +36,14 @@ bool ArrayReadBinary(struct Array **p_arr, FILE *file_src)
     return true;
 }
 
-bool ArrayWriteBinary(struct Array *arr, FILE *file_dest)
+bool ArrayWriteBinary(Array_t *arr, FILE *file_dest)
 {
     assert(arr != NULL);
     assert(file_dest != NULL);
 
-    struct Array temp
+    Array_t temp
         = {.items = NULL, .item_size = arr->item_size, .len = arr->len};
-    if (fwrite(&temp, sizeof(struct Array), 1, file_dest) != 1
+    if (fwrite(&temp, sizeof(Array_t), 1, file_dest) != 1
         || fwrite(arr->items, arr->item_size, arr->len, file_dest)
                != (size_t)arr->len) {
         return false;
@@ -51,7 +51,7 @@ bool ArrayWriteBinary(struct Array *arr, FILE *file_dest)
     return true;
 }
 
-bool ArrayWrite(struct Array *arr, const char *type_format, const char *delim,
+bool ArrayWrite(Array_t *arr, const char *type_format, const char *delim,
                 FILE *file_dest)
 {
     assert(arr != NULL);

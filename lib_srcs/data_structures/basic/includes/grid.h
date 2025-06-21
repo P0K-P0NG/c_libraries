@@ -14,15 +14,15 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-struct Grid {
+typedef struct Grid {
     void **items;
     size_t row_count;
     size_t col_count;
-};
+} Grid_t;
 
-extern struct Grid *GridCreate(size_t row_count, size_t col_count);
-extern void GridClear(struct Grid **p_grid, void (*free_data)(void *));
-extern bool GridSet(struct Grid *grid, size_t row_idx, size_t col_idx,
+extern Grid_t *GridCreate(size_t row_count, size_t col_count);
+extern void GridClear(Grid_t **p_grid, void (*free_data)(void *));
+extern bool GridSet(Grid_t *grid, size_t row_idx, size_t col_idx,
                     void *data, void (*free_data)(void *));
-extern void *GridGet(struct Grid *grid, size_t row_idx, size_t col_idx);
+extern void *GridGet(Grid_t *grid, size_t row_idx, size_t col_idx);
 #endif

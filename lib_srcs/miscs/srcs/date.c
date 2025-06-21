@@ -18,7 +18,7 @@ const char month_names[12][10]
     = {"January", "Febuary", "March",     "April",    "May",     "June",
        "July",    "August",  "September", "November", "December"};
 
-int checkDate(struct Date date, int min_year, int max_year)
+int checkDate(Date_t date, int min_year, int max_year)
 {
     int is_valid = 0;
     int offset = 0;
